@@ -1,0 +1,26 @@
+# Dependency directories
+node_modules/
+
+# Environment configuration
+.env
+
+# Build outputs
+/dist
+/build
+
+# Logs
+*.log
+npm-debug.log*
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# common ignore files
+*.swp
+*.lock
+*~
