@@ -1,0 +1,246 @@
+\documentclass[12pt]{article}
+
+% Include necessary packages
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lipsum} 
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{makecell}
+\usepackage{longtable}
+\usepackage{ltablex}
+
+% Set margins
+\geometry{a4paper, margin=1in}
+\keepXColumns
+
+\begin{document}
+
+% Title Page
+\begin{titlepage}
+    \centering
+    \vspace*{\fill}
+    {\LARGE\bfseries  COMP 4560 Industrial Project Proposal}
+    \vfill 
+
+    \begin{flushleft}
+        {\Large\bfseries January 16, 2024}
+        \vspace{0.2cm} 
+
+        {\large
+        Ajay Nair\par
+        Ishraq Md Nazrul\par
+        Logan Doran\par
+        Tahmina Sadia Mahmud Rodshi\par
+        }
+    \end{flushleft}
+\end{titlepage}
+
+% Table of Contents
+\tableofcontents
+\newpage
+
+% Introduction section
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+The Canadian Grain Commission manages a vast amount of data every year. This project aims to help visualize this data in an efficient and user-friendly way. The focus is on creating a visual tool that enables users to upload various data sets and generate engaging visualizations. 
+
+Core features include presenting scientific data through multiple visualization techniques, such as mapping multiple data points, a dynamic legend system to enhance data interpretation, and incorporating interactive elements to explore trends over time. Emphasizing creativity and adaptability, this project seeks to transform raw data into comprehensive geographical maps for the Canadian Grain Commission. 
+
+% Sections
+\section*{Background}
+\addcontentsline{toc}{section}{Background}
+{\small \subsection*{Courses Completed}}
+\addcontentsline{toc}{subsection}{Courses Completed} 
+\begin{itemize}
+    \item COMP 3010: Distributed Computing  
+    \item COMP 3020: Human-Computer Interaction I 
+    \item COMP 3030: Automata Theory and Formal Languages 
+    \item COMP 3190: Introduction to Artificial Intelligence 
+    \item COMP 3350: Software Engineering I 
+    \item COMP 3370: Computer Organization 
+    \item COMP 3380: Databases Concepts and Usage 
+    \item COMP 4180: Intelligent Mobile Robotics 
+    \item COMP 4190: Artificial Intelligence 2 
+    \item COMP 4360: Machine Learning 
+    \item COMP 4380: Database Implementation 
+    \item COMP 4820: Bioinformatics 
+    \item COMP 4620: Professional Practices in Computer Science 
+\end{itemize}
+
+{\tiny\subsection*{Ajay Nair}}
+\addcontentsline{toc}{subsection}{Ajay Nair} 
+\begin{itemize}
+    \item Experience in software development following traditional software engineering principles and agile methodologies. 
+    \item Experience in project management and client relations. 
+    \item Experience in database management.
+    \item Experience in UX/UI development following the User-Centered Design Cycle.
+    \item Experience in Object Oriented Programming.
+    \item Experience in data cleaning and analysis in an academic research setting.
+\end{itemize}
+{\tiny\subsection*{Ishraq Md Nazrul}}
+\addcontentsline{toc}{subsection}{Ishraq Md Nazrul} 
+\begin{itemize}
+    \item 
+\end{itemize}
+{\tiny\subsection*{Logan Doran}}
+\addcontentsline{toc}{subsection}{Logan Doran} 
+\begin{itemize}
+    \item Extensive C\# and Java experience in industry and project work. 
+    \item Experience with MSSQL, and sqlite. 
+    \item Experience designing interfaces under usability principles. 
+    \item Experience in data cleaning, data visualization, and data analysis in an industry context. 
+    \item Experience in Object Oriented Programming. 
+\end{itemize}
+{\tiny\subsection*{Tahmina Sadia Mahmud Rodshi}}
+\addcontentsline{toc}{subsection}{Tahmina Sadia Mahmud Rodshi} 
+\begin{itemize}
+    \item 
+\end{itemize}
+
+\newpage
+\section*{Problem Statement}
+\addcontentsline{toc}{section}{Problem Statement}
+The Canadian Grain Commission (CGC) lacks an efficient tool for visualizing complex agricultural data on geographical maps, resulting in inefficiencies in data presentation. Currently, creating maps is a time-consuming process with difficult reproducibility. 
+
+Our project aims to streamline the creation of agricultural visualization tools and provide the CGC with a dedicated platform that assists in the efficient and creative representation of their data. By establishing a robust visual tool, we hope to enhance the interpretation and accessibility of crucial agricultural information. 
+
+\section*{Methodology and Timeline}
+\addcontentsline{toc}{section}{Methodology and Timeline}
+The first step of the project is to use a public GitHub repository to set up a collaborative environment. This repository will serve as the main hub for monitoring tasks, managing active dev tasks, and organizing deliverables. The configuration of each development environment will be tailored to the specific needs of the project for managing agricultural data, with an emphasis on database and platform choices.  
+
+The implementation of an Agile development technique will be paired with a user-centered design. This strategy makes it possible to make adaptable and flexible adjustments in response to frequent input, ensuring that the tool is in line with the requirements and experiences of non-technical users. To serve a varied user base, important elements like web accessibility standards and user-friendly interfaces will be given priority. 
+
+A well-structured relational database on disk and on memory will be the core of our application, enabling seamless user interaction with agricultural data. These tables will support efficient data storage, integration, and retrieval, allowing for efficient query capabilities while ensuring data accuracy and security. As the project progresses, we will adapt the database schema to handle all forms of data that a user could want to upload to the application. 
+
+Time-series and geographic data management will be accomplished through the use of libraries that are tailored to handle and process geospatial data efficiently. Preprocessing and normalization of data will also be done as part of backend development. To reduce edge cases and facilitate data management, this step is essential as it entails cleaning, converting and standardizing data formats.  
+
+The development of the user interface will prioritize usability for non-technical users with an added option for an Advanced Mode for users needing extra statistics and information. The intuitiveness of the interface will be verified through usability testing and prototyping. There will be plenty of customization choices, including dynamic style options that enable users to change visualization elements like color schemes and intensity and careful considerations will be made to comply with the Web Content Accessibility Guidelines.  
+
+The system’s architecture will have security and privacy in mind when in development to ensure a robust toolset in production. The system will be continuously monitored, and tests will be implemented to ensure proper safety of user data and proper integration of the system. Maintenance will be done throughout the term to ensure everything is updated and complies with proper licensing when using external libraries. 
+
+There will be clear and comprehensive user manuals available, aimed at non-technical consumers. The architecture and data processing of the system will be described in detail in the technical documentation. The tool's general usability will be improved by providing users with assistance in addressing frequent issues through a troubleshooting guide and FAQ area.
+
+The project will be polished at the last stage, making sure every feature functions as it should. The system will be more versatile and portable thanks to containerization, which will be accomplished via Docker. Frequent check-ins with Sean from Canadian Grain Commission and Professor Robert Guderian will guarantee ongoing development in response to input. The product will be ready for use, guaranteeing simple incorporation into current systems and usability for the intended audience.
+
+The following is the detail of the timeline:
+
+\subsection*{Timeline:}
+\addcontentsline{toc}{subsection}{Timeline} 
+    \begin{tabularx}{\textwidth}{|>{\setlength\hsize{1.4\hsize}\setlength\linewidth{\hsize}}X|>{\setlength\hsize{.6\hsize}\setlength\linewidth{\hsize}}X|}
+    \hline
+    \multicolumn{2}{|l|}{Combined Project Tasks }\\
+    \hline
+    Tasks  & Tentative Completion \newline Dates \\
+    \hline
+    Infrastructure and Environment Setup:
+    \begin{itemize}
+    \item Discuss architecture.  
+    \item Setup individual environments.
+    \item Setup CI/CD and Containerization.
+    \item Generate Issues for user stories and features.
+    \item Split up dev tasks.
+    \item Discuss potential platforms to develop application.
+    \item Set up Development database.
+    \end{itemize} &
+    \multirow{14}{*}{\centering\arraybackslash January 25, 2024} \\
+    \hline
+    Check in with Sean and Robert Guderian & January 27, 2024 \\\hline
+    Milestone 1:
+    \begin{itemize}
+    \item Set up the map interface, including geographical regions (provinces and agricultural zones).   
+    \item Develop data upload functionality. 
+    \item Implement basic data visualization with initial color customization. 
+    \item Add download functionality for visualized data maps in a single file format as photo format. 
+    \end{itemize} &
+    \multirow{14}{*}{\centering\arraybackslash Febuary 6, 2024} \\ \hline
+    Check in with Sean and Robert Guderian & Febuary 7, 2024 \\\hline
+    Milestone 2:
+    \begin{itemize}
+    \item Preprocessing of data and Outlier Detection.   
+        \begin{itemize}
+            \item Outlier data detection in terms of GIS.
+        \end{itemize}
+    \item Implement feature to upload multiple data sets.  
+    \item Implement Observational View for multiple data sets.
+        \begin{itemize}
+            \item Two main options: Overlay or Side by side comparison
+        \end{itemize}
+    \item Searching and modifying Map:
+        \begin{itemize}
+            \item Implementing a feature to allow users to view changes occurring in cities or municipalities by focusing on a subset of a city. 
+            \item Implement a feature to allow users to modify colors to preferred color choices.
+        \end{itemize}
+    \item Implement advanced numerical filtering options for combined datasets (this is dependent on dataset that is uploaded) 
+        \begin{itemize}
+            \item Ability to filter results based on fields that are present in the dataset. 
+        \end{itemize}
+    \end{itemize} &
+    \multirow{24}{*}{\centering\arraybackslash Febuary 25, 2024} \\ \hline
+    Check in with Sean and Robert Guderian & March 10, 2024 \\\hline
+    Milestone 3:
+    \begin{itemize}
+    \item Enhance data export options, supporting multiple file formats.  
+    \item Implement history feature to track changes made to files.  
+        \begin{itemize}
+            \item Incorporate undo/redo feature for region coloring
+        \end{itemize}
+    \item Matrix/Album of images of how the trend would change:
+        \begin{itemize}
+            \item Add feature to view the data with clips – use sliders to show the change over time.
+        \end{itemize}
+    \end{itemize} &
+    \multirow{14}{*}{\centering\arraybackslash March 10 , 2024} \\ \hline
+    Check in with Sean and Robert Guderian & March 11, 2024 \\\hline
+    \begin{itemize}
+        \item Conduct Unit, Integration Tests for the application with more complicated datasets to ensure proper functionality
+    \end{itemize}
+    & \multirow{5}{*}{\centering\arraybackslash March 20, 2024} \\\hline
+    Check in with Sean and Robert Guderian & 
+    March 22, 2024 \\\hline
+    \begin{itemize}
+        \item Create a guide that walks the user through the process of interacting with the application for users without a technical background.
+        \item Outline an index with a description of the project and provide brief summaries of each feature that the application offers. 
+        \item Additionally, assemble a comprehensive instruction manual detailing the steps necessary to configure the environment for running the application.
+    \end{itemize}
+    & \multirow{14}{*}{\centering\arraybackslash March 30, 2024} \\\hline
+    Check in with Sean and Robert Guderian & April 1, 2024 \\\hline
+    \begin{itemize}
+        \item A final document outlining final tasks completed over the course of the project.
+        \item Prepare and compile final presentation slides and discussing potential improvement to be made to the application. 
+        \item Decide who will present which parts of the projects.
+    \end{itemize}
+    & \multirow{10}{*}{\centering\arraybackslash TBD}\\\hline
+    \end{tabularx}
+
+\section*{Infrastructure, facilities and expert personnel requirements}
+\addcontentsline{toc}{section}{Infrastructure, facilities and expert personnel requirements}
+
+To ensure the success of this project, we would need access to the data collected and held by the Canadian Grain Commission. Additionally, we would require insights and support from an HCI professional, specifically Dr. Patrick Dubois, to ensure a proper user-designed approach. These insights will prove beneficial when we require guidance on decisions outside of our areas of expertise. We have also discussed potential development-focused support from Sean through a colleague from the Canadian Grain Commission. 
+
+We are planning to communicate and establish a connection with Sean’s co-worker over email. We are expected to require additional resources such as the Linux lab, and potential Geographic Information System (GIS) experts such as Dr. David Walker from the Riddell Faculty of Environment, Earth, and Resources within the university. However, should we encounter issues in accessing any of these resources we will investigate alternatives such as graduate students in GIS-focused areas of research.   
+
+\section*{Outcome and Deliverables}
+\addcontentsline{toc}{section}{Outcome and Deliverables}
+\subsection*{Shrink Goals}
+\addcontentsline{toc}{subsection}{Shrink Goals}
+\begin{itemize}
+    \item  1
+\end{itemize}
+
+\subsection*{Expected Goals}
+\addcontentsline{toc}{subsection}{Expected Goals}
+\begin{itemize}
+    \item  2
+\end{itemize}
+
+\subsection*{Stretch Goals}
+\addcontentsline{toc}{subsection}{Stretch Goals}
+\begin{itemize}
+    \item  3
+\end{itemize}
+
+\end{document}

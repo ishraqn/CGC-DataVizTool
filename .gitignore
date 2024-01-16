@@ -24,3 +24,12 @@ Thumbs.db
 *.swp
 *.lock
 *~
+
+#latex aux and intermediate files
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
