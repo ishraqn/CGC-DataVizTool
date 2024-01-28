@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target"                          : "ES2020",     // Specify ECMAScript target version
+    "module"                          : "NodeNext",   // Specify module code generation
+    "outDir"                          : "./dist",     // Specify output directory for compiled files
+    "rootDir"                         : "./src",      // Specify root directory of input files
+    "strict"                          : true,         // Enable all strict type-checking options
+    "esModuleInterop"                 : true,         // Enable interoperability between CommonJS and ES Modules via creation of namespace objects for all imports
+    "skipLibCheck"                    : true,         // Skip type checking of declaration files
+    "forceConsistentCasingInFileNames": true,         // Disallow inconsistently-cased references to the same file
+    "moduleResolution"                : "NodeNext",   // Select module resolution strategy: Node.js-style module resolution
+    "resolveJsonModule"               : true,         // Include modules imported with .json extension
+    "noImplicitReturns"               : true,         // Report error when not all code paths in function return a value
+    "noUnusedLocals"                  : true,         // Report errors on unused locals
+    "noUnusedParameters"              : true,         // Report errors on unused parameters
+    "noImplicitAny"                   : true,         // Raise error on expressions and declarations with an implied 'any' type
+    "removeComments"                  : true,         // Remove comments in the output files
+    "sourceMap"                       : true,         // Generate corresponding .map file for easier debugging
+    "incremental"                     : true          // Enable incremental compilation
+  },
+  "include": [
+    "src/**/*"                                        // Include all TypeScript files in 'src' directory, including subdirectories
+  ],
+  "exclude": [
+    "node_modules",                                   // Exclude all files in 'node_modules' directory
+    "**/*.test.ts"                                    // Exclude all test files
+  ]
+}
