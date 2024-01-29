@@ -15,7 +15,7 @@ app.use(cors());
 app.use(compression());
 app.use(express.json());
 
-app.get("/init", (_req: Request, res: Response): void => {
+app.get("/api/init", (_req: Request, res: Response): void => {
 	res.json({ message: "CGC Dev Init 🚀" });
 });
 
