@@ -27,7 +27,7 @@ to start the backend in development mode. The backend will then be available at 
 The frontend is using React with TypeScript. To run the frontend:
 
 ```bash
-npm start
+npm run dev
 ```
 
 to start the frontend in development mode. The frontend will then be available at `localhost:3000`. The frontend will automatically reload when changes are made to the code.
