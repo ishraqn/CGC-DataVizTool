@@ -16,7 +16,7 @@ const App: React.FC = () => {
 
 
   useEffect(() => {
-    fetch('/api/v1/data-folder/2021-Agri-Preprocessed/default-2024-02-02T10:05:44.420Z.geojson')
+    fetch('/api/v1/data-folder/2021-Agri-Preprocessed/default-2024-02-02T19-04-55.958Z.geojson')
       .then(response => response.json())
       .then(data => {
         setGeoJsonData(data);
