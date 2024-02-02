@@ -11,8 +11,8 @@ export const shapefileController = {
 				__dirname,
 				"..",
 				"data",
-				"2021-Agri-Preprocessed",
-				`default-${lastModifiedFile}.geojson`
+				"default",
+				`default-2024-02-02T19-04-55.958Z.geojson`
 			);
 			res.download(filePath);
 		} catch (error) {

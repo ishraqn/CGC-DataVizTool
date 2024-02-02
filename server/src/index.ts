@@ -19,7 +19,7 @@ app.use(express.json());
 console.log(path.resolve(__dirname, "..", "src", "data"));
 app.use(
 	"/api/v1/data-folder",
-	express.static(path.resolve(__dirname, "..","src","data"))
+	express.static(path.resolve(__dirname, "..", "src", "data", "default"))
 );
 
 app.get("/api/v1/init", (_req: Request, res: Response): void => {

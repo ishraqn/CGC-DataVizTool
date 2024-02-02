@@ -35,4 +35,6 @@ Thumbs.db
 *.toc
 
 #data unprocessed
-2021-Agri-*/
+2021-Agri-Unprocessed
+2021-Agri-Preprocessed
+!default-2024-02-02T19-04-55.958Z.geojson
