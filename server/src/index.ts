@@ -11,6 +11,7 @@ import cookieParser from "cookie-parser";
 import compression from "compression";
 import shapefileRoutes from "./routes/shapefileRoutes";
 import developerRoutes from "./routes/developerRoutes";
+import multer from 'multer';
 
 dotenv.config({ path: path.resolve(__dirname, "..", "..", ".env") });
 
@@ -29,6 +30,36 @@ const PORT: string | undefined = process.env.PORT;
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 5000, // limit each IP to 5000 requests per windowMs (bad must change)
+});
+
+// Set up multer storage
+const storage = multer.diskStorage({
+    destination: function (_req, _file, cb) {
+        cb(null, 'uploads/temp'); // Save files to the 'uploads/temp' directory
+    },
+    filename: function (_req, file, cb) {
+        cb(null, file.originalname); // Use the original filename for the uploaded file
+    }
+});
+
+const upload = multer({ 
+    storage: storage,
+    fileFilter: (_req, file, cb) => {
+        const allowedFileTypes = ['.csv'];
+        const extname = path.extname(file.originalname).toLowerCase();
+
+        if (allowedFileTypes.includes(extname)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Only .csv files are allowed!'));
+        }
+        // Check file mimetype to ensure it's a CSV file - doesn't work
+        // if (file.mimetype === 'text/csv' || file.mimetype === 'application/vnd.ms-excel') {
+        //     cb(null, true); // Accept the file
+        // } else {
+        //     cb(new Error('Only CSV files are allowed')); // Reject the file
+        // }
+    }
 });
 
 // middleware for the server
@@ -65,6 +96,18 @@ app.use(
 
 // developer routes for basic testing purposes
 app.use("/api/v1", developerRoutes);
+
+// Route for handling file upload
+app.post('/upload', upload.single('csvFile'), (req: Request, res: Response) => {
+    // Access the uploaded file via req.file
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+
+    // File uploaded successfully
+    res.status(200).send('File uploaded successfully.');
+    return;
+});
 
 // main shapefile routes
 app.use("/api/v1/shapefile", shapefileRoutes);
