@@ -9,7 +9,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     console.log('Fetching data from the backend...');
-    fetch('/api/v1')
+    fetch('/api/v1/dev')
       .then((response) => response.json())
       .then((data) => setMessage(data.message))
       .catch((error) => console.error('Error fetching data:', error));
