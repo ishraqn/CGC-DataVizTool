@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import GeoJSONMap from './components/geoJSONMap';
+import FileUploadForm from './components/uploadForm'
 import './App.css';
 
 const App: React.FC = () => {
@@ -30,6 +31,7 @@ const App: React.FC = () => {
         <h1>CGC DEV TEAM</h1>
         <main>
           <p>🎊Message from the backend: {message}</p>
+          <FileUploadForm />
         </main>
       </header>
       {geoJsonData && <GeoJSONMap geoJsonData={geoJsonData} />}
