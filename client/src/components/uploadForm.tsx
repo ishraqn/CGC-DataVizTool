@@ -7,7 +7,8 @@ const FileUploadForm = () => {
         const formData = new FormData(event.target as HTMLFormElement);
         const file = formData.get('csvFile') as File;
     
-        if (file) {
+        if (file.size <= 0) {
+        } else {
             fetch('api/v1/upload', {
                 method: 'POST',
                 body: formData
