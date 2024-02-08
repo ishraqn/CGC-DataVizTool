@@ -16,12 +16,9 @@ const FileUploadForm = () => {
             .then(response => {
                 if (response.ok) {
                     (event.target as HTMLFormElement).reset();
-                    window.alert('File uploaded successfully.');
                 } else {
                     // Handle other HTTP status codes (e.g., 400, 500) as errors
                     console.error('Error uploading file:', response.status, response.statusText);
-                    // Inform the user about the failure to upload the file
-                    window.alert('Failed to upload file. Please try again.');
                     // Access the response body for further details
                     response.text().then(errorMessage => {
                         console.error('Error message:', errorMessage);
