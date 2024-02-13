@@ -1,9 +1,10 @@
 import React from 'react';
+//import { convertCSVToGeoJSON } from '/api/v1/server/src/utils/csv2geojson.js'; // Import your conversion function
 
 const FileUploadForm = () => {
     const handleFileUpload = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevent the default form submission behavior
-        
+
         const formData = new FormData(event.target as HTMLFormElement);
         const file = formData.get('csvFile') as File;
 
@@ -20,6 +21,11 @@ const FileUploadForm = () => {
             })
             .then(response => {
                 if (response.ok) {
+                    // Call the conversion function after successful file upload
+                    //convertCSVToGeoJSON(file); // Pass the file to your conversion function
+
+                    //still need to display points on map.
+
                     (event.target as HTMLFormElement).reset();
                 } else {
                     // Handle other HTTP status codes (e.g., 400, 500) as errors
