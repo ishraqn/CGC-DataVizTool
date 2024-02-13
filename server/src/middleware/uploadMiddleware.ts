@@ -30,16 +30,16 @@ const storage = multer.diskStorage({
 
 export const upload = multer({ 
     storage: storage,
+    limits: { fileSize: 1024 * 1024 },
     // Define file filter to allow only specific file types
     fileFilter: (_req, file, cb) => {
-        const allowedFileTypes = ['.csv'];
-        const extname = path.extname(file.originalname).toLowerCase();
+        const allowedFileTypes = ['text/csv'];
 
-        if (allowedFileTypes.includes(extname)) {
+        if (allowedFileTypes.includes(file.mimetype)) {
             cb(null, true);
         } else {
-            const errorMessage = 'Only .csv files are allowed!';
+            const errorMessage = `Only files of the following types are allowed: ${allowedFileTypes.join(', ')}`;
             cb(new Error(errorMessage));
-        }
+        } 
     }
 });

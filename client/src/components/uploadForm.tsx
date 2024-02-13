@@ -6,8 +6,11 @@ const FileUploadForm = () => {
         
         const formData = new FormData(event.target as HTMLFormElement);
         const file = formData.get('csvFile') as File;
-    
-        if (file.size <= 0) {
+
+        if (file.size > 1024 * 1024) { 
+            console.error('File size exceeds 1MB limit.');
+        } else if (file.size <= 0) {
+            console.error('File is empty');
         } else {
             fetch('api/v1/upload', {
                 method: 'POST',
