@@ -11,6 +11,8 @@ const FileUploadForm = () => {
             console.error('File size exceeds 1MB limit.');
         } else if (file.size <= 0) {
             console.error('File is empty');
+        } else if (file.type != "text/csv"){
+            console.error('Wrong file type. Must be csv');
         } else {
             fetch('api/v1/upload', {
                 method: 'POST',
