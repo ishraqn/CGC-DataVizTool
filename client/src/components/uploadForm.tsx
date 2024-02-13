@@ -37,10 +37,12 @@ const FileUploadForm = () => {
     };
 
     return (
-        <form encType="multipart/form-data" onSubmit={handleFileUpload}>
-            <input type="file" name="csvFile" accept=".csv"/>
-            <button type="submit">Upload CSV</button>
-        </form>
+        <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <form encType="multipart/form-data" onSubmit={handleFileUpload}>
+                <input type="file" name="csvFile" accept=".csv"/>
+                <button type="submit">Upload CSV</button>
+            </form>
+        </div>
     );
   };
 

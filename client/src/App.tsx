@@ -31,10 +31,10 @@ const App: React.FC = () => {
         <h1>CGC DEV TEAM</h1>
         <main>
           <p>🎊Message from the backend: {message}</p>
-          <FileUploadForm />
         </main>
       </header>
       {geoJsonData && <GeoJSONMap geoJsonData={geoJsonData} />}
+      <FileUploadForm />
     </div>
   );
 }
