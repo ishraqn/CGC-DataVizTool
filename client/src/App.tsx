@@ -45,7 +45,7 @@ const App: React.FC = () => {
           <p>🎊Message from the backend: {message}</p>
         </main>
       </header>
-      {geoJsonData && <GeoJSONMap geoJsonData={pointData} />}
+      {geoJsonData && <GeoJSONMap geoJsonData={geoJsonData} pointData={pointData}/>}
       <FileUploadForm />
     </div>
   );

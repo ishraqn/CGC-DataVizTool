@@ -9,8 +9,7 @@ import React, { useEffect } from 'react';
 import { MapContainer, GeoJSON, useMap } from 'react-leaflet';
 import { GeoJsonObject, Feature, Geometry } from 'geojson';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
-
+import L from 'leaflet'; 
 
 // Defining a custom interface for GeoJSON features with additional properties.
 interface GeoJSONFeature extends Feature<Geometry> {
@@ -20,10 +19,13 @@ interface GeoJSONFeature extends Feature<Geometry> {
 // Props for our GeoJSONMap component, expecting geoJsonData.
 interface GeoJSONMapProps {
   geoJsonData: GeoJsonObject | null;
+  pointData: GeoJsonObject | null;
 }
 
+
+
 // The main component to render our map and GeoJSON data. 
-const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
+const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData, pointData }) => {
   // Custom styles for our GeoJSON features - let's make it look nice and clear!
   const geoJsonStyle = {
     fillColor: "beige",
@@ -32,13 +34,27 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     fillOpacity: 0.5,
   };
   
-  // Function to create popups for each feature on our map.
+  // // Function to create popups for each feature on our map.
   const onEachFeature = (feature: GeoJSONFeature, layer: L.Layer) => {
     // Adding popups with property details, if available.
     if (feature.properties) {
       layer.bindPopup(Object.keys(feature.properties).map(key => 
         `<strong>${key}</strong>: ${feature.properties[key]}`).join('<br />'));
     }
+  };
+
+  const pointStyle = {
+    radius: 8,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+  };
+  
+  const onEachPoint = (feature: GeoJSONFeature, layer: L.Layer) => {
+    layer.bindPopup(Object.keys(feature.properties).map(key => 
+      `<strong>${key}</strong>: ${feature.properties[key]}`).join('<br />'));
   };
 
   // A component to automatically adjust the map view to fit all our GeoJSON features.
@@ -63,17 +79,25 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
   return (
     <MapContainer 
       center={[45.4211, -75.6903]} 
-      zoom={1} 
+      zoom={1}
       style={{ height: '400px', width: '100vw' }}
       zoomControl={false}
       keyboard={false}
     >
       {geoJsonData && (
         <>
-          <GeoJSON data={geoJsonData} style={geoJsonStyle} onEachFeature={onEachFeature} />
-          <FitBounds data={geoJsonData} />
+      {geoJsonData && <GeoJSON data={geoJsonData} style={geoJsonStyle} onEachFeature={onEachFeature} />}
+      {<FitBounds data={geoJsonData} />}
         </>
       )}
+      {pointData && (
+          <GeoJSON
+            data={pointData}
+            pointToLayer={(feature, latlng) => L.circleMarker(latlng, pointStyle)}
+            onEachFeature={onEachPoint}
+          />
+        )}
+
     </MapContainer>
   );
 };

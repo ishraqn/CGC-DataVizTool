@@ -1,6 +1,6 @@
-import * as fs from "fs";
-import * as path from "path";
-import csvtojson from "csvtojson";
+import fs from 'fs';
+import path from 'path';
+import csvtojson from 'csvtojson';
 
 const createDirectoryIfNotExists = (directory: string) => {
     if (!fs.existsSync(directory)) {
@@ -11,14 +11,17 @@ const createDirectoryIfNotExists = (directory: string) => {
 async function convertCSVToGeoJSON(csvFilePath: string) {
     try {
         const geojsonDir: string = path.resolve(__dirname, "..", "data", "csv_conversion");
+        
         // const fileName: string = path.basename(csvFilePath, path.extname(csvFilePath));
+        // hardcoded for testing points displaying after conversion
+
         const geojsonFileName: string = `points.geojson`;
         const geojsonFilePath: string = path.resolve(geojsonDir, geojsonFileName);
 
         createDirectoryIfNotExists(geojsonDir);
 
-        const jsonObj: any[] = await csvtojson().fromFile(csvFilePath);
-        const features: any[] = jsonObj.map((item: any) => {
+        const csvToJson: any[] = await csvtojson().fromFile(csvFilePath);
+        const features: any[] = csvToJson.map((item: any) => {
         const latitude: number = parseFloat(item.latitude);
         const longitude: number = parseFloat(item.longitude);
             return {
@@ -29,7 +32,6 @@ async function convertCSVToGeoJSON(csvFilePath: string) {
                     coordinates: [longitude, latitude],
                 },
             };
-            return null;
         }).filter((feature: any) => feature !== null);
 
         const geoJSON = {

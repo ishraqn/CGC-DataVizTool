@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import * as path from 'path';
-import * as fs from 'fs/promises';
+import path from 'path';
+import fs from 'fs/promises';
 import { convertCSVToGeoJSON as convertCsvToGeoJsonUtil } from '../utils/csv2GeojsonUtils';
 
-export const handleCSVToGeoJSONConversion = async (req: Request, res: Response): Promise<void> => {
+export const CSVToGeoJSONControl = async (req: Request, res: Response): Promise<void> => {
     if (!req.file) {
         res.status(400).send({ message: 'No file reached csv controller' });
         return; // Explicitly return to stop execution

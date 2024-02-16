@@ -11,5 +11,6 @@ export const fileController = {
 		res.status(200).send('File uploaded successfully.');
 		return;
 	}
-	};
 	// download: (req: Request, res: Response) => {
+
+} 
