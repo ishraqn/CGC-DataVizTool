@@ -1,24 +1,30 @@
-import { Request, Response } from 'express';
-import {convertCSVToGeoJSON} from "../utils/csv2GeojsonUtils"
+import { Request, Response } from "express";
+import * as path from 'path';
+import * as fs from 'fs/promises';
+import { convertCSVToGeoJSON as convertCsvToGeoJsonUtil } from '../utils/csv2GeojsonUtils';
 
-export const convertCSV = async (req: Request, res: Response) => {
-    // Check if the file was uploaded
+export const handleCSVToGeoJSONConversion = async (req: Request, res: Response): Promise<void> => {
     if (!req.file) {
-        return res.status(400).send('No CSV file uploaded.');
-    }
+        res.status(400).send({ message: 'No file reached csv controller' });
+        return; // Explicitly return to stop execution
+    }else{
 
-    try {
-        const filePath = req.file.path; // Get the path to the uploaded file
-        // Use filePath as input to your conversion logic
-        const geoJSON = await convertCSVToGeoJSON(filePath); // Convert CSV to GeoJSON using your utility function
+        const filePath = path.resolve(__dirname, '../data/uploads/temp', req.file.filename);
 
-        // Send back the conversion result or a success message
-        res.json({
-            message: 'CSV successfully converted to GeoJSON',
-            data: geoJSON // Send the conversion result
-        });
-    } catch (error) {
-        console.error('Error converting CSV to GeoJSON:', error);
-        res.status(500).send('Failed to convert CSV file to GeoJSON.');
+        try {
+            const geoJson = await convertCsvToGeoJsonUtil(filePath);
+            res.json(geoJson);
+
+            try {
+                await fs.unlink(filePath);
+                console.log(`File ${filePath} deleted successfully.`);
+            } catch (err) {
+                console.error(`Error deleting file ${filePath}:`, err);
+            }
+        } catch (err) {
+            const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+            res.status(500).send({ message: 'Error processing CSV file', error: errorMessage });
+            return; // Explicitly return to stop execution
+        }
     }
 };

@@ -1,47 +1,49 @@
-import csvtojson from "csvtojson";
 import * as fs from "fs";
 import * as path from "path";
+import csvtojson from "csvtojson";
 
-const destinationProjection = "EPSG:4326"; // Assuming WGS 84 for the output projection
+const createDirectoryIfNotExists = (directory: string) => {
+    if (!fs.existsSync(directory)) {
+        fs.mkdirSync(directory, { recursive: true });
+    }
+};
 
 async function convertCSVToGeoJSON(csvFilePath: string) {
-  try {
-    const tempDir = "/Users/ajay/TestParsing/result"; // Get the system's temporary directory
-    const fileName = path.basename(csvFilePath, path.extname(csvFilePath)); // Extract filename without extension
-    const geojsonFilePath = path.join(tempDir, fileName + ".geojson"); // Construct the full path for the GeoJSON file
+    try {
+        const geojsonDir: string = path.resolve(__dirname, "..", "data", "csv_conversion");
+        // const fileName: string = path.basename(csvFilePath, path.extname(csvFilePath));
+        const geojsonFileName: string = `points.geojson`;
+        const geojsonFilePath: string = path.resolve(geojsonDir, geojsonFileName);
 
-    const jsonObj = await csvtojson().fromFile(csvFilePath);
+        createDirectoryIfNotExists(geojsonDir);
 
-    const features = jsonObj.map((item) => {
-      const latitude = parseFloat(item.latitude);
-      const longitude = parseFloat(item.longitude);
+        const jsonObj: any[] = await csvtojson().fromFile(csvFilePath);
+        const features: any[] = jsonObj.map((item: any) => {
+        const latitude: number = parseFloat(item.latitude);
+        const longitude: number = parseFloat(item.longitude);
+            return {
+                type: "Feature",
+                properties: item,
+                geometry: {
+                    type: "Point",
+                    coordinates: [longitude, latitude],
+                },
+            };
+            return null;
+        }).filter((feature: any) => feature !== null);
 
-      //Forming thegeojson data as needed.
-      return {
-        type: "Feature",
-        properties: item, // All CSV columns become feature properties
-        geometry: {
-          type: "Point",
-          coordinates: [longitude, latitude],
-        },
-      };
-    }).filter((feature) => feature !== null); // Remove nulls from invalid rows
+        const geoJSON = {
+            type: "FeatureCollection",
+            features: features,
+        };
 
-    const geoJSON = {
-      type: "FeatureCollection",
-      features: features,
-    };
-
-    // Ensure the directory exists
-    if (!fs.existsSync(tempDir)) {
-      fs.mkdirSync(tempDir, { recursive: true });
+        fs.writeFile(geojsonFilePath, JSON.stringify(geoJSON, null, 2), (err) => {
+            if (err) throw err;
+            console.log(`GeoJSON file saved to ${geojsonFilePath}`);
+        });
+    } catch (error) {
+        console.error("Failed to convert CSV to GeoJSON:", error);
     }
-
-    fs.writeFileSync(geojsonFilePath, JSON.stringify(geoJSON, null, 2));
-    console.log(`GeoJSON file saved to ${geojsonFilePath}`);
-  } catch (error) {
-    console.error("Failed to convert CSV to GeoJSON:", error);
-  }
 }
 
 export { convertCSVToGeoJSON };

@@ -1,11 +1,18 @@
 import { Router } from "express";
-// import { fileController } from "../controller/fileController";
-import { upload } from "../middleware/uploadMiddleware"; // multer middleware import goes here
-import { fileController } from "../controller/fileController";
+import { upload } from "../middleware/uploadMiddleware"; // Your multer middleware for handling file uploads
+import { handleCSVToGeoJSONConversion } from '../controller/csvController'; // The function that handles CSV to GeoJSON conversion
 
 const router = Router();
 
-router.post("/upload", upload.single('csvFile'),fileController.upload); // route to upload a file
-// router.get('/download', fileController.download); // route to download a file
+// Route for uploading and converting a CSV file
+router.post('/upload', upload.single('csvFile'), (req, res) => {
+    if (req.file) {
+        // If a file is uploaded, proceed to convert it
+       handleCSVToGeoJSONConversion(req, res);
+    } else {
+        // If no file is uploaded, send an appropriate response
+        res.status(400).send({ message: 'No file uploaded' });
+    }
+});
 
 export default router;

@@ -6,6 +6,7 @@ import './App.css';
 const App: React.FC = () => {
   const [message, setMessage] = useState('');
   const [geoJsonData, setGeoJsonData] = useState(null); 
+  const [pointData, setPointData] = useState(null);
 
   useEffect(() => {
     console.log('Fetching data from the backend...');
@@ -25,6 +26,17 @@ const App: React.FC = () => {
       .catch(error => console.error('Failed to load GeoJSON data:', error));
   }, []);
 
+
+  useEffect(() => {
+    fetch('/api/v1/data-folder/points.geojson')
+      .then(response => response.json())
+      .then(data => {
+        setPointData(data);
+      })
+      .catch(error => console.error('Failed to load GeoJSON point data:', error));
+  }, []);
+
+
   return (
     <div className="App full-width">
       <header className="App-header">
@@ -33,10 +45,11 @@ const App: React.FC = () => {
           <p>🎊Message from the backend: {message}</p>
         </main>
       </header>
-      {geoJsonData && <GeoJSONMap geoJsonData={geoJsonData} />}
+      {geoJsonData && <GeoJSONMap geoJsonData={pointData} />}
       <FileUploadForm />
     </div>
   );
 }
 
 export default App;
+
