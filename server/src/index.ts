@@ -16,13 +16,20 @@ import express, { Request, Response, Application, NextFunction } from "express";
 
 dotenv.config({ path: path.resolve(__dirname, "..", "..", ".env") });
 
+// uploaded file data interface
+interface uploadFileData {
+    name: string;
+    path: string;
+    size: number;
+    type: string;
+    lastModifiedDate: Date;
+}
+
 // express module augmentation
 declare module "express-session" {
     interface SessionData {
         views: number;
-    }
-    interface lastConversionSessionData {
-        lastConversion?: { time: string; filePath: string };
+        uploadFileList: { [key: string]: uploadFileData }; // uploadeded file list
     }
 }
 
@@ -70,7 +77,7 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 
 // cleanup function for temp files
 const MAX_AGE = 1000 * 60 * 60; // 1 hour
-const CLEANUP_INTERVAL = 2 * (1000 * 60 * 60); // 2 hours
+const CLEANUP_INTERVAL = 3 * (1000 * 60 * 60); // 3 hours
 cleanupTempFiles(MAX_AGE, CLEANUP_INTERVAL);
 
 // start the server
