@@ -45,7 +45,6 @@ export const fileController = {
             const keys = Object.keys(uploadArray);
             const lastFileKey = keys[keys.length - 1];
             const lastFile = uploadArray[lastFileKey];
-            console.log("lastfile",lastFile);
             res.json(lastFile);
         } else {
             res.json({ message: "No files uploaded yet." });
