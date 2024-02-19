@@ -47,7 +47,6 @@ app.use(compression());
 app.use(
 	"/api/v1/data-folder",
 	express.static(path.resolve(__dirname, "data", "default", "simplified")), 
-	express.static(path.resolve(__dirname, "data"))
 );
 
 // express-session middleware for user session management
