@@ -10,7 +10,7 @@
  import { GeoJsonObject, Feature, Geometry } from 'geojson';
  import 'leaflet/dist/leaflet.css';
  import L from 'leaflet';
- import {generateColorGradient, getColor } from '../utils/geoJSONUtils';
+ import {generateColorGradient, getColor, extractValuesFromGeoJSON } from '../utils/geoJSONUtils';
  
  // Defining a custom interface for GeoJSON features with additional properties.
  interface GeoJSONFeature extends Feature<Geometry> {
@@ -24,23 +24,21 @@
  
  const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
    const [colorGradient, setColorGradient] = useState<{ [key: number]: string }>({});
-   const [values, setValues] = useState<number[]>([]);
+   const [allValues, setValues] = useState<number[]>([]);
+   const [steps, setSteps] = useState<number>(5); // State for steps
+
    // Effect to initialize color gradient and data values
    useEffect(() => {
      if (geoJsonData) {
-       const tempValues: number[] = [];
-       (geoJsonData as any).features.forEach((feature: any) => {
-        tempValues.push(feature.properties.CARUID % 10);
-       }); setValues(tempValues);
-
-       const initialColorGradient = generateColorGradient();
-       setColorGradient(initialColorGradient);
+       setValues(extractValuesFromGeoJSON(geoJsonData));
+       setColorGradient(generateColorGradient(steps));
      }
    }, [geoJsonData]);
  
    const geoJsonStyle = (feature: any) => {
-    const value = feature.properties.CARUID % 10;
-    const fillColorIndex = getColor(value, values); // Call getColor function to get the fill color
+    const currValue = feature.properties.CARUID; //temporarily using CARUID in place of data
+    const fillColorIndex = getColor(currValue, allValues, steps); // Call getColor function to get the fill color
+
     return {
       fillColor: colorGradient[fillColorIndex] || 'gray',
       weight: 1,

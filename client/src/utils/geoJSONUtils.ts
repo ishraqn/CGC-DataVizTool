@@ -1,4 +1,6 @@
-export function generateColorGradient(numSteps: number = 5, startColor: string = 'rgb(171, 15, 52)', endColor: string = 'rgb(166, 166, 237)'): string[] {
+import { GeoJsonObject } from "geojson";
+
+export function generateColorGradient(numSteps: number = 10, startColor: string = 'rgb(171, 15, 52)', endColor: string = 'rgb(166, 166, 237)'): string[] {
     // Parse the start and end colors
     const startRGB: number[] = parseRGB(startColor);
     const endRGB: number[] = parseRGB(endColor);
@@ -33,7 +35,7 @@ function parseRGB(rgb: string): number[] {
     }
 }
 
-export function getColor(value: number, values: number[], numSteps: number = 5): number {
+export function getColor(value: number, values: number[], numSteps: number = 10): number {
     // Determine the value range
     const minValue = Math.min(...values);
     const maxValue = Math.max(...values);
@@ -47,5 +49,13 @@ export function getColor(value: number, values: number[], numSteps: number = 5):
     console.log(value);
     console.log(binIndex);
     return binIndex;
+}
+
+export function extractValuesFromGeoJSON(geoJsonData: GeoJsonObject): number[]{
+    const tempValues: number[] = [];
+    (geoJsonData as any).features.forEach((feature: any) => {
+        tempValues.push(feature.properties.CARUID); //temporarily using CARUID in place of data
+       });
+    return tempValues;
 }
 
