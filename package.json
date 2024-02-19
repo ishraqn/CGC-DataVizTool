@@ -12,8 +12,5 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.2.2"
-  },
-  "dependencies": {
-    "csvjson": "^5.1.0"
   }
 }

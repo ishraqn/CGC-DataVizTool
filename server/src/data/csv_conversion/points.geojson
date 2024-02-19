@@ -1,0 +1,1433 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "4",
+        "Province": "AB",
+        "Station": "ACHESON",
+        "long": "-113.77",
+        "lat": "53.57"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "AB",
+        "Station": "BAWLF",
+        "long": "-112.47",
+        "lat": "52.92"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "3",
+        "Province": "AB",
+        "Station": "CAMROSE",
+        "long": "-112.85",
+        "lat": "53.02"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "AB",
+        "Station": "HIGH LEVEL",
+        "long": "-117.13",
+        "lat": "58.52"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "3",
+        "Province": "AB",
+        "Station": "KILLAM",
+        "long": "-111.85",
+        "lat": "52.78"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "6",
+        "Province": "AB",
+        "Station": "LAVOY",
+        "long": "-111.87",
+        "lat": "53.45"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "AB",
+        "Station": "NAMPA",
+        "long": "-117.28",
+        "lat": "56.03"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "AB",
+        "Station": "PROVOST",
+        "long": "-110.27",
+        "lat": "52.35"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "AB",
+        "Station": "RYCROFT",
+        "long": "-118.72",
+        "lat": "55.75"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "6",
+        "Province": "AB",
+        "Station": "STAR",
+        "long": "-112.77",
+        "lat": "53.82"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "AB",
+        "Station": "STIRLING",
+        "long": "-112.52",
+        "lat": "49.5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "AB",
+        "Station": "VEGREVILLE",
+        "long": "-112.05",
+        "lat": "53.5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "5",
+        "Province": "AB",
+        "Station": "VERMILION",
+        "long": "-110.85",
+        "lat": "53.37"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "AB",
+        "Station": "VIKING",
+        "long": "-111.77",
+        "lat": "53.1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "6",
+        "Province": "AB",
+        "Station": "WESTLOCK",
+        "long": "-113.87",
+        "lat": "54.15"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "AB",
+        "Station": "WETASKIWIN",
+        "long": "-113.37",
+        "lat": "52.97"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "BC",
+        "Station": "DAWSON CR",
+        "long": "-120.23",
+        "lat": "55.75"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "BC",
+        "Station": "FT ST JOHN",
+        "long": "-120.8",
+        "lat": "56.17"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "3",
+        "Province": "MB",
+        "Station": "AGASSIZ",
+        "long": "-97.99",
+        "lat": "49.19"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "MB",
+        "Station": "ARBORG",
+        "long": "-97.22",
+        "lat": "50.9"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "MB",
+        "Station": "BEAUSEJOUR",
+        "long": "-96.52",
+        "lat": "50.07"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "BOISSEVAIN",
+        "long": "-100.05",
+        "lat": "49.23"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "BRUNKILD",
+        "long": "-97.58",
+        "lat": "49.6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "CARMAN",
+        "long": "-98",
+        "lat": "49.48"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "CYPRESS RV",
+        "long": "-99.08",
+        "lat": "49.57"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "3",
+        "Province": "MB",
+        "Station": "DAUPHIN",
+        "long": "-100.05",
+        "lat": "51.15"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "MB",
+        "Station": "ELM CREEK",
+        "long": "-98",
+        "lat": "49.68"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "ELVA",
+        "long": "-101.11",
+        "lat": "49.21"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "FANNYSTELE",
+        "long": "-97.75",
+        "lat": "49.75"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "GLADSTONE",
+        "long": "-98.97",
+        "lat": "50.22"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "JORDAN",
+        "long": "-98",
+        "lat": "49.37"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "KILLARNEY",
+        "long": "-99.67",
+        "lat": "49.18"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "LETELLIER",
+        "long": "-97.3",
+        "lat": "49.13"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "MARIAPOLIS",
+        "long": "-99",
+        "lat": "49.37"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "MINNEDOSA",
+        "long": "-99.83",
+        "lat": "50.25"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "MB",
+        "Station": "MOLLARD",
+        "long": "-97.63",
+        "lat": "49.55"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "3",
+        "Province": "MB",
+        "Station": "MORRIS",
+        "long": "-97.37",
+        "lat": "49.35"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "5",
+        "Province": "MB",
+        "Station": "NESBITT",
+        "long": "-99.87",
+        "lat": "49.6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "OAKNER",
+        "long": "-100.58",
+        "lat": "50.08"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "ROSSER",
+        "long": "-97.45",
+        "lat": "49.98"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "RUSSELL",
+        "long": "-101.3",
+        "lat": "50.78"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "SOMERSET",
+        "long": "-98.65",
+        "lat": "49.42"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "MB",
+        "Station": "SOURIS E",
+        "long": "-100.25",
+        "lat": "49.62"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "MB",
+        "Station": "SOUTHLAKES",
+        "long": "-97.22",
+        "lat": "50.03"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "4",
+        "Province": "MB",
+        "Station": "VIRDEN",
+        "long": "-100.93",
+        "lat": "49.85"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "4",
+        "Province": "MB",
+        "Station": "WINKLER",
+        "long": "-97.93",
+        "lat": "49.18"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "MB",
+        "Station": "WINNIPEG",
+        "long": "-97.15",
+        "lat": "49.88"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "ABERDEEN",
+        "long": "-106.28",
+        "lat": "52.32"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "AMAZON",
+        "long": "-105.45",
+        "lat": "51.55"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "ASSINIBOIA",
+        "long": "-105.98",
+        "lat": "49.63"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "SK",
+        "Station": "BALGONIE",
+        "long": "-104.27",
+        "lat": "50.48"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "BOOTH SG",
+        "long": "-104.63",
+        "lat": "51.42"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "3",
+        "Province": "SK",
+        "Station": "CANORA",
+        "long": "-102.43",
+        "lat": "51.63"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "6",
+        "Province": "SK",
+        "Station": "CARNDUFF",
+        "long": "-101.8",
+        "lat": "49.17"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "DAVIDSON",
+        "long": "-105.98",
+        "lat": "51.27"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "FAIRLIGHT",
+        "long": "-101.68",
+        "lat": "49.88"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "FOAM LAKE",
+        "long": "-103.53",
+        "lat": "51.65"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "SK",
+        "Station": "GLENAVON",
+        "long": "-103.13",
+        "lat": "50.2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "4",
+        "Province": "SK",
+        "Station": "GRENFELL",
+        "long": "-102.93",
+        "lat": "50.42"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "HERBERT",
+        "long": "-107.22",
+        "lat": "50.43"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "HUMBOLDT",
+        "long": "-105.12",
+        "lat": "52.2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "SK",
+        "Station": "INDIAN HD",
+        "long": "-103.52",
+        "lat": "50.53"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "ITUNA",
+        "long": "-103.5",
+        "lat": "51.17"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "LANGENBURG",
+        "long": "-101.72",
+        "lat": "50.85"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "LAST MTN S",
+        "long": "-104.55",
+        "lat": "50.94"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "LIMERICK",
+        "long": "-106.27",
+        "lat": "49.65"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "MAYMONT",
+        "long": "-107.7",
+        "lat": "52.57"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "5",
+        "Province": "SK",
+        "Station": "MELFORT",
+        "long": "-104.62",
+        "lat": "52.85"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "4",
+        "Province": "SK",
+        "Station": "N BATTLEFD",
+        "long": "-108.28",
+        "lat": "52.78"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "SK",
+        "Station": "NAICAM",
+        "long": "-104.5",
+        "lat": "52.42"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "NIPAWIN",
+        "long": "-104",
+        "lat": "53.37"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "REED LAKE",
+        "long": "-107.13",
+        "lat": "50.43"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "SK",
+        "Station": "RICHARDSON",
+        "long": "-104.45",
+        "lat": "50.38"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "7",
+        "Province": "SK",
+        "Station": "SASKATOON",
+        "long": "-106.65",
+        "lat": "52.12"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "SHELLBROOK",
+        "long": "-106.4",
+        "lat": "53.22"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "5",
+        "Province": "SK",
+        "Station": "TISDALE",
+        "long": "-104.07",
+        "lat": "52.85"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "1",
+        "Province": "SK",
+        "Station": "VALPARAISO",
+        "long": "-104.18",
+        "lat": "52.85"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "SK",
+        "Station": "VANSCOY",
+        "long": "-106.98",
+        "lat": "52"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "SK",
+        "Station": "WADENA",
+        "long": "-103.65",
+        "lat": "51.95"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "SK",
+        "Station": "WATROUS",
+        "long": "-105.47",
+        "lat": "51.67"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "4",
+        "Province": "SK",
+        "Station": "WEYBURN",
+        "long": "-103.87",
+        "lat": "49.67"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "SK",
+        "Station": "WHITE STAR",
+        "long": "-105.73",
+        "lat": "53.3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "2",
+        "Province": "SK",
+        "Station": "WHITEWOOD",
+        "long": "-102.27",
+        "lat": "50.33"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "samples": "3",
+        "Province": "SK",
+        "Station": "YORKTON",
+        "long": "-102.48",
+        "lat": "51.22"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          null,
+          null
+        ]
+      }
+    }
+  ]
+}

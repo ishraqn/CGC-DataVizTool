@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "csvjson": "^5.1.0",
     "dotenv": "^16.4.1",
     "leaflet": "^1.9.4",
     "react": "^18.2.0",

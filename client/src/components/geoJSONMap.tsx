@@ -19,7 +19,6 @@ interface GeoJSONFeature extends Feature<Geometry> {
 // Props for our GeoJSONMap component, expecting geoJsonData.
 interface GeoJSONMapProps {
   geoJsonData: GeoJsonObject | null;
-  pointData: GeoJsonObject | null;
 }
 
 
@@ -43,19 +42,6 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData, pointData }) => {
     }
   };
 
-  const pointStyle = {
-    radius: 8,
-    fillColor: "#ff7800",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.8
-  };
-  
-  const onEachPoint = (feature: GeoJSONFeature, layer: L.Layer) => {
-    layer.bindPopup(Object.keys(feature.properties).map(key => 
-      `<strong>${key}</strong>: ${feature.properties[key]}`).join('<br />'));
-  };
 
   // A component to automatically adjust the map view to fit all our GeoJSON features.
   const FitBounds = ({ data }: { data: GeoJsonObject }) => {
@@ -90,13 +76,6 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData, pointData }) => {
       {<FitBounds data={geoJsonData} />}
         </>
       )}
-      {pointData && (
-          <GeoJSON
-            data={pointData}
-            pointToLayer={(feature, latlng) => L.circleMarker(latlng, pointStyle)}
-            onEachFeature={onEachPoint}
-          />
-        )}
 
     </MapContainer>
   );
