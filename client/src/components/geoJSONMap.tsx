@@ -11,6 +11,8 @@
  import 'leaflet/dist/leaflet.css';
  import L from 'leaflet';
  import {generateColorGradient, getColor, extractValuesFromGeoJSON } from '../utils/geoJSONUtils';
+import ColorPickerComponent from './ColorPickerComponent';
+import { ColorResult, RGBColor } from 'react-color';
  
  // Defining a custom interface for GeoJSON features with additional properties.
  interface GeoJSONFeature extends Feature<Geometry> {
@@ -21,20 +23,31 @@
  interface GeoJSONMapProps {
    geoJsonData: GeoJsonObject | null;
  }
- 
+
  const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
+  const initialColor: RGBColor = { r: 255, g: 0, b: 0 };
    const [colorGradient, setColorGradient] = useState<{ [key: number]: string }>({});
    const [allValues, setValues] = useState<number[]>([]);
    const [steps, setSteps] = useState<number>(5); // State for steps
+   const [color, setColor] = useState(initialColor); // State for steps
+
+   const convertColorToString = (color: RGBColor): string => {
+    return `rgb(${color.r}, ${color.g}, ${color.b})`;
+  };
 
    // Effect to initialize color gradient and data values
    useEffect(() => {
      if (geoJsonData) {
        setValues(extractValuesFromGeoJSON(geoJsonData));
-       setColorGradient(generateColorGradient(steps));
+       setColorGradient(generateColorGradient(steps, convertColorToString(color)));
      }
    }, [geoJsonData]);
- 
+
+   const handleColorChange = (colorOrig: ColorResult) => {
+    setColor(colorOrig.rgb);
+    setColorGradient(generateColorGradient(steps, convertColorToString(color)));
+  };
+  
    const geoJsonStyle = (feature: any) => {
     const currValue = feature.properties.CARUID; //temporarily using CARUID in place of data
     const fillColorIndex = getColor(currValue, allValues, steps); // Call getColor function to get the fill color
@@ -76,9 +89,11 @@
    };
  
    return (
-     <MapContainer 
-       center={[45.4211, -75.6903]} 
-       zoom={1} 
+    <><ColorPickerComponent onColorChange={function (color: ColorResult): void {
+      handleColorChange(color);
+     } } /><MapContainer
+       center={[45.4211, -75.6903]}
+       zoom={1}
        style={{ height: '400px', width: '100vw' }}
        zoomControl={false}
        keyboard={false}
@@ -89,7 +104,8 @@
            <FitBounds data={geoJsonData} />
          </>
        )}
-     </MapContainer>
+     </MapContainer></>
+     
    );
  };
  

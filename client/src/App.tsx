@@ -32,9 +32,12 @@ const App: React.FC = () => {
         <main>
           <p>🎊Message from the backend: {message}</p>
         </main>
+        
       </header>
+      
       {geoJsonData && <GeoJSONMap geoJsonData={geoJsonData} />}
       <FileUploadForm />
+      
     </div>
   );
 }

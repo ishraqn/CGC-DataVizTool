@@ -4,6 +4,7 @@ export function generateColorGradient(numSteps: number = 10, startColor: string 
     // Parse the start and end colors
     const startRGB: number[] = parseRGB(startColor);
     const endRGB: number[] = parseRGB(endColor);
+    console.log(startColor);
 
     // Calculate the step size for each color channel
     const stepSize: number[] = [
@@ -20,7 +21,6 @@ export function generateColorGradient(numSteps: number = 10, startColor: string 
         const b: number = Math.round(startRGB[2] + stepSize[2] * i);
         gradientColors.push(`rgb(${r}, ${g}, ${b})`);
     }
-    console.log(gradientColors);
     return gradientColors;
 }
 
@@ -46,8 +46,6 @@ export function getColor(value: number, values: number[], numSteps: number = 10)
 
     // Determine which bin the value falls into
     const binIndex = Math.floor((value - minValue) / binSize);
-    console.log(value);
-    console.log(binIndex);
     return binIndex;
 }
 
