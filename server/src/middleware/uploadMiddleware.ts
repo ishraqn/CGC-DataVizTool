@@ -34,8 +34,9 @@ export const upload = multer({
     // Define file filter to allow only specific file types
     fileFilter: (_req, file, cb) => {
         const allowedFileTypes = ['text/csv'];
+        const allowedFileExtensions = ['.csv'];
 
-        if (allowedFileTypes.includes(file.mimetype)) {
+        if (allowedFileTypes.includes(file.mimetype) && allowedFileExtensions.includes(path.extname(file.originalname))) {
             cb(null, true);
         } else {
             const errorMessage = `Only files of the following types are allowed: ${allowedFileTypes.join(', ')}`;

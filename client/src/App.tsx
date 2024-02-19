@@ -5,6 +5,7 @@ import './App.css';
 
 const App: React.FC = () => {
   const [message, setMessage] = useState('');
+  const [fileUploads, setFileUploads] = useState([]);
   const [geoJsonData, setGeoJsonData] = useState(null); 
 
   useEffect(() => {
@@ -25,6 +26,17 @@ const App: React.FC = () => {
       .catch(error => console.error('Failed to load GeoJSON data:', error));
   }, []);
 
+  useEffect(() => {
+    fetch("/api/v1/last-upload-file")
+        .then((response) => response.json())
+        .then((data) => {
+            setFileUploads(data);
+        })
+        .catch((error) =>
+            console.error("Failed to load last file upload:", error)
+        );
+}, []);
+
   return (
     <div className="App full-width">
       <header className="App-header">
@@ -35,6 +47,18 @@ const App: React.FC = () => {
       </header>
       {geoJsonData && <GeoJSONMap geoJsonData={geoJsonData} />}
       <FileUploadForm />
+      <div>
+                <h2>Last Uploaded File Details:</h2>
+                {fileUploads && (
+                    <ul>
+                        <li>Name: {fileUploads.name}</li>
+                        <li>Path: {fileUploads.path}</li>
+                        <li>Size: {fileUploads.size} bytes</li>
+                        <li>Type: {fileUploads.type}</li>
+                        <li>Last Modified: {fileUploads.lastModifiedDate}</li>
+                    </ul>
+                )}
+            </div>
     </div>
   );
 }
