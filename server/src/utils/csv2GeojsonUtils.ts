@@ -8,22 +8,22 @@ const createDirectoryIfNotExists = (directory: string) => {
     }
 };
 
-async function convertCSVToGeoJSON(csvFilePath: string) {
+async function convertCSVToGeoJSON(csvFilePath: string, filename: string) {
     try {
-        const geojsonDir: string = path.resolve(__dirname, "..", "data", "csv_conversion");
+        const geojsonDir: string = path.resolve(__dirname, "..", "data", "uploads", "temp");
         
         // const fileName: string = path.basename(csvFilePath, path.extname(csvFilePath));
         // hardcoded for testing points displaying after conversion
 
-        const geojsonFileName: string = `points.geojson`;
+        const geojsonFileName: string = path.basename(filename, path.extname(filename)) + ".geojson";
         const geojsonFilePath: string = path.resolve(geojsonDir, geojsonFileName);
 
         createDirectoryIfNotExists(geojsonDir);
 
         const csvToJson: any[] = await csvtojson().fromFile(csvFilePath);
         const features: any[] = csvToJson.map((item: any) => {
-        const latitude: number = parseFloat(item.latitude);
-        const longitude: number = parseFloat(item.longitude);
+        const latitude: number = parseFloat(item.lat);
+        const longitude: number = parseFloat(item.long);
             return {
                 type: "Feature",
                 properties: item,
