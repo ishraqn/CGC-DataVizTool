@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import GeoJSONMap from './components/geoJSONMap';
-import FileUploadForm from './components/uploadForm'
+// import FileUploadForm from './components/uploadForm'
 import './App.css';
+import {  } from 'leaflet';
+import Sidebar from './components/sidebar';
 
 const App: React.FC = () => {
   const [message, setMessage] = useState('');
@@ -38,27 +40,14 @@ const App: React.FC = () => {
 }, []);
 
   return (
-    <div className="App full-width">
-      <header className="App-header">
-        <h1>CGC DEV TEAM</h1>
-        <main>
-          <p>🎊Message from the backend: {message}</p>
-        </main>
-      </header>
-      {geoJsonData && <GeoJSONMap geoJsonData={geoJsonData} />}
-      <FileUploadForm />
-      <div>
-                <h2>Last Uploaded File Details:</h2>
-                {fileUploads && (
-                    <ul>
-                        <li>Name: {fileUploads.name}</li>
-                        <li>Path: {fileUploads.path}</li>
-                        <li>Size: {fileUploads.size} bytes</li>
-                        <li>Type: {fileUploads.type}</li>
-                        <li>Last Modified: {fileUploads.lastModifiedDate}</li>
-                    </ul>
-                )}
-            </div>
+    <div className="App noise">
+      <h1> CGC Data Visualization</h1>
+      <Sidebar/>
+      {geoJsonData && (
+      <div className="map-frame">
+        <GeoJSONMap geoJsonData={geoJsonData} />
+      </div>
+      )}
     </div>
   );
 }
