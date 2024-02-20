@@ -17,11 +17,7 @@
   overflow: hidden;
   justify-content: center;
   align-items: center;
-}
-
-.noise { 
   background-color: #F4F6F9;
-  background-image: -url(./assets/noise.png);
 }
 
 h1 { 
