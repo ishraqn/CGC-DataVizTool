@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import {join} from "path";
 
 // handles the file after it has been uploaded (do something with the file after multer middleware has processed it)
 export const fileController = {
-	upload: (req: Request, res: Response) => {
+	upload: (req: Request, res: Response, next: NextFunction) => {
 		// Access the uploaded file via req.file
 		if (!req.file) {
 			return res.status(400).send('No file uploaded.');
@@ -35,17 +35,19 @@ export const fileController = {
 	
 		// File uploaded successfully
 		res.status(200).send('File uploaded successfully.');
+		next();
 		return;
 	},
 
 	// return the last uploaded file by the user
-	lastUploadFile: (req: Request, res: Response): void => {
+	lastUploadFile: (req: Request, res: Response, next: NextFunction): void => {
         if (req.session.uploadFileList) {
             const uploadArray = req.session.uploadFileList;
             const keys = Object.keys(uploadArray);
             const lastFileKey = keys[keys.length - 1];
             const lastFile = uploadArray[lastFileKey];
-            res.json(lastFile);
+            res.locals.lastUploadedFile = lastFile;
+			next();
         } else {
             res.json({ message: "No files uploaded yet." });
         }
