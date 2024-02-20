@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import {join} from "path";
+import {join, extname, dirname, basename} from "path";
 
 // handles the file after it has been uploaded (do something with the file after multer middleware has processed it)
 export const fileController = {
@@ -39,19 +39,42 @@ export const fileController = {
 		return;
 	},
 
-	// return the last uploaded file by the user
-	lastUploadFile: (req: Request, res: Response, next: NextFunction): void => {
-        if (req.session.uploadFileList) {
-            const uploadArray = req.session.uploadFileList;
-            const keys = Object.keys(uploadArray);
-            const lastFileKey = keys[keys.length - 1];
-            const lastFile = uploadArray[lastFileKey];
+    // package the last uploaded file details and send it to the client
+    packLastUploadFile: (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ): void => {
+        const lastFile = getLastUploadedFile(req.session.uploadFileList);
+        if (lastFile) {
             res.locals.lastUploadedFile = lastFile;
-			next();
+            next();
         } else {
             res.json({ message: "No files uploaded yet." });
         }
     },
 
+		// send the last uploaded file details to the client
+		sendLastUploadFile: (req: Request, res: Response) => {
+			const lastFile = getLastUploadedFile(req.session.uploadFileList);
+			if (lastFile) {
+				const directory = dirname(lastFile.path);
+				const newFileName = basename(lastFile.path, extname(lastFile.path)) + ".geojson";
+				const convertedCSVFile = join(directory, newFileName);
+				res.sendFile(convertedCSVFile);
+			} else {
+				res.json({ message: "No files uploaded yet." });
+			}
+		},
+
 	};
 	// download: (req: Request, res: Response) => {
+		
+function getLastUploadedFile(uploadFileList: any) {
+	if (!uploadFileList || Object.keys(uploadFileList).length === 0) {
+		return null;
+	}
+	const keys = Object.keys(uploadFileList);
+	const lastFileKey = keys[keys.length - 1];
+	return uploadFileList[lastFileKey];
+}

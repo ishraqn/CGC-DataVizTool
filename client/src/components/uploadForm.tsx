@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FileUploadForm = () => {
+const FileUploadForm = ({onUploadSuccess}) => {
     const handleFileUpload = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevent the default form submission behavior
         
@@ -21,6 +21,7 @@ const FileUploadForm = () => {
             .then(response => {
                 if (response.ok) {
                     (event.target as HTMLFormElement).reset();
+                    onUploadSuccess();
                 } else {
                     // Handle other HTTP status codes (e.g., 400, 500) as errors
                     console.error('Error uploading file:', response.status, response.statusText);
