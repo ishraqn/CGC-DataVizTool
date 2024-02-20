@@ -7,6 +7,7 @@ import morgan from "morgan";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
+import geoRoutes from "./routes/geoRoutes";
 import fileRoutes from "./routes/fileRoutes";
 import shapefileRoutes from "./routes/shapefileRoutes";
 import developerRoutes from "./routes/developerRoutes";
@@ -68,6 +69,9 @@ app.use("/api/v1/shapefile", shapefileRoutes);
 
 // file routes for file uploads and downloads
 app.use("/api/v1", fileRoutes);
+
+// geo routes for spatial data processing
+app.use("/api/v1/geo", geoRoutes);
 
 // catch all error middleware for the server
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
