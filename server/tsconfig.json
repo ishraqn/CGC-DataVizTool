@@ -16,13 +16,17 @@
     "noImplicitAny"                   : true,         // Raise error on expressions and declarations with an implied 'any' type
     "removeComments"                  : true,         // Remove comments in the output files
     "sourceMap"                       : true,         // Generate corresponding .map file for easier debugging
-    "incremental"                     : true          // Enable incremental compilation
+    "incremental"                     : true,         // Enable incremental compilation
+    "typeRoots"                       : [
+      "./node_modules/@types",                // Specify path to all type definition files
+                              "./src/@types"  // Specify path to all type definition files in 'src' directory
+    ],
   },
   "include": [
-    "src/**/*"                                        // Include all TypeScript files in 'src' directory, including subdirectories
+    "src/**/*"  // Include all TypeScript files in 'src' directory, including subdirectories
   ],
   "exclude": [
-    "node_modules",                                   // Exclude all files in 'node_modules' directory
-    "**/*.test.ts"                                    // Exclude all test files
+    "node_modules",                // Exclude all files in 'node_modules' directory
+                   "**/*.test.ts"  // Exclude all test files
   ]
 }
