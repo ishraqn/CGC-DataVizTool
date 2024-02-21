@@ -71,10 +71,17 @@ export const ToggleProvider: React.FC = ({ children }) => {
 			})
 			.then((filesObject) => {
 				if (typeof filesObject === "object" && filesObject !== null) {
-					const filesArray = Object.keys(filesObject).map((key) => ({
-						...filesObject[key],
-						id: key,
-					}));
+					const filesArray = Object.keys(filesObject).map((key) => {
+						const originalName = filesObject[key].name;
+						const nameParts = originalName.split('_');
+						const nameAfterUnderscore = nameParts.length > 1 ? nameParts.slice(1).join('_') : originalName;
+						
+						return {
+							...filesObject[key],
+							id: key,
+							name: nameAfterUnderscore,
+						};
+					});
 					setUploadedFiles(filesArray);
 					return filesArray;
 				} else {
