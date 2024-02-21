@@ -115,3 +115,8 @@
     font-size: 20px;
     
 } */
+
+
+.file-dropdown{
+    overflow: auto;
+}

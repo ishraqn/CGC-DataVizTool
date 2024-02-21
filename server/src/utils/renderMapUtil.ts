@@ -58,28 +58,38 @@ const renderMap = async (filePath: string): Promise<Buffer> => {
     <script>
         const geoJsonData = ${JSON.stringify(geoJsonData)};
 
-        const getColor = totalSamples => {
-            return totalSamples > 1000 ? "#122336" : 
-                   totalSamples > 900  ? "#12273d" : 
-                   totalSamples > 800  ? "#112a45" : 
-                   totalSamples > 700  ? "#13385e" : 
-                   totalSamples > 600  ? "#13385e" : 
-                   totalSamples > 500  ? "#1c4978" : 
-                   totalSamples > 400  ? "#204b78" : 
-                   totalSamples > 300  ? "#264f7a" : 
-                   totalSamples > 250  ? "#2b517a" :
-                   totalSamples > 200  ? "#2f537a" : 
-                   totalSamples > 150  ? "#33577d" :
-                   totalSamples > 100  ? "#3c638c" : 
-                   totalSamples > 80   ? "#42668c" :
-                   totalSamples > 60   ? "#4a6c91" : 
-                   totalSamples > 40   ? "#537294" : 
-                   totalSamples > 20   ? "#597694" : 
-                   totalSamples > 10   ? "#7091b3" : 
-                   totalSamples > 5    ? "#7895b3" : 
-                   totalSamples > 2    ? "#8299b0" : 
-                   totalSamples > 0    ? "#98afc7" : 
-                   "white"; 
+        const getColor = totalSamples =>  {
+            return totalSamples > 28
+                ? "#29394a"
+                : totalSamples > 26
+                ? "#304152"
+                : totalSamples > 24
+                ? "#38495b"
+                : totalSamples > 22
+                ? "#405264"
+                : totalSamples > 20
+                ? "#485a6d"
+                : totalSamples > 18
+                ? "#506376"
+                : totalSamples > 16
+                ? "#586b7f"
+                : totalSamples > 14
+                ? "#607488"
+                : totalSamples > 12
+                ? "#687c91"
+                : totalSamples > 10
+                ? "#70849a"
+                : totalSamples > 8
+                ? "#788da3"
+                : totalSamples > 6
+                ? "#8095ac"
+                : totalSamples > 4
+                ? "#889eb5"
+                : totalSamples > 2
+                ? "#90a6be"
+                : totalSamples > 0
+                ? "#98afc7"
+                : "white"; // missing/0
         };
 
         const geoJsonStyle = feature => ({

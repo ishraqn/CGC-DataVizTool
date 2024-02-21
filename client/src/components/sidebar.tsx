@@ -106,13 +106,17 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
 										className={`file-item ${
 											index === selectedFileIndex ? "file-selected" : ""
 										}`}
-										onClick={() => handleFileSelection(index)}
+										onClick={(event) => {
+											handleFileSelection(index);
+											event.stopPropagation();
+										}}
 									>
 										<div className="file-item-checkbox">
 											<input
 												type="checkbox"
 												id={`file-checkbox-${index}`}
 												checked={index === currentFileIndex}
+												onChange={handleCheckboxChange}
 												readOnly // This makes the input not clickable, but it's controlled by the label click
 											/>
 											<label
