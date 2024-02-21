@@ -1,6 +1,6 @@
 <div align="center">
     <h1> CGC Data Visualization Tool </h1>
-    <img src="main_screen.png" width="500" height="300">
+    <img src="main_screen.png" width="500" height="400">
 </div>
 
 ## 
