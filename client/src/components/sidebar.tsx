@@ -13,8 +13,6 @@ interface SidebarProps {
 
 // mock data
 const mockFilterGroups: FilterGroup[] = [
-    { id: "1", name: "Change BaseMap Color" },
-    { id: "2", name: "Toggle Tile Layer" },
     { id: "3", name: "Select File" },
 	{ id: "4", name: "Download Map" },
 ];
@@ -66,6 +64,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
 
     return (
 		<div className="sidebar">
+			<div className="sidebar-title">  Filters</div>
 			<ul className="sidebar-menu">
 				{mockFilterGroups.map((group) => (
 					<li
@@ -107,13 +106,17 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
 										className={`file-item ${
 											index === selectedFileIndex ? "file-selected" : ""
 										}`}
-										onClick={() => handleFileSelection(index)}
+										onClick={(event) => {
+											handleFileSelection(index);
+											event.stopPropagation();
+										}}
 									>
 										<div className="file-item-checkbox">
 											<input
 												type="checkbox"
 												id={`file-checkbox-${index}`}
 												checked={index === currentFileIndex}
+												onChange={handleCheckboxChange}
 												readOnly // This makes the input not clickable, but it's controlled by the label click
 											/>
 											<label
