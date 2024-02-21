@@ -26,6 +26,7 @@ import { ColorResult, RGBColor } from 'react-color';
 
  const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
   const initialColor: RGBColor = { r: 255, g: 0, b: 0 };
+  const [mapKey, setMapKey] = useState(Date.now());
    const [colorGradient, setColorGradient] = useState<{ [key: number]: string }>({});
    const [allValues, setValues] = useState<number[]>([]);
    const [steps, setSteps] = useState<number>(5); // State for steps
@@ -94,27 +95,32 @@ useEffect(() => {
 }, [geoJsonData]);
 
 return (
-<><ColorPickerComponent onColorChange={function (color: ColorResult): void {
-  handleColorChange(color); } } />
+  <>
+    <ColorPickerComponent
+      onColorChange={(color: ColorResult): void => {
+        handleColorChange(color);
+      }}
+    />
     <MapContainer
-        key={mapKey}
-        zoom={1}
-        zoomControl={true}
-        keyboard={false}
-        preferCanvas={false}
-        inertia={false}
+      key={mapKey}
+      zoom={1}
+      zoomControl={true}
+      keyboard={false}
+      preferCanvas={false}
+      inertia={false}
     >
-        {geoJsonData && (
-            <>
-                <GeoJSON
-                    data={geoJsonData}
-                    style={geoJsonStyle}
-                    onEachFeature={onEachFeature}
-                />
-                <FitBounds data={geoJsonData} />
-            </>
-        )}
+      {geoJsonData && (
+        <>
+          <GeoJSON
+            data={geoJsonData}
+            style={geoJsonStyle}
+            onEachFeature={onEachFeature}
+          />
+          <FitBounds data={geoJsonData} />
+        </>
+      )}
     </MapContainer>
+  </>
 );
 };
 
