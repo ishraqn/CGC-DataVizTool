@@ -49,65 +49,74 @@ import { ColorResult, RGBColor } from 'react-color';
   };
   
    const geoJsonStyle = (feature: any) => {
-    const currValue = feature.properties.CARUID; //temporarily using CARUID in place of data
+    const currValue = feature.properties.totalSamples as number;
     const fillColorIndex = getColor(currValue, allValues, steps); // Call getColor function to get the fill color
 
     return {
       fillColor: colorGradient[fillColorIndex] || 'gray',
-      weight: 1,
-      color: 'white',
-      fillOpacity: 0.5,
+      weight: 2,
+      color: "#46554F",
+      fillOpacity: 1,
      };
    };
    
    // Function to create popups for each feature on our map.
    const onEachFeature = (feature: GeoJSONFeature, layer: L.Layer) => {
-     // Adding popups with property details, if available.
-     if (feature.properties) {
-       layer.bindPopup(Object.keys(feature.properties).map(key => 
-         `<strong>${key}</strong>: ${feature.properties[key]}`).join('<br />'));
-     }
-   };
- 
-   // A component to automatically adjust the map view to fit all our GeoJSON features.
-   const FitBounds = ({ data }: { data: GeoJsonObject }) => {
-     const map = useMap();
- 
-     useEffect(() => {
-       // Creating a layer from our GeoJSON data to calculate bounds.
-       const geoJsonLayer = L.geoJSON(data);
-       const bounds = geoJsonLayer.getBounds();
-       // Adjusting the map view and setting limits.
-       map.fitBounds(bounds);
-       map.setMaxBounds(bounds);
-       map.setMinZoom(map.getZoom());
-       // Disabling tap if it's available for better mobile support.
-       if (map.tap) map.tap.disable();
-     }, [data, map]);
- 
-     return null;
-   };
- 
-   return (
-    <><ColorPickerComponent onColorChange={function (color: ColorResult): void {
-      handleColorChange(color);
-     } } /><MapContainer
-       center={[45.4211, -75.6903]}
-       zoom={1}
-       style={{ height: '400px', width: '100vw' }}
-       zoomControl={false}
-       keyboard={false}
-     >
-       {geoJsonData && (
-         <>
-           <GeoJSON data={geoJsonData} style={geoJsonStyle} onEachFeature={onEachFeature} />
-           <FitBounds data={geoJsonData} />
-         </>
-       )}
-     </MapContainer></>
-     
-   );
- };
- 
- export default GeoJSONMap;
+    if (feature.properties) {
+        layer.bindPopup(
+            Object.keys(feature.properties)
+                .map(
+                    (key) =>
+                        `<strong>${key}</strong>: ${feature.properties[key]}`
+                )
+                .join("<br />")
+        );
+    }
+};
+
+const FitBounds = ({ data }: { data: GeoJsonObject }) => {
+    const map = useMap();
+
+    useEffect(() => {
+        const geoJsonLayer = L.geoJSON(data);
+        const bounds = geoJsonLayer.getBounds();
+        map.fitBounds(bounds);
+        map.setMaxBounds(bounds);
+        map.setMinZoom(map.getZoom());
+        if (map.tap) map.tap.disable();
+    }, [data, map]);
+
+    return null;
+};
+
+useEffect(() => {
+    setMapKey(Date.now());
+}, [geoJsonData]);
+
+return (
+<><ColorPickerComponent onColorChange={function (color: ColorResult): void {
+  handleColorChange(color); } } />
+    <MapContainer
+        key={mapKey}
+        zoom={1}
+        zoomControl={true}
+        keyboard={false}
+        preferCanvas={false}
+        inertia={false}
+    >
+        {geoJsonData && (
+            <>
+                <GeoJSON
+                    data={geoJsonData}
+                    style={geoJsonStyle}
+                    onEachFeature={onEachFeature}
+                />
+                <FitBounds data={geoJsonData} />
+            </>
+        )}
+    </MapContainer>
+);
+};
+
+export default GeoJSONMap;
  
