@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
         // Generate filename based on current date, session ID, and original filename
         const formattedDate = new Date().toISOString().replace(/:/g, "-");  // formatted date for the file name
         const uniqueId = uuidV5(formattedDate, uuidV5.URL); 
-        const sanitizedFileName = file.originalname.replace(/[^\w\s.-]/gi, ''); // Remove any special characters
+        const sanitizedFileName = file.originalname.replace(/[^\w.-]/gi, ''); // Remove any special characters and spaces
         const filename = `${uniqueId}_${sanitizedFileName}`;
         cb(null, filename);
     }

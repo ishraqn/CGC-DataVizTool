@@ -1,6 +1,8 @@
 import React from 'react';
+import { useToggle } from '../contexts/useToggle';
 
 const FileUploadForm = ({onUploadSuccess}) => {
+    const { fetchUploadedFiles } = useToggle();
     const handleFileUpload = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevent the default form submission behavior
         
@@ -22,6 +24,7 @@ const FileUploadForm = ({onUploadSuccess}) => {
                 if (response.ok) {
                     (event.target as HTMLFormElement).reset();
                     onUploadSuccess();
+                    fetchUploadedFiles();
                 } else {
                     // Handle other HTTP status codes (e.g., 400, 500) as errors
                     console.error('Error uploading file:', response.status, response.statusText);

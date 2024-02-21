@@ -21,7 +21,6 @@ export const fileController = {
 		// init the session uploadFileList if it doesn't exist
 		if (!req.session.uploadFileList) {
 			req.session.uploadFileList = {};
-			
 		}
 
 		// add the file details to the session uploadFileList
@@ -67,6 +66,35 @@ export const fileController = {
 			}
 		},
 
+		listAllFiles: (req: Request, res: Response) => {
+			const uploadFileList = req.session.uploadFileList;
+			if (!uploadFileList || Object.keys(uploadFileList).length === 0) {
+				res.json({ message: "No files uploaded yet." });
+				return;
+			}
+			res.json(uploadFileList);
+		},
+	
+		getFile: (req: Request, res: Response) => {
+			console.log("req.params.fileId", req.params.fileId);
+			const uploadFileList = req.session.uploadFileList;
+			const fileName = req.params.fileId;
+			if (!uploadFileList || Object.keys(uploadFileList).length === 0) {
+				res.status(404).send("No files uploaded yet.");
+				return;
+			}
+			const file = uploadFileList[fileName];
+			const directory = dirname(file.path);
+			const newFileName =
+				basename(file.path, extname(file.path)) + "_totalSamples.geojson";
+			const convertedCSVFile = join(directory, newFileName);
+			if (file) {
+				console.log("Sending file:", convertedCSVFile);
+				res.sendFile(convertedCSVFile);
+			} else {
+				res.status(404).send("File not found.");
+			}
+		},
 	};
 	// download: (req: Request, res: Response) => {
 		
