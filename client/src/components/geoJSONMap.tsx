@@ -17,21 +17,27 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData}) => {
     const [mapKey, setMapKey] = useState(Date.now());
     // temporary choropleth color function
     const getColor = (totalSamples: number) => {
-        return totalSamples > 100
-            ? "#800026"
-            : totalSamples > 50
-            ? "#BD0026"
-            : totalSamples > 20
-            ? "#E31A1C"
-            : totalSamples > 10
-            ? "#FC4E2A"
-            : totalSamples > 5
-            ? "#FD8D3C"
-            : totalSamples > 2
-            ? "#FEB24C"
-            : totalSamples > 0
-            ? "#FED976"
-            : "#FFEDA0";
+        return totalSamples > 1000 ? "#122336" : 
+               totalSamples > 900  ? "#12273d" : 
+               totalSamples > 800  ? "#112a45" : 
+               totalSamples > 700  ? "#13385e" : 
+               totalSamples > 600  ? "#13385e" : 
+               totalSamples > 500  ? "#1c4978" : 
+               totalSamples > 400  ? "#204b78" : 
+               totalSamples > 300  ? "#264f7a" : 
+               totalSamples > 250  ? "#2b517a" :
+               totalSamples > 200  ? "#2f537a" : 
+               totalSamples > 150  ? "#33577d" :
+               totalSamples > 100  ? "#3c638c" : 
+               totalSamples > 80   ? "#42668c" :
+               totalSamples > 60   ? "#4a6c91" : 
+               totalSamples > 40   ? "#537294" : 
+               totalSamples > 20   ? "#597694" : 
+               totalSamples > 10   ? "#7091b3" : 
+               totalSamples > 5    ? "#7895b3" : 
+               totalSamples > 2    ? "#8299b0" : 
+               totalSamples > 0    ? "#98afc7" : 
+               "white"; // 0 samples / missing data
     };
 
     const geoJsonStyle = (feature: GeoJSONFeature) => ({

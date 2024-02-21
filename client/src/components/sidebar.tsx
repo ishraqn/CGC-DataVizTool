@@ -13,8 +13,6 @@ interface SidebarProps {
 
 // mock data
 const mockFilterGroups: FilterGroup[] = [
-    { id: "1", name: "Change BaseMap Color" },
-    { id: "2", name: "Toggle Tile Layer" },
     { id: "3", name: "Select File" },
 	{ id: "4", name: "Download Map" },
 ];
@@ -66,6 +64,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
 
     return (
 		<div className="sidebar">
+			<div className="sidebar-title">  Filters</div>
 			<ul className="sidebar-menu">
 				{mockFilterGroups.map((group) => (
 					<li
