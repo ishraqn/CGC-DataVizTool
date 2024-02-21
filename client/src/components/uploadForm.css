@@ -1,0 +1,117 @@
+.upload-form-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  position: fixed;
+  top: 0;
+  right: 2%;
+  width: 98%;
+  padding: 20px 0;
+  z-index: 1000;
+}
+
+.upload-form {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/*normalizer*/
+.upload-input,
+.upload-button {
+  font-size: 12px;
+  line-height: 0.3;
+  border-radius: 3px;
+}
+
+/*choose file button*/
+.upload-input::file-selector-button {
+  padding: 1.4px 9px;
+  background-color: #ffffff;
+  color: #454444;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.2s;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+.upload-input::file-selector-button:hover {
+  background-color: #e2ebeb;
+}
+
+/*box*/
+.upload-input {
+  background-color: #b8c5c7;
+  font-family: "Roboto", sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline-block;
+  width: auto;
+  padding: 5px 4px;
+  font-size: 12px;
+  border: 1px solid #dcdcdc;
+  border-radius: 11px;
+  margin-right: 7px;
+  box-sizing: border-box;
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+}
+
+/*upload button*/
+.upload-button {
+  padding: 8px 10px;
+  background-color: #87aba6;
+  font-size: 12px;
+  font-family: "Roboto", sans-serif;
+  color: #ffffff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.3s;
+  box-sizing: border-box;
+  outline: none;
+  max-width: 85px;
+  white-space: nowrap;
+  box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+}
+
+.upload-button:hover {
+  background-color: #76a29b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/*drag and drop future implementation*/
+/* .dropzone {
+    flex-grow: 1; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin-right: 10px;
+    border: 2px dashed #72908c;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    color: #5c5a5a;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  
+  .dropzone:hover {
+    background-color: #eaeaea;
+    border-color: #87aba6;
+  }
+  
+  .dropzone-active {
+    background-color: #b8c5c7;
+  } */

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useToggle } from '../contexts/useToggle';
+import './uploadForm.css';
 
 const FileUploadForm = ({onUploadSuccess}) => {
     const { fetchUploadedFiles } = useToggle();
@@ -41,10 +42,11 @@ const FileUploadForm = ({onUploadSuccess}) => {
     };
 
     return (
-        <div style={{ marginTop: '20px', marginBottom: '20px' }}>
-            <form encType="multipart/form-data" onSubmit={handleFileUpload}>
-                <input type="file" name="csvFile" accept=".csv"/>
-                <button type="submit">Upload CSV</button>
+        <div className="upload-form-container">
+            <form className="upload-form" encType="multipart/form-data" onSubmit={handleFileUpload}>
+                <label htmlFor="csvFile" className="visually-hidden">Choose CSV file</label>
+                <input id="csvFile" className="upload-input" type="file" name="csvFile" accept=".csv"/>
+                <button className="upload-button" type="submit">Upload CSV</button>
             </form>
         </div>
     );

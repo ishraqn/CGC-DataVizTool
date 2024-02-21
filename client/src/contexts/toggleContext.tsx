@@ -8,6 +8,7 @@ interface UploadFileData {
 	size            : number;
 	type            : string;
 	lastModifiedDate: Date;
+	cleanName: string;
 }
 type FetchUploadedFilesFunction = () => Promise<UploadFileData[]>;
 
@@ -71,10 +72,19 @@ export const ToggleProvider: React.FC = ({ children }) => {
 			})
 			.then((filesObject) => {
 				if (typeof filesObject === "object" && filesObject !== null) {
-					const filesArray = Object.keys(filesObject).map((key) => ({
-						...filesObject[key],
-						id: key,
-					}));
+					const filesArray = Object.keys(filesObject).map((key) => {
+						const originalName = filesObject[key].name;
+						let nameAfterUnderscore = "";
+						if (originalName !== undefined) {
+							const nameParts = originalName.split('_');
+							nameAfterUnderscore = nameParts.length > 1 ? nameParts.slice(1).join('_') : originalName;
+						}
+						return {
+							...filesObject[key],
+							id: key,
+							cleanName: nameAfterUnderscore,
+						};
+					});
 					setUploadedFiles(filesArray);
 					return filesArray;
 				} else {

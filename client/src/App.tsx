@@ -93,10 +93,42 @@ const App: React.FC = () => {
 		}
 	}, [currentFileIndex, isUploadedFileVisible, uploadedFiles]);
 
+	const handleDownload = async () => { 
+		try {
+			const selectedFile = uploadedFiles[currentFileIndex];
+			const response = await fetch("/api/v1/map/render-map",{
+				method: "POST", 
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({"filePath": selectedFile.path}),
+			});
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+
+			const blob = await response.blob();
+			const url = window.URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			if (selectedFile.cleanName.trim().length > 0){
+				a.download = selectedFile.cleanName + ".png";
+			}
+			else {
+				a.download = "default-map.png";
+			}
+			document.body.appendChild(a);
+			a.click();
+			a.remove();
+		} catch (error) {
+			console.error("Failed to download map image:", error);
+		}
+	};
+
 	return (
 		<div className="App noise">
 			<h1> CGC Data Visualization</h1>
-			<Sidebar />
+			<Sidebar handleDownload = {handleDownload} />
 			{mapData && (
 				<div className="map-frame">
 					<GeoJSONMap geoJsonData={mapData} />
