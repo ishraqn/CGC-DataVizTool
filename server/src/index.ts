@@ -52,6 +52,7 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(cors());
 app.use(compression());
+app.use(express.json({limit:'50mb'}));
 
 // serve the static files from the data folder
 app.use(

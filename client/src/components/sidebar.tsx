@@ -7,14 +7,19 @@ type FilterGroup = {
     name: string;
 };
 
+interface SidebarProps {
+	handleDownload: () => Promise<void>;
+}
+
 // mock data
 const mockFilterGroups: FilterGroup[] = [
     { id: "1", name: "Change BaseMap Color" },
     { id: "2", name: "Toggle Tile Layer" },
     { id: "3", name: "Select File" },
+	{ id: "4", name: "Download Map" },
 ];
 
-const Sidebar: React.FC = () => {
+const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
     // const [selectedIds, setSelectedIds] = useState<{ [key: string]: boolean }>({});
 
     const {
@@ -40,6 +45,9 @@ const Sidebar: React.FC = () => {
 				break;
 			case "3":
 				setShowFileList(!showFileList);
+				break;
+			case "4":
+				handleDownload();
 				break;
 			default:
 				break;
@@ -112,7 +120,7 @@ const Sidebar: React.FC = () => {
 												htmlFor={`file-checkbox-${index}`}
 												className="file-item-label"
 											>
-												{file.name}
+												{file.cleanName}
 											</label>
 										</div>
 									</li>
