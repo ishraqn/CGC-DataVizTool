@@ -37,7 +37,7 @@ declare module "express-session" {
 
 // constants for the server
 const app: Application = express();
-const PORT: string | undefined = process.env.PORT;
+const PORT: string | number = process.env.PORT || 5120;
 
 // rate limiter for the server
 const limiter = rateLimit({
