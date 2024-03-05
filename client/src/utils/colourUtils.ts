@@ -1,4 +1,5 @@
 import { GeoJsonObject } from "geojson";
+import { RGBColor } from "react-color";
 
 export function generateColorGradient(
     numSteps: number = 10,
@@ -46,30 +47,35 @@ function parseRGB(rgb: string): number[] {
 export function getColor(
     value: number,
     values: number[],
-    numSteps: number = 10): number {
+    numSteps: number = 10
+): number {
     let binIndex;
-    if (value == 0){
+    if (value === 0) {
         binIndex = 0;
     } else {
-    --numSteps;
-    // Determine the value range excluding 0
-    const filteredValues = values.filter(val => val !== 0);
-    const minValue = Math.min(...filteredValues);
-    const maxValue = Math.max(...filteredValues);
-    const valueRange = maxValue - minValue;
-    // Determine the bin size
-    const binSize = valueRange / numSteps;
+        --numSteps;
+        // Determine the value range excluding 0
+        const filteredValues = values.filter(val => val !== 0);
+        const minValue = Math.min(...filteredValues);
+        const maxValue = Math.max(...filteredValues);
+        const valueRange = maxValue - minValue;
+        // Determine the bin size
+        const binSize = valueRange / numSteps;
 
-    // Determine which bin the value falls into
-    binIndex = Math.floor((value - minValue) / binSize)+1;
+        // Determine which bin the value falls into
+        binIndex = Math.floor((value - minValue) / binSize) + 1;
     }
     return binIndex;
 }
 
-export function extractValuesFromGeoJSON(geoJsonData: GeoJsonObject): number[]{
+export function extractValuesFromGeoJSON(geoJsonData: GeoJsonObject): number[] {
     const tempValues: number[] = [];
     (geoJsonData as any).features.forEach((feature: any) => {
         tempValues.push(feature.properties.totalSamples as number);
-       });
+    });
     return tempValues;
+}
+
+export function convertColorToString(color: RGBColor): string {
+    return `rgb(${color.r}, ${color.g}, ${color.b})`;
 }

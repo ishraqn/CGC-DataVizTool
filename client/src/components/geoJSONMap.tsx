@@ -3,10 +3,10 @@ import { MapContainer, GeoJSON, useMap } from 'react-leaflet';
 import { GeoJsonObject, Feature, Geometry } from 'geojson';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import {generateColorGradient, getColor, extractValuesFromGeoJSON } from '../utils/geoJSONUtils';
 import ColorPickerComponent from './ColorPickerComponent';
- import { ColorResult, RGBColor } from 'react-color';
- import "./geoJSONMap.css";
+import { ColorResult, RGBColor } from 'react-color';
+import { generateColorGradient, getColor, extractValuesFromGeoJSON, convertColorToString } from '../utils/colourUtils';
+import "./geoJSONMap.css";
 // Defining a custom interface for GeoJSON features with additional properties.
 interface GeoJSONFeature extends Feature<Geometry> {
   properties: { [key: string]: unknown };
@@ -18,16 +18,13 @@ interface GeoJSONMapProps {
 }
 
 const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
- const initialColor: RGBColor = { r: 152, g: 175, b: 199 };
  const [mapKey, setMapKey] = useState(Date.now());
   const [colorGradient, setColorGradient] = useState<{ [key: number]: string }>({});
-  const [allValues, setValues] = useState<number[]>([]);
-  const [steps, setSteps] = useState<number>(5); // State for steps
-  const [color, setColor] = useState(initialColor);
 
   const convertColorToString = (color: RGBColor): string => {
    return `rgb(${color.r}, ${color.g}, ${color.b})`;
  };
+    const [colorGradient, setColorGradient] = useState<{ [key: number]: string }>({});
 
   // Effect to initialize color gradient and data values
   useEffect(() => {
@@ -35,7 +32,6 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
       setValues(extractValuesFromGeoJSON(geoJsonData));
       setColorGradient(generateColorGradient(steps, convertColorToString(color)));
     }
-  }, [geoJsonData]);
 
   const handleColorChange = (colorOrig: ColorResult) => {
     const newColor = colorOrig.rgb;
