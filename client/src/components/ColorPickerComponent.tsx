@@ -9,17 +9,17 @@ interface ColorPickerProps {
 const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange }) => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [color, setColor] = useState<ColorResult>({
-    hex: '#ab0f34',
+    hex: '#98afc7',
     rgb: {
-      r: 171,
-      g: 15,
-      b: 52,
+      r: 152,
+      g: 175,
+      b: 199,
       a: 1,
     },
     hsl: {
-      h: 351,
-      s: 84,
-      l: 36,
+      h: 211,
+      s: 30,
+      l: 69,
       a: 1,
     },
   });

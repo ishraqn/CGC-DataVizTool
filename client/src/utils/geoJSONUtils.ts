@@ -3,7 +3,7 @@ import { GeoJsonObject } from "geojson";
 export function generateColorGradient(
     numSteps: number = 10,
     startColor: string = 'rgb(152, 175, 199)',
-    endColor: string = 'rgb(41, 57, 74)'
+    endColor: string = 'rgb(72, 19, 102)'
 ): string[] {
     // Parse the start and end colors
     const startRGB: number[] = parseRGB(startColor);

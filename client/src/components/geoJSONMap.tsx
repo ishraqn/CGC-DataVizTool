@@ -18,7 +18,7 @@ interface GeoJSONMapProps {
 }
 
 const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
- const initialColor: RGBColor = { r: 255, g: 0, b: 0 };
+ const initialColor: RGBColor = { r: 152, g: 175, b: 199 };
  const [mapKey, setMapKey] = useState(Date.now());
   const [colorGradient, setColorGradient] = useState<{ [key: number]: string }>({});
   const [allValues, setValues] = useState<number[]>([]);
