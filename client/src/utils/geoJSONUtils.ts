@@ -1,6 +1,11 @@
 import { GeoJsonObject } from "geojson";
 
-export function generateColorGradient(numSteps: number = 10, startColor: string = 'rgb(152, 175, 199)', endColor: string = 'rgb(41, 57, 74)'): string[] {
+export function generateColorGradient(
+    numSteps: number = 10,
+    startColor: string = 'rgb(152, 175, 199)',
+    endColor: string = 'rgb(41, 57, 74)'
+): string[] {
+    ++numSteps;
     // Parse the start and end colors
     const startRGB: number[] = parseRGB(startColor);
     const endRGB: number[] = parseRGB(endColor);
@@ -14,12 +19,18 @@ export function generateColorGradient(numSteps: number = 10, startColor: string 
 
     // Generate the gradient colors
     const gradientColors: string[] = [];
-    for (let i = 0; i <= numSteps; i++) {
-        const r: number = i === 0 ? 255 : Math.round(startRGB[0] + stepSize[0] * i);
-        const g: number = i === 0 ? 255 : Math.round(startRGB[1] + stepSize[1] * i);
-        const b: number = i === 0 ? 255 : Math.round(startRGB[2] + stepSize[2] * i);
+    
+    // Push white color for 0
+    gradientColors.push('rgb(255, 255, 255)');
+
+    // Generate the gradient colors for other steps
+    for (let i = 1; i <= numSteps; i++) {
+        const r: number = Math.round(startRGB[0] + stepSize[0] * i);
+        const g: number = Math.round(startRGB[1] + stepSize[1] * i);
+        const b: number = Math.round(startRGB[2] + stepSize[2] * i);
         gradientColors.push(`rgb(${r}, ${g}, ${b})`);
     }
+    console.log(gradientColors);
     return gradientColors;
 }
 
@@ -37,26 +48,30 @@ function parseRGB(rgb: string): number[] {
 export function getColor(
     value: number,
     values: number[],
-    numSteps: number = 10
-): number {
-    // Determine the value range
-    const minValue = Math.min(...values);
-    const maxValue = Math.max(...values);
+    numSteps: number = 10): number {
+    let binIndex;
+    if (value == 0){
+        binIndex = 0;
+    } else {
+    // Determine the value range excluding 0
+    const filteredValues = values.filter(val => val !== 0);
+    const minValue = Math.min(...filteredValues);
+    const maxValue = Math.max(...filteredValues);
     const valueRange = maxValue - minValue;
 
     // Determine the bin size
     const binSize = valueRange / numSteps;
 
     // Determine which bin the value falls into
-    const binIndex = Math.floor((value - minValue) / binSize);
-
+    binIndex = Math.floor((value - minValue) / binSize)+1;
+    }
     return binIndex;
 }
 
 export function extractValuesFromGeoJSON(geoJsonData: GeoJsonObject): number[]{
     const tempValues: number[] = [];
     (geoJsonData as any).features.forEach((feature: any) => {
-        tempValues.push(feature.properties.totalSamples as number); //temporarily using CARUID in place of data
+        tempValues.push(feature.properties.totalSamples as number);
        });
     return tempValues;
 }
