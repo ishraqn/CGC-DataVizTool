@@ -38,10 +38,8 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
   }, [geoJsonData]);
 
   const handleColorChange = (colorOrig: ColorResult) => {
-   setColor(colorOrig.rgb);
     const newColor = colorOrig.rgb;
    setColor(newColor);
-   console.log(convertColorToString(newColor));
    setColorGradient(generateColorGradient(steps, convertColorToString(newColor)));
  };
  
