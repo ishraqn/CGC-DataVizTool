@@ -1,19 +1,12 @@
-/**-------***-------***-------***-------***-------
- ** Overview: 
- * The `GeoJSONMap` React component, in TypeScript using `react-leaflet`, displays a map from GeoJSON data. 
- * It styles features, shows popups with their properties, and adjusts the map view to fit the GeoJSON boundaries. 
- * A `FitBounds` component within it calculates and sets these boundaries based on the GeoJSON data provided as a prop.
- * -------***-------***-------***-------***-------*/
-
  import React, { useEffect, useState } from 'react';
  import { MapContainer, GeoJSON, useMap } from 'react-leaflet';
  import { GeoJsonObject, Feature, Geometry } from 'geojson';
  import 'leaflet/dist/leaflet.css';
  import L from 'leaflet';
  import {generateColorGradient, getColor, extractValuesFromGeoJSON } from '../utils/geoJSONUtils';
-import ColorPickerComponent from './ColorPickerComponent';
-import { ColorResult, RGBColor } from 'react-color';
- 
+ import ColorPickerComponent from './ColorPickerComponent';
+  import { ColorResult, RGBColor } from 'react-color';
+
  // Defining a custom interface for GeoJSON features with additional properties.
  interface GeoJSONFeature extends Feature<Geometry> {
    properties: { [key: string]: unknown };
@@ -23,7 +16,7 @@ import { ColorResult, RGBColor } from 'react-color';
  interface GeoJSONMapProps {
    geoJsonData: GeoJsonObject | null;
  }
-
+ 
  const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
   const initialColor: RGBColor = { r: 255, g: 0, b: 0 };
   const [mapKey, setMapKey] = useState(Date.now());
@@ -43,37 +36,38 @@ import { ColorResult, RGBColor } from 'react-color';
        setColorGradient(generateColorGradient(steps, convertColorToString(color)));
      }
    }, [geoJsonData]);
-
+ 
    const handleColorChange = (colorOrig: ColorResult) => {
     setColor(colorOrig.rgb);
     setColorGradient(generateColorGradient(steps, convertColorToString(color)));
   };
   
    const geoJsonStyle = (feature: any) => {
-    const currValue = feature.properties.totalSamples as number;
-    const fillColorIndex = getColor(currValue, allValues, steps); // Call getColor function to get the fill color
+   const currValue = feature.properties.totalSamples as number; //temporarily using CARUID in place of data
+   const fillColorIndex = getColor(currValue, allValues, steps); // Call getColor function to get the fill color
 
-    return {
-      fillColor: colorGradient[fillColorIndex] || 'gray',
-      weight: 2,
-      color: "#46554F",
-      fillOpacity: 1,
-     };
-   };
+   return {
+     fillColor: colorGradient[fillColorIndex] || 'gray',
+     weight: 1,
+     color: 'white',
+     fillOpacity: 0.5,
+    };
+  };
+ 
+   // A component to automatically adjust the map view to fit all our GeoJSON features.
    
-   // Function to create popups for each feature on our map.
-   const onEachFeature = (feature: GeoJSONFeature, layer: L.Layer) => {
-    if (feature.properties) {
-        layer.bindPopup(
-            Object.keys(feature.properties)
-                .map(
-                    (key) =>
-                        `<strong>${key}</strong>: ${feature.properties[key]}`
-                )
-                .join("<br />")
-        );
-    }
-};
+    const onEachFeature = (feature: GeoJSONFeature, layer: L.Layer) => {
+        if (feature.properties) {
+            layer.bindPopup(
+                Object.keys(feature.properties)
+                    .map(
+                        (key) =>
+                            `<strong>${key}</strong>: ${feature.properties[key]}`
+                    )
+                    .join("<br />")
+            );
+        }
+    };
 
 const FitBounds = ({ data }: { data: GeoJsonObject }) => {
     const map = useMap();
@@ -125,4 +119,3 @@ return (
 };
 
 export default GeoJSONMap;
- 
