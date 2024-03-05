@@ -22,7 +22,7 @@ const storage = multer.diskStorage({
         // Generate filename based on current date, session ID, and original filename
         const formattedDate = new Date().toISOString().replace(/:/g, "-");  // formatted date for the file name
         const uniqueId = uuidV5(formattedDate, uuidV5.URL); 
-        const sanitizedFileName = file.originalname.replace(/[^\w\s.-]/gi, ''); // Remove any special characters
+        const sanitizedFileName = file.originalname.replace(/[^\w.-]/gi, ''); // Remove any special characters and spaces
         const filename = `${uniqueId}_${sanitizedFileName}`;
         cb(null, filename);
     }
@@ -34,8 +34,9 @@ export const upload = multer({
     // Define file filter to allow only specific file types
     fileFilter: (_req, file, cb) => {
         const allowedFileTypes = ['text/csv'];
+        const allowedFileExtensions = ['.csv'];
 
-        if (allowedFileTypes.includes(file.mimetype)) {
+        if (allowedFileTypes.includes(file.mimetype) && allowedFileExtensions.includes(path.extname(file.originalname))) {
             cb(null, true);
         } else {
             const errorMessage = `Only files of the following types are allowed: ${allowedFileTypes.join(', ')}`;
