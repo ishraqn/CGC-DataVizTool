@@ -1,22 +1,23 @@
 import { GeoJsonObject } from "geojson";
 
-export function generateColorGradient(numSteps: number = 10, startColor: string = 'rgb(255, 255, 255)', endColor: string = 'rgb(166, 166, 237)'): string[] {
+export function generateColorGradient(numSteps: number = 10, startColor: string = 'rgb(152, 175, 199)', endColor: string = 'rgb(41, 57, 74)'): string[] {
     // Parse the start and end colors
     const startRGB: number[] = parseRGB(startColor);
     const endRGB: number[] = parseRGB(endColor);
-    // Calculate the step size for each color channel
+    
+    // Calculate the step size for each color channel 
     const stepSize: number[] = [
-        (endRGB[0] - startRGB[0]) / (numSteps - 1),
-        (endRGB[1] - startRGB[1]) / (numSteps - 1),
-        (endRGB[2] - startRGB[2]) / (numSteps - 1)
+        (endRGB[0] - startRGB[0]) / numSteps,
+        (endRGB[1] - startRGB[1]) / numSteps,
+        (endRGB[2] - startRGB[2]) / numSteps
     ];
 
     // Generate the gradient colors
     const gradientColors: string[] = [];
-    for (let i = 0; i < numSteps; i++) {
-        const r: number = Math.round(startRGB[0] + stepSize[0] * i);
-        const g: number = Math.round(startRGB[1] + stepSize[1] * i);
-        const b: number = Math.round(startRGB[2] + stepSize[2] * i);
+    for (let i = 0; i <= numSteps; i++) {
+        const r: number = i === 0 ? 255 : Math.round(startRGB[0] + stepSize[0] * i);
+        const g: number = i === 0 ? 255 : Math.round(startRGB[1] + stepSize[1] * i);
+        const b: number = i === 0 ? 255 : Math.round(startRGB[2] + stepSize[2] * i);
         gradientColors.push(`rgb(${r}, ${g}, ${b})`);
     }
     return gradientColors;
@@ -33,17 +34,22 @@ function parseRGB(rgb: string): number[] {
     }
 }
 
-export function getColor(value: number, values: number[], numSteps: number = 10): number {
+export function getColor(
+    value: number,
+    values: number[],
+    numSteps: number = 10
+): number {
     // Determine the value range
     const minValue = Math.min(...values);
     const maxValue = Math.max(...values);
     const valueRange = maxValue - minValue;
 
     // Determine the bin size
-    const binSize = valueRange / numSteps+1;
+    const binSize = valueRange / numSteps;
 
     // Determine which bin the value falls into
     const binIndex = Math.floor((value - minValue) / binSize);
+
     return binIndex;
 }
 
@@ -54,4 +60,3 @@ export function extractValuesFromGeoJSON(geoJsonData: GeoJsonObject): number[]{
        });
     return tempValues;
 }
-
