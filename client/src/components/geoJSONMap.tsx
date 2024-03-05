@@ -18,13 +18,12 @@ interface GeoJSONMapProps {
 }
 
 const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
- const [mapKey, setMapKey] = useState(Date.now());
-  const [colorGradient, setColorGradient] = useState<{ [key: number]: string }>({});
-
-  const convertColorToString = (color: RGBColor): string => {
-   return `rgb(${color.r}, ${color.g}, ${color.b})`;
- };
+    const initialColor: RGBColor = { r: 152, g: 175, b: 199 };
+    const [mapKey, setMapKey] = useState(Date.now());
     const [colorGradient, setColorGradient] = useState<{ [key: number]: string }>({});
+    const [allValues, setValues] = useState<number[]>([]);
+    const [steps, setSteps] = useState<number>(5); // State for steps
+    const [color, setColor] = useState(initialColor);
 
   // Effect to initialize color gradient and data values
   useEffect(() => {
@@ -32,6 +31,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
       setValues(extractValuesFromGeoJSON(geoJsonData));
       setColorGradient(generateColorGradient(steps, convertColorToString(color)));
     }
+    }, [geoJsonData, color]);
 
   const handleColorChange = (colorOrig: ColorResult) => {
     const newColor = colorOrig.rgb;
