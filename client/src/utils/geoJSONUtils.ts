@@ -5,7 +5,6 @@ export function generateColorGradient(
     startColor: string = 'rgb(152, 175, 199)',
     endColor: string = 'rgb(41, 57, 74)'
 ): string[] {
-    ++numSteps;
     // Parse the start and end colors
     const startRGB: number[] = parseRGB(startColor);
     const endRGB: number[] = parseRGB(endColor);
@@ -52,12 +51,12 @@ export function getColor(
     if (value == 0){
         binIndex = 0;
     } else {
+    --numSteps;
     // Determine the value range excluding 0
     const filteredValues = values.filter(val => val !== 0);
     const minValue = Math.min(...filteredValues);
     const maxValue = Math.max(...filteredValues);
     const valueRange = maxValue - minValue;
-
     // Determine the bin size
     const binSize = valueRange / numSteps;
 
