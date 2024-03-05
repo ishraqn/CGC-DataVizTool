@@ -19,7 +19,6 @@ export function generateColorGradient(numSteps: number = 10, startColor: string 
         const b: number = Math.round(startRGB[2] + stepSize[2] * i);
         gradientColors.push(`rgb(${r}, ${g}, ${b})`);
     }
-    console.log(gradientColors);
     return gradientColors;
 }
 
@@ -45,8 +44,6 @@ export function getColor(value: number, values: number[], numSteps: number = 10)
 
     // Determine which bin the value falls into
     const binIndex = Math.floor((value - minValue) / binSize);
-    console.log(value);
-    console.log(binIndex);
     return binIndex;
 }
 
