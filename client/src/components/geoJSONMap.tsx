@@ -6,7 +6,7 @@ import L from 'leaflet';
 import {generateColorGradient, getColor, extractValuesFromGeoJSON } from '../utils/geoJSONUtils';
 import ColorPickerComponent from './ColorPickerComponent';
  import { ColorResult, RGBColor } from 'react-color';
-
+ import "./geoJSONMap.css";
 // Defining a custom interface for GeoJSON features with additional properties.
 interface GeoJSONFeature extends Feature<Geometry> {
   properties: { [key: string]: unknown };
