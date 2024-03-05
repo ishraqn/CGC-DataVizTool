@@ -1,9 +1,9 @@
 .leaflet-container {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  bottom: 10px;
-  left: 10px;
-  border-radius: 10px;
-  background-color: #e0e7e7;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+    border-radius: 10px;
+    background-color: #e2e8eb;
 }

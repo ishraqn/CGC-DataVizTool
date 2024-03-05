@@ -8,6 +8,7 @@ import compression from "compression";
 import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import geoRoutes from "./routes/geoRoutes";
+import mapRoutes from "./routes/mapRoutes";
 import fileRoutes from "./routes/fileRoutes";
 import shapefileRoutes from "./routes/shapefileRoutes";
 import developerRoutes from "./routes/developerRoutes";
@@ -36,7 +37,7 @@ declare module "express-session" {
 
 // constants for the server
 const app: Application = express();
-const PORT: string | undefined = process.env.PORT;
+const PORT: string | number = process.env.PORT || 5120;
 
 // rate limiter for the server
 const limiter = rateLimit({
@@ -51,6 +52,7 @@ app.use(cookieParser());
 app.use(helmet());
 app.use(cors());
 app.use(compression());
+app.use(express.json({limit:'50mb'}));
 
 // serve the static files from the data folder
 app.use(
@@ -72,6 +74,9 @@ app.use("/api/v1", fileRoutes);
 
 // geo routes for spatial data processing
 app.use("/api/v1/geo", geoRoutes);
+
+// map routes for rendering maps
+app.use("/api/v1/map", mapRoutes);
 
 // catch all error middleware for the server
 app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
