@@ -19,7 +19,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
   const [mapKey, setMapKey] = useState(Date.now());
   const [colorGradient, setColorGradient] = useState<{ [key: number]: string }>({});
   const [allValues, setValues] = useState<number[]>([]);
-  const [steps, setSteps] = useState<number>(5); // State for steps
+  const [steps, setSteps] = useState<number>(15); // State for steps
 
   // Effect to initialize color gradient and data values
   useEffect(() => {
