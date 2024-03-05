@@ -30,7 +30,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
   }, [geoJsonData]);
 
   const geoJsonStyle = (feature: any) => {
-   const currValue = feature.properties.CARUID; //temporarily using CARUID in place of data
+   const currValue = feature.properties.totalSamples as number; //temporarily using CARUID in place of data
    const fillColorIndex = getColor(currValue, allValues, steps); // Call getColor function to get the fill color
 
    return {

@@ -4,7 +4,6 @@ export function generateColorGradient(numSteps: number = 10, startColor: string 
     // Parse the start and end colors
     const startRGB: number[] = parseRGB(startColor);
     const endRGB: number[] = parseRGB(endColor);
-
     // Calculate the step size for each color channel
     const stepSize: number[] = [
         (endRGB[0] - startRGB[0]) / (numSteps - 1),
@@ -54,7 +53,7 @@ export function getColor(value: number, values: number[], numSteps: number = 10)
 export function extractValuesFromGeoJSON(geoJsonData: GeoJsonObject): number[]{
     const tempValues: number[] = [];
     (geoJsonData as any).features.forEach((feature: any) => {
-        tempValues.push(feature.properties.CARUID); //temporarily using CARUID in place of data
+        tempValues.push(feature.properties.totalSamples as number); //temporarily using CARUID in place of data
        });
     return tempValues;
 }
