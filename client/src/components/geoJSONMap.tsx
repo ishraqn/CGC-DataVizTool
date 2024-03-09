@@ -1,115 +1,118 @@
-import React, { useEffect, useState } from "react";
-import { MapContainer, GeoJSON, useMap } from "react-leaflet";
-import { GeoJsonObject, Feature, Geometry } from "geojson";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
+import React, { useEffect, useState } from 'react';
+import { MapContainer, GeoJSON, useMap } from 'react-leaflet';
+import { GeoJsonObject, Feature, Geometry } from 'geojson';
+import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
+import ColorPickerComponent from './ColorPickerComponent';
+import { ColorResult, RGBColor } from 'react-color';
+import { generateColorGradient, getColor, extractValuesFromGeoJSON, convertColorToString } from '../utils/colourUtils';
 import "./geoJSONMap.css";
-
+// Defining a custom interface for GeoJSON features with additional properties.
 interface GeoJSONFeature extends Feature<Geometry> {
-    properties: { [key: string]: unknown };
+  properties: { [key: string]: unknown };
 }
 
+// Props for our GeoJSONMap component, expecting geoJsonData.
 interface GeoJSONMapProps {
-    geoJsonData: GeoJsonObject | null;
+  geoJsonData: GeoJsonObject | null;
 }
 
 const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
+    const initialColor: RGBColor = { r: 152, g: 175, b: 199 };
     const [mapKey, setMapKey] = useState(Date.now());
-    // temporary choropleth color function
-    const getColor = (totalSamples: number) => {
-        return totalSamples > 28
-            ? "#29394a"
-            : totalSamples > 26
-            ? "#304152"
-            : totalSamples > 24
-            ? "#38495b"
-            : totalSamples > 22
-            ? "#405264"
-            : totalSamples > 20
-            ? "#485a6d"
-            : totalSamples > 18
-            ? "#506376"
-            : totalSamples > 16
-            ? "#586b7f"
-            : totalSamples > 14
-            ? "#607488"
-            : totalSamples > 12
-            ? "#687c91"
-            : totalSamples > 10
-            ? "#70849a"
-            : totalSamples > 8
-            ? "#788da3"
-            : totalSamples > 6
-            ? "#8095ac"
-            : totalSamples > 4
-            ? "#889eb5"
-            : totalSamples > 2
-            ? "#90a6be"
-            : totalSamples > 0
-            ? "#98afc7"
-            : "white"; // missing/0
-    };
+    const [colorGradient, setColorGradient] = useState<{ [key: number]: string }>({});
+    const [allValues, setValues] = useState<number[]>([]);
+    const [steps, setSteps] = useState<number>(5); // State for steps
+    const [color, setColor] = useState(initialColor);
 
-    const geoJsonStyle = (feature: GeoJSONFeature) => ({
-        fillColor: getColor(feature.properties.totalSamples as number),
-        weight: 2,
-        color: "#46554F",
-        fillOpacity: 1,
-    });
+  // Effect to initialize color gradient and data values
+  useEffect(() => {
+    if (geoJsonData) {
+      setValues(extractValuesFromGeoJSON(geoJsonData));
+      setColorGradient(generateColorGradient(steps, convertColorToString(color)));
+    }
+    }, [geoJsonData, color]);
 
-    const onEachFeature = (feature: GeoJSONFeature, layer: L.Layer) => {
-        if (feature.properties) {
-            layer.bindPopup(
-                Object.keys(feature.properties)
-                    .map(
-                        (key) =>
-                            `<strong>${key}</strong>: ${feature.properties[key]}`
-                    )
-                    .join("<br />")
-            );
-        }
-    };
+  const handleColorChange = (colorOrig: ColorResult) => {
+    const newColor = colorOrig.rgb;
+   setColor(newColor);
+   setColorGradient(generateColorGradient(steps, convertColorToString(newColor)));
+ };
+ 
+  const geoJsonStyle = (feature: any) => {
+  const currValue = feature.properties.totalSamples as number;
+  const fillColorIndex = getColor(currValue, allValues, steps); // Call getColor function to get the fill color
 
-    const FitBounds = ({ data }: { data: GeoJsonObject }) => {
-        const map = useMap();
+  return {
+    fillColor: colorGradient[fillColorIndex] || 'gray',
+    weight: 1,
+    color: 'white',
+    fillOpacity: 0.5,
+   };
+ };
 
-        useEffect(() => {
-            const geoJsonLayer = L.geoJSON(data);
-            const bounds = geoJsonLayer.getBounds();
-            map.fitBounds(bounds);
-            map.setMaxBounds(bounds);
-            map.setMinZoom(map.getZoom());
-            if (map.tap) map.tap.disable();
-        }, [data, map]);
+  // A component to automatically adjust the map view to fit all our GeoJSON features.
+  
+   const onEachFeature = (feature: GeoJSONFeature, layer: L.Layer) => {
+       if (feature.properties) {
+           layer.bindPopup(
+               Object.keys(feature.properties)
+                   .map(
+                       (key) =>
+                           `<strong>${key}</strong>: ${feature.properties[key]}`
+                   )
+                   .join("<br />")
+           );
+       }
+   };
 
-        return null;
-    };
+const FitBounds = ({ data }: { data: GeoJsonObject }) => {
+   const map = useMap();
 
-    useEffect(() => {
-        setMapKey(Date.now());
-    }, [geoJsonData]);
+   useEffect(() => {
+       const geoJsonLayer = L.geoJSON(data);
+       const bounds = geoJsonLayer.getBounds();
+       map.fitBounds(bounds);
+       map.setMaxBounds(bounds);
+       map.setMinZoom(map.getZoom());
+       if (map.tap) map.tap.disable();
+   }, [data, map]);
 
-    return (
-        <MapContainer
-            key={mapKey}
-            zoom={1}
-            zoomControl={true}
-            keyboard={false}
-            preferCanvas={false}
-            inertia={false}
-        >
-            {geoJsonData && (
-                <>
-                    <GeoJSON
-                        data={geoJsonData}
-                        style={geoJsonStyle}
-                        onEachFeature={onEachFeature}
-                    />
-                    <FitBounds data={geoJsonData} />
-                </>
-            )}
-        </MapContainer>
-    );
+   return null;
+};
+
+useEffect(() => {
+   setMapKey(Date.now());
+}, [geoJsonData]);
+
+return (
+ <>
+   <ColorPickerComponent
+     onColorChange={(color: ColorResult): void => {
+       handleColorChange(color);
+     }}
+   />
+   <MapContainer
+     key={mapKey}
+     zoom={1}
+     zoomControl={true}
+     keyboard={false}
+     preferCanvas={false}
+     inertia={false}
+   >
+     {geoJsonData && (
+       <>
+         <GeoJSON
+           data={geoJsonData}
+           style={geoJsonStyle}
+           onEachFeature={onEachFeature}
+         />
+         <FitBounds data={geoJsonData} />
+       </>
+     )}
+   </MapContainer>
+ </>
+);
 };
 
 export default GeoJSONMap;
