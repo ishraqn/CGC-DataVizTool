@@ -26,6 +26,7 @@ type ToggleContextType = {
 	currentFileIndex        : number;
 	setCurrentFileIndex     : (index: number) => void;
 	fetchUploadedFiles      : FetchUploadedFilesFunction;
+	removeUploadedFile: (index: number) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -42,6 +43,7 @@ const defaultState: ToggleContextType = {
 	currentFileIndex        : 0,
 	setCurrentFileIndex     : () => {},
 	fetchUploadedFiles      : async () => [],
+	removeUploadedFile		: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -97,6 +99,12 @@ export const ToggleProvider: React.FC = ({ children }) => {
 			});
 	};
 
+	const removeUploadedFile = (index: number) => {
+        const newFiles = [...uploadedFiles];
+        newFiles.splice(index, 1);
+        setUploadedFiles(newFiles);
+    };
+
 	useEffect(() => {
 		fetchUploadedFiles();
 	}, []);
@@ -117,6 +125,7 @@ export const ToggleProvider: React.FC = ({ children }) => {
 				currentFileIndex,
 				setCurrentFileIndex,
 				fetchUploadedFiles,
+				removeUploadedFile,
 			}}
 		>
 			{children}

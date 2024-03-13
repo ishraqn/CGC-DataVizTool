@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { FaTimes } from "react-icons/fa";
 import "./sidebar.css";
 import { useToggle } from "../contexts/useToggle";
 
@@ -29,6 +30,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
         baseMapColor,
         setBaseMapColor,
         currentFileIndex,
+		removeUploadedFile
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
@@ -62,6 +64,10 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
         event.stopPropagation();
     };
 
+	const handleRemoveFile = (index: number) => {
+		console.log(index + " should be removed\n");
+		removeUploadedFile(index);
+	  };
     return (
 		<div className="sidebar">
 			<div className="sidebar-title">  Filters</div>
@@ -125,6 +131,10 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
 											>
 												{file.cleanName}
 											</label>
+											<FaTimes
+											className="remove-icon"
+											onClick={() => handleRemoveFile(index)}
+											/>
 										</div>
 									</li>
 								))}
