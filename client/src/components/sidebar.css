@@ -119,6 +119,7 @@
 
 .remove-icon:hover {
     opacity: 0.7;
+    color: red;
 }
 
 /* filter icon styling
