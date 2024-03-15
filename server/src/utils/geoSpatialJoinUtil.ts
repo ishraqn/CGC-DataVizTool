@@ -45,7 +45,7 @@ export const aggregateSamplesInBorders = (
                         )
 					}
 
-					if (
+				if (
 						!matched &&
 						point.properties?.CARUID &&
 						border.properties?.CARUID &&
@@ -54,7 +54,18 @@ export const aggregateSamplesInBorders = (
 						matched = true;
 					}
 
-					if (matched) {
+                if (!matched) {
+                        const province = point.properties?.Province || point.properties?.province;
+                        const cropDistrict = point.properties?.CropDistrict || point.properties?.CD;
+                        const careNameNumberMatch = border.properties?.CARENAME?.match(/\d+$/);
+                        const careNameNumber = careNameNumberMatch ? careNameNumberMatch[0] : null;
+                
+                        if (province?.toUpperCase() === border.properties?.PRABBR && cropDistrict === careNameNumber) {
+                            matched = true;
+                        }
+                }
+
+				if (matched) {
 						const samples = parseInt(
 							point.properties?.samples ||
 								point.properties?.Samples ||
