@@ -69,16 +69,6 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
 
 	const handleRemoveFile = (index: number) => {
 		console.log(index + " should be removed\n");
-		if(index === currentFileIndex){
-			const remainingFiles = uploadedFiles.filter((file, idx) => idx !== index);
-
-			if (remainingFiles.length > 0){
-				setCurrentFileIndex(0);
-			} else {
-				setCurrentFileIndex(0);
-				setIsUploadedFileVisible(false);
-			}
-		}
 		setFileToDeleteIndex(index);
         setShowConfirmation(true);
 	  };
