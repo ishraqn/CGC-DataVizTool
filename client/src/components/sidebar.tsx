@@ -68,7 +68,6 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
     };
 
 	const handleRemoveFile = (index: number) => {
-		console.log(index + " should be removed\n");
 		setFileToDeleteIndex(index);
         setShowConfirmation(true);
 	  };
