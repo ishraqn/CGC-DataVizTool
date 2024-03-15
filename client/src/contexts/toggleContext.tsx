@@ -26,7 +26,7 @@ type ToggleContextType = {
 	currentFileIndex        : number;
 	setCurrentFileIndex     : (index: number) => void;
 	fetchUploadedFiles      : FetchUploadedFilesFunction;
-	removeUploadedFile: (index: number) => void;
+	removeUploadedFile		: (index: number) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -63,6 +63,21 @@ export const ToggleProvider: React.FC = ({ children }) => {
 	const [currentFileIndex, setCurrentFileIndex] = useState(
 		defaultState.currentFileIndex
 	);
+	const [removedFileIds, setRemovedFileIds] = useState<string[]>([]);
+	
+	useEffect(() => {
+        const storedRemovedFileIds = sessionStorage.getItem("removedFileIds");
+        if (storedRemovedFileIds) {
+            setRemovedFileIds(JSON.parse(storedRemovedFileIds));
+        }
+    }, []);
+
+	useEffect(() => {
+		if (removedFileIds.length > 0) {
+			if(removedFileIds[0].length > 0){
+			sessionStorage.setItem("removedFileIds", JSON.stringify(removedFileIds));}
+		}
+	}, [removedFileIds]);
 
 	const fetchUploadedFiles: FetchUploadedFilesFunction = async () => {
 		return fetch("/api/v1/all-uploaded-files")
@@ -87,8 +102,13 @@ export const ToggleProvider: React.FC = ({ children }) => {
 							cleanName: nameAfterUnderscore,
 						};
 					});
-					setUploadedFiles(filesArray);
-					return filesArray;
+					
+					const filteredFile = filesArray.filter(
+						(file) => !removedFileIds.includes(file.id)
+					);
+					
+					setUploadedFiles(filteredFile);
+					return filteredFile;
 				} else {
 					throw new Error("Invalid response format");
 				}
@@ -100,14 +120,17 @@ export const ToggleProvider: React.FC = ({ children }) => {
 	};
 
 	const removeUploadedFile = (index: number) => {
-        const newFiles = [...uploadedFiles];
+        const fileId = uploadedFiles[index].id;
+		setRemovedFileIds((prevIds) => [...prevIds, fileId]);
+
+		const newFiles = [...uploadedFiles];
         newFiles.splice(index, 1);
         setUploadedFiles(newFiles);
     };
 
 	useEffect(() => {
 		fetchUploadedFiles();
-	}, []);
+	  }, [removedFileIds]);
 
 	return (
 		<ToggleContext.Provider
