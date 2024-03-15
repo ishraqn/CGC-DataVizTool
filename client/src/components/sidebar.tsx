@@ -87,7 +87,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
     return (
 		<div className="sidebar">
 			<div className="sidebar-title">  Filters</div>
-			<ul className={`sidebar-menu ${showConfirmation ? "dialog-open" : ""}`}>
+			<ul className={`sidebar-menu${showConfirmation ? "-dialog-open" : ""}`}>
 				{mockFilterGroups.map((group) => (
 					<li
 						key={group.id}
