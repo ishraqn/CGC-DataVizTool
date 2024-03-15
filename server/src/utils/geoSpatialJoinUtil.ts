@@ -27,6 +27,8 @@ export const aggregateSamplesInBorders = (
             border.geometry.type === "MultiPolygon"
         ) {
             pointsGeoJSON.features.forEach((point) => {
+				let matched = false;
+
                 if (point.geometry.type === "Point") {
                     const pointGeometry: Point = {
                         type: "Point",
@@ -36,21 +38,35 @@ export const aggregateSamplesInBorders = (
                         ],
                     };
 
-                    if (
+                    matched =
                         booleanPointInPolygon(
                             pointGeometry,
                             border as Feature<Polygon | MultiPolygon>
                         )
-                    ) {
-                        if (
-                            point.properties &&
-                            !isNaN(parseInt(point.properties.samples))
-                        ) {
-                            totalSamples += parseInt(point.properties.samples);
-                        }
-                    }
-                }
-            });
+					}
+
+					if (
+						!matched &&
+						point.properties?.CARUID &&
+						border.properties?.CARUID &&
+						point.properties.CARUID === border.properties.CARUID
+					) {
+						matched = true;
+					}
+
+					if (matched) {
+						const samples = parseInt(
+							point.properties?.samples ||
+								point.properties?.Samples ||
+								point.properties?.sample ||
+								point.properties?.Sample ||
+								"0"
+						);
+						if (!isNaN(samples)) {
+							totalSamples += samples;
+						}
+					}
+				});
 
             border.properties = {
                 ...border.properties,
