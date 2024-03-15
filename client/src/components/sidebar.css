@@ -122,6 +122,27 @@
     color: red;
 }
 
+.confirmation-dialog {
+    background-color: #f4f6f9;
+    color: #4a4a4a;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+}
+
+.confirmation-dialog p {
+    margin-bottom: 20px;
+}
+
+.confirmation-dialog button {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
 /* filter icon styling
 .sidebar-title::before {
     margin-right: 10px;
