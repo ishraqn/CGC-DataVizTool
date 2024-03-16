@@ -95,7 +95,7 @@ const FitBounds = ({ data }: { data: GeoJsonObject }) => {
        if (bounds.isValid()){
         map.fitBounds(bounds);
         map.setMaxBounds(bounds);
-        map.setMinZoom(map.getZoom());
+        map.setMinZoom(1);
        }
     }
        if (map.tap) map.tap.disable();
@@ -117,7 +117,7 @@ return (
    />
    <MapContainer
      key={mapKey}
-     zoom={1}
+     zoom={0}
      zoomControl={true}
      keyboard={false}
      preferCanvas={false}
