@@ -12,9 +12,5 @@
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^8.2.2"
-  },
-  "dependencies": {
-    "leaflet-image": "^0.4.0",
-    "react-dropzone": "^14.2.3"
   }
 }
