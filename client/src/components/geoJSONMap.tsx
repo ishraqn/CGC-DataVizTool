@@ -3,9 +3,9 @@ import { MapContainer, GeoJSON, useMap } from 'react-leaflet';
 import { GeoJsonObject, Feature, Geometry } from 'geojson';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import ColorPickerComponent from './ColorPickerComponent';
+import { useToggle } from '../contexts/useToggle';
 import { ColorResult, RGBColor } from 'react-color';
-import { generateColorGradient, getColor, extractValuesFromGeoJSON, convertColorToString } from '../utils/colourUtils';
+import { hexToRgb, generateColorGradient, getColor, extractValuesFromGeoJSON, convertColorToString } from '../utils/colourUtils';
 import "./geoJSONMap.css";
 // Defining a custom interface for GeoJSON features with additional properties.
 interface GeoJSONFeature extends Feature<Geometry> {
@@ -18,27 +18,21 @@ interface GeoJSONMapProps {
 }
 
 const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
-    const initialColor: RGBColor = { r: 152, g: 175, b: 199 };
     const [mapKey, setMapKey] = useState(Date.now());
     const [colorGradient, setColorGradient] = useState<{ [key: number]: string }>({});
     const [allValues, setValues] = useState<number[]>([]);
     const [steps, setSteps] = useState<number>(5); // State for steps
-    const [color, setColor] = useState(initialColor);
+    const { colorPickerColor} = useToggle();
 
   // Effect to initialize color gradient and data values
   useEffect(() => {
     if (geoJsonData) {
       setValues(extractValuesFromGeoJSON(geoJsonData));
-      setColorGradient(generateColorGradient(steps, convertColorToString(color)));
+      const rgbColor = hexToRgb(colorPickerColor);
+      setColorGradient(generateColorGradient(steps, rgbColor));
     }
-    }, [geoJsonData, color]);
+    }, [geoJsonData, colorPickerColor, steps]);
 
-  const handleColorChange = (colorOrig: ColorResult) => {
-    const newColor = colorOrig.rgb;
-   setColor(newColor);
-   setColorGradient(generateColorGradient(steps, convertColorToString(newColor)));
- };
- 
   const geoJsonStyle = (feature: any) => {
   const currValue = feature.properties.totalSamples as number;
   const fillColorIndex = getColor(currValue, allValues, steps); // Call getColor function to get the fill color
@@ -87,11 +81,6 @@ useEffect(() => {
 
 return (
  <>
-   <ColorPickerComponent
-     onColorChange={(color: ColorResult): void => {
-       handleColorChange(color);
-     }}
-   />
    <MapContainer
      key={mapKey}
      zoom={1}

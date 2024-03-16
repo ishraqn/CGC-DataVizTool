@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import "./sidebar.css";
 import { useToggle } from "../contexts/useToggle";
+import ColorPickerComponent from "./ColorPickerComponent";
 
 type FilterGroup = {
     id: string;
@@ -13,6 +14,7 @@ interface SidebarProps {
 
 // mock data
 const mockFilterGroups: FilterGroup[] = [
+	{ id: "1", name: "Color Picker" },
     { id: "3", name: "Select File" },
 	{ id: "4", name: "Download Map" },
 ];
@@ -26,8 +28,8 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
         uploadedFiles,
         setCurrentFileIndex,
         setIsUploadedFileVisible,
-        baseMapColor,
-        setBaseMapColor,
+        colorPickerColor,
+        setColorPickerColor,
         currentFileIndex,
     } = useToggle();
 
@@ -76,11 +78,13 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
 					>
 						<div className="menu-item-checkbox">
 							{group.id === "1" ? (
-								<input
-									type="color"
-									value={baseMapColor}
-									onChange={(e) => setBaseMapColor(e.target.value)}
-								/>
+								<><label
+									htmlFor={`checkbox-${group.id}`}
+									className="menu-item-label"
+								>
+									{group.name}
+								</label><ColorPickerComponent
+										onColorChange={(colorResult) => setColorPickerColor(colorResult.hex)} /></>
 							) : (
 								<>
 									<input

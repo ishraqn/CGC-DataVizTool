@@ -19,8 +19,8 @@ type ToggleContextType = {
 	setIsUploadedFileVisible: (isVisible: boolean) => void;
 	uploadedFile            : UploadFileData | null;
 	setUploadedFile         : (file: UploadFileData | null) => void;
-	mapColor                : string;
-	setMapColor             : (color: string) => void;
+	colorPickerColor        : string;
+	setColorPickerColor     : (color: string) => void;
 	uploadedFiles           : UploadFileData[];
 	setUploadedFiles        : (files: UploadFileData[]) => void;
 	currentFileIndex        : number;
@@ -35,8 +35,8 @@ const defaultState: ToggleContextType = {
 	setIsUploadedFileVisible: () => {},
 	uploadedFile            : null,
 	setUploadedFile         : () => {},
-	mapColor                : "white",
-	setMapColor             : () => {},
+	colorPickerColor        : "#98AFC7",
+	setColorPickerColor     : () => {},
 	uploadedFiles           : [],
 	setUploadedFiles        : () => {},
 	currentFileIndex        : 0,
@@ -54,7 +54,7 @@ export const ToggleProvider: React.FC = ({ children }) => {
 		defaultState.isUploadedFileVisible
 	);
 	const [uploadedFile, setUploadedFile]   = useState(defaultState.uploadedFile);
-	const [mapColor, setMapColor]           = useState(defaultState.mapColor);
+	const [colorPickerColor, setColorPickerColor]           = useState(defaultState.colorPickerColor);
 	const [uploadedFiles, setUploadedFiles] = useState(
 		defaultState.uploadedFiles
 	);
@@ -110,8 +110,8 @@ export const ToggleProvider: React.FC = ({ children }) => {
 				setIsUploadedFileVisible,
 				uploadedFile,
 				setUploadedFile,
-				mapColor,
-				setMapColor,
+				colorPickerColor,
+				setColorPickerColor,
 				uploadedFiles,
 				setUploadedFiles,
 				currentFileIndex,
