@@ -85,13 +85,21 @@ const FitBounds = ({ data }: { data: GeoJsonObject }) => {
    const map = useMap();
 
    useEffect(() => {
-       const geoJsonLayer = L.geoJSON(data);
+    if (data && "features" in data) {
+      const visibleFeatures = data.features.filter(
+        (feature) => 
+          feature.properties && featureVisibility[feature.properties.CARUID]
+      );
+       const geoJsonLayer = L.geoJSON(visibleFeatures as GeoJsonObject);
        const bounds = geoJsonLayer.getBounds();
-       map.fitBounds(bounds);
-       map.setMaxBounds(bounds);
-       map.setMinZoom(map.getZoom());
+       if (bounds.isValid()){
+        map.fitBounds(bounds);
+        map.setMaxBounds(bounds);
+        map.setMinZoom(map.getZoom());
+       }
+    }
        if (map.tap) map.tap.disable();
-   }, [data, map]);
+   }, [data, map, featureVisibility]);
 
    return null;
 };
