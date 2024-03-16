@@ -67,7 +67,15 @@ const Sidebar: React.FC<SidebarProps> = ({ handleDownload, geoJsonData }) => {
     const renderFeatureVisibilityToggles = () => {
         if (!geoJsonData || !geoJsonData.features) return null;
 
-        return geoJsonData.features.map((feature, index) => {
+        // sort
+        const sortedFeatures = geoJsonData.features.sort((curr, prev) => {
+            const currKey = curr.properties?.CARUID || "";
+            const prevKey = prev.properties?.CARUID || "";
+            if (!currKey || !prevKey) return 0;
+            return currKey.localeCompare(prevKey);
+        });
+
+        return sortedFeatures.map((feature, index) => {
             const key = feature.properties?.CARUID;
             if (!key) return null;
 
