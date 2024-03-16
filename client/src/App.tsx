@@ -73,7 +73,11 @@ const App: React.FC = () => {
 		// Update map data when a file is selected from the sidebar
 		if (isUploadedFileVisible && uploadedFiles.length > 0) {
 			const selectedFile = uploadedFiles[currentFileIndex];
-			const fileId = selectedFile.id; 
+			const fileId = selectedFile ? selectedFile.id : undefined;
+			if (!fileId) {
+				console.error("No file ID found for selected file:", selectedFile);
+				return;
+			} 
 			fetch(`/api/v1/${fileId}`)
 				.then((response) => {
 					if (!response.ok) {
