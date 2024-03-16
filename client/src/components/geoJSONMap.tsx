@@ -55,14 +55,14 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
   const fillColorIndex = getColor(currValue, allValues, steps); // Call getColor function to get the fill color
 
   if (!featureVisibility[feature.properties.CARUID]) {
-    return { fillOpacity: 0, weight: 0, color: 'white', fillColor: 'gray' };
+    return { fillOpacity: 0, weight: 0, color: 'white', fillColor: colorGradient[fillColorIndex] };
   }
 
   return {
-    fillColor: colorGradient[fillColorIndex] || 'gray',
-    weight: 1,
-    color: 'white',
-    fillOpacity: 0.5,
+    fillColor: colorGradient[fillColorIndex] || 'white',
+    weight: 0.7,
+    color: 'black',
+    fillOpacity: 1,
    };
  };
 
@@ -117,7 +117,7 @@ return (
    />
    <MapContainer
      key={mapKey}
-     zoom={0}
+     zoom={1}
      zoomControl={true}
      keyboard={false}
      preferCanvas={false}
