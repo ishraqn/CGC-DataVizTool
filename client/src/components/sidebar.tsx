@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
 import "./sidebar.css";
 import { useToggle } from "../contexts/useToggle";
+import { geoJSON, geoJson } from "leaflet";
 
 type FilterGroup = {
     id: string;
@@ -8,16 +9,18 @@ type FilterGroup = {
 };
 
 interface SidebarProps {
-	handleDownload: () => Promise<void>;
+    handleDownload: () => Promise<void>;
+    geoJsonData: any;
 }
 
 // mock data
 const mockFilterGroups: FilterGroup[] = [
     { id: "3", name: "Select File" },
-	{ id: "4", name: "Download Map" },
+    { id: "4", name: "Download Map" },
+    { id: "5", name: "Select Crop Region" },
 ];
 
-const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
+const Sidebar: React.FC<SidebarProps> = ({ handleDownload, geoJsonData }) => {
     // const [selectedIds, setSelectedIds] = useState<{ [key: string]: boolean }>({});
 
     const {
@@ -26,30 +29,64 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
         uploadedFiles,
         setCurrentFileIndex,
         setIsUploadedFileVisible,
-        baseMapColor,
-        setBaseMapColor,
+        colorPickerColor,
+        setColorPickerColor,
         currentFileIndex,
+        featureVisibility,
+        toggleFeatureVisibility,
+        setFeatureVisibility,
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
-    const [selectedFileIndex, setSelectedFileIndex] = useState<number | null>(null);
+    const [selectedFileIndex, setSelectedFileIndex] = useState<number | null>(
+        null
+    );
+    const [showFeatureVisibility, setShowFeatureVisibility] = useState(false);
 
     const handleCardClick = (id: string) => {
-		switch (id) {
-			case "1":
-				break;
-			case "2":
-				setIsTileLayerVisible(!isTileLayerVisible);
-				break;
-			case "3":
-				setShowFileList(!showFileList);
-				break;
-			case "4":
-				handleDownload();
-				break;
-			default:
-				break;
-		}
+        switch (id) {
+            case "1":
+                break;
+            case "2":
+                setIsTileLayerVisible(!isTileLayerVisible);
+                break;
+            case "3":
+                setShowFileList(!showFileList);
+                break;
+            case "4":
+                handleDownload();
+                break;
+            case "5":
+                setShowFeatureVisibility(!showFeatureVisibility);
+                break;
+            default:
+                break;
+        }
+    };
+
+    const renderFeatureVisibilityToggles = () => {
+        if (!geoJsonData || !geoJsonData.features) return null;
+
+        return geoJsonData.features.map((feature, index) => {
+            const key = feature.properties?.CARUID;
+            if (!key) return null;
+
+            return (
+                <li key={`feature-${index}`}>
+                    <div className="file-item-checkbox">
+                        <input
+                            type="checkbox"
+                            id={`feature-visibility-${key}`}
+                            checked={featureVisibility[key] ?? false}
+                            onChange={() => toggleFeatureVisibility(key)}
+                        />
+                        <label htmlFor={`feature-visibility-${key}`}>
+                            {`${key}`}
+                        </label>
+                    </div>
+                </li>
+            );
+        });
     };
 
     const handleFileSelection = (index: number) => {
@@ -58,83 +95,117 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
         setSelectedFileIndex(index);
     };
 
-    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleCheckboxChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
         event.stopPropagation();
     };
 
+    useEffect(() => {
+        if (geoJsonData && "features" in geoJsonData) {
+            const intialVisibility = {};
+            geoJsonData.features.forEach((feature) => {
+                if (feature.properties && feature.properties.CARUID) {
+                    const key = feature.properties.CARUID;
+                    intialVisibility[key] = true;
+                }
+            });
+            setFeatureVisibility(intialVisibility);
+        }
+    }, [geoJsonData, setFeatureVisibility]);
+
     return (
-		<div className="sidebar">
-			<div className="sidebar-title">  Filters</div>
-			<ul className="sidebar-menu">
-				{mockFilterGroups.map((group) => (
-					<li
-						key={group.id}
-						className={`menu-item ${
-							group.id === "2" && isTileLayerVisible ? "active" : ""
-						}`}
-						onClick={() => handleCardClick(group.id)}
-					>
-						<div className="menu-item-checkbox">
-							{group.id === "1" ? (
-								<input
-									type="color"
-									value={baseMapColor}
-									onChange={(e) => setBaseMapColor(e.target.value)}
-								/>
-							) : (
-								<>
-									<input
-										type="checkbox"
-										id={`checkbox-${group.id}`}
-										checked={group.id === "2" && isTileLayerVisible}
-										onChange={handleCheckboxChange}
-									/>
-									<label
-										htmlFor={`checkbox-${group.id}`}
-										className="menu-item-label"
-									>
-										{group.name}
-									</label>
-								</>
-							)}
-						</div>
-						{group.id === "3" && showFileList && (
-							<ul className="file-dropdown">
-								{uploadedFiles.map((file, index) => (
-									<li
-										key={index}
-										className={`file-item ${
-											index === selectedFileIndex ? "file-selected" : ""
-										}`}
-										onClick={(event) => {
-											handleFileSelection(index);
-											event.stopPropagation();
-										}}
-									>
-										<div className="file-item-checkbox">
-											<input
-												type="checkbox"
-												id={`file-checkbox-${index}`}
-												checked={index === currentFileIndex}
-												onChange={handleCheckboxChange}
-												readOnly // This makes the input not clickable, but it's controlled by the label click
-											/>
-											<label
-												htmlFor={`file-checkbox-${index}`}
-												className="file-item-label"
-											>
-												{file.cleanName}
-											</label>
-										</div>
-									</li>
-								))}
-							</ul>
-						)}
-					</li>
-				))}
-			</ul>
-		</div>
-	);
+        <div className="sidebar">
+            <div className="sidebar-title"> Filters</div>
+            <ul className="sidebar-menu">
+                {mockFilterGroups.map((group) => (
+                    <li
+                        key={group.id}
+                        className={`menu-item ${
+                            group.id === "2" && isTileLayerVisible
+                                ? "active"
+                                : ""
+                        }`}
+                        onClick={() => handleCardClick(group.id)}
+                    >
+                        <div className="menu-item-checkbox">
+                            {group.id === "1" ? (
+                                <input
+                                    type="color"
+                                    value={colorPickerColor}
+                                    onChange={(e) =>
+                                        setColorPickerColor(e.target.value)
+                                    }
+                                />
+                            ) : (
+                                <>
+                                    <input
+                                        type="checkbox"
+                                        id={`checkbox-${group.id}`}
+                                        checked={
+                                            group.id === "2" &&
+                                            isTileLayerVisible
+                                        }
+                                        onChange={handleCheckboxChange}
+                                    />
+                                    <label
+                                        htmlFor={`checkbox-${group.id}`}
+                                        className="menu-item-label"
+                                    >
+                                        {group.name}
+                                    </label>
+                                </>
+                            )}
+                        </div>
+                        {group.id === "3" && showFileList && (
+                            <ul className="file-dropdown">
+                                {uploadedFiles.map((file, index) => (
+                                    <li
+                                        key={index}
+                                        className={`file-item ${
+                                            index === selectedFileIndex
+                                                ? "file-selected"
+                                                : ""
+                                        }`}
+                                        onClick={(event) => {
+                                            handleFileSelection(index);
+                                            event.stopPropagation();
+                                        }}
+                                    >
+                                        <div className="file-item-checkbox">
+                                            <input
+                                                type="checkbox"
+                                                id={`file-checkbox-${index}`}
+                                                checked={
+                                                    index === currentFileIndex
+                                                }
+                                                onChange={handleCheckboxChange}
+                                                readOnly // This makes the input not clickable, but it's controlled by the label click
+                                            />
+                                            <label
+                                                htmlFor={`file-checkbox-${index}`}
+                                                className="file-item-label"
+                                            >
+                                                {file.cleanName}
+                                            </label>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                        {group.id === "5" && showFeatureVisibility && (
+                            <ul
+                                className="file-dropdown"
+                                onClick={(event) => event.stopPropagation()}
+                            >
+                                {renderFeatureVisibilityToggles()}
+                            </ul>
+                        )}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 };
 
 export default Sidebar;

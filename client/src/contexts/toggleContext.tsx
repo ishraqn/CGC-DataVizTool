@@ -19,13 +19,16 @@ type ToggleContextType = {
 	setIsUploadedFileVisible: (isVisible: boolean) => void;
 	uploadedFile            : UploadFileData | null;
 	setUploadedFile         : (file: UploadFileData | null) => void;
-	mapColor                : string;
-	setMapColor             : (color: string) => void;
+	colorPickerColor        : string;
+	setColorPickerColor     : (color: string) => void;
 	uploadedFiles           : UploadFileData[];
 	setUploadedFiles        : (files: UploadFileData[]) => void;
 	currentFileIndex        : number;
 	setCurrentFileIndex     : (index: number) => void;
 	fetchUploadedFiles      : FetchUploadedFilesFunction;
+	featureVisibility	    : {[key: string]: boolean};
+	toggleFeatureVisibility : (feature: string) => void;
+	setFeatureVisibility    : (visibility: {[key: string]: boolean}) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -35,13 +38,16 @@ const defaultState: ToggleContextType = {
 	setIsUploadedFileVisible: () => {},
 	uploadedFile            : null,
 	setUploadedFile         : () => {},
-	mapColor                : "white",
-	setMapColor             : () => {},
+	colorPickerColor        : "#98AFC7",
+	setColorPickerColor     : () => {},
 	uploadedFiles           : [],
 	setUploadedFiles        : () => {},
 	currentFileIndex        : 0,
 	setCurrentFileIndex     : () => {},
 	fetchUploadedFiles      : async () => [],
+	featureVisibility       : {},
+	toggleFeatureVisibility : () => {},
+	setFeatureVisibility    : () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -54,13 +60,23 @@ export const ToggleProvider: React.FC = ({ children }) => {
 		defaultState.isUploadedFileVisible
 	);
 	const [uploadedFile, setUploadedFile]   = useState(defaultState.uploadedFile);
-	const [mapColor, setMapColor]           = useState(defaultState.mapColor);
+	const [colorPickerColor, setColorPickerColor]           = useState(defaultState.colorPickerColor);
 	const [uploadedFiles, setUploadedFiles] = useState(
 		defaultState.uploadedFiles
 	);
 	const [currentFileIndex, setCurrentFileIndex] = useState(
 		defaultState.currentFileIndex
 	);
+	const [featureVisibility, setFeatureVisibility] = useState<{
+		[key: string]: boolean;
+	}>(defaultState.featureVisibility);
+
+	const toggleFeatureVisibility = (key: string) => {
+		setFeatureVisibility((prev) => ({
+			...prev,
+			[key]: !prev[key],
+		}));
+	};
 
 	const fetchUploadedFiles: FetchUploadedFilesFunction = async () => {
 		return fetch("/api/v1/all-uploaded-files")
@@ -110,13 +126,16 @@ export const ToggleProvider: React.FC = ({ children }) => {
 				setIsUploadedFileVisible,
 				uploadedFile,
 				setUploadedFile,
-				mapColor,
-				setMapColor,
+				colorPickerColor,
+				setColorPickerColor,
 				uploadedFiles,
 				setUploadedFiles,
 				currentFileIndex,
 				setCurrentFileIndex,
 				fetchUploadedFiles,
+				featureVisibility,
+				toggleFeatureVisibility,
+				setFeatureVisibility,
 			}}
 		>
 			{children}

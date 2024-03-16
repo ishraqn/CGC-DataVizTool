@@ -7,6 +7,8 @@ import ColorPickerComponent from './ColorPickerComponent';
 import { ColorResult, RGBColor } from 'react-color';
 import { generateColorGradient, getColor, extractValuesFromGeoJSON, convertColorToString } from '../utils/colourUtils';
 import "./geoJSONMap.css";
+import { useToggle } from '../contexts/useToggle';
+
 // Defining a custom interface for GeoJSON features with additional properties.
 interface GeoJSONFeature extends Feature<Geometry> {
   properties: { [key: string]: unknown };
@@ -25,6 +27,8 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     const [steps, setSteps] = useState<number>(5); // State for steps
     const [color, setColor] = useState(initialColor);
 
+    const { featureVisibility} = useToggle();
+
   // Effect to initialize color gradient and data values
   useEffect(() => {
     if (geoJsonData) {
@@ -39,9 +43,20 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
    setColorGradient(generateColorGradient(steps, convertColorToString(newColor)));
  };
  
+ const defaultStyle = {
+   fillColor: '#98AFC7',
+   weight: 1,
+   color: 'white',
+   fillOpacity: 0.5,
+  };
+
   const geoJsonStyle = (feature: any) => {
   const currValue = feature.properties.totalSamples as number;
   const fillColorIndex = getColor(currValue, allValues, steps); // Call getColor function to get the fill color
+
+  if (!featureVisibility[feature.properties.CARUID]) {
+    return { fillOpacity: 0, weight: 0, color: 'white', fillColor: 'gray' };
+  }
 
   return {
     fillColor: colorGradient[fillColorIndex] || 'gray',
