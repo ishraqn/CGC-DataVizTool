@@ -19,7 +19,6 @@ const renderMap = async (filePath: string): Promise<Buffer> => {
     try {
         const data = await fs.readFile(filePath, "utf-8");
         geoJsonData = JSON.parse(data);
-        console.log("geoJsonData:", geoJsonData);
     } catch (error) {
         console.error(
             `Failed to read or parse the GeoJSON file at ${filePath}:`,
