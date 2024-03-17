@@ -1,16 +1,14 @@
-    // ToggleContext.tsx
 import React, { createContext, useState, useEffect } from "react";
 
 interface UploadFileData {
-	id              : any;
+	id              : unknown;
 	name            : string;
 	path            : string;
 	size            : number;
 	type            : string;
 	lastModifiedDate: Date;
-	cleanName: string;
+	cleanName       : string;
 }
-type FetchUploadedFilesFunction = () => Promise<UploadFileData[]>;
 
 type ToggleContextType = {
 	isTileLayerVisible      : boolean;
@@ -25,8 +23,8 @@ type ToggleContextType = {
 	setUploadedFiles        : (files: UploadFileData[]) => void;
 	currentFileIndex        : number;
 	setCurrentFileIndex     : (index: number) => void;
-	fetchUploadedFiles      : FetchUploadedFilesFunction;
-	featureVisibility	    : {[key: string]: boolean};
+	fetchUploadedFiles      : () => void;
+	featureVisibility       : { [key: string]: boolean };
 	toggleFeatureVisibility : (feature: string) => void;
 	setFeatureVisibility    : (visibility: {[key: string]: boolean}) => void;
 	removeUploadedFile		: (index: number) => void;
@@ -54,7 +52,7 @@ const defaultState: ToggleContextType = {
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
 
-export const ToggleProvider: React.FC = ({ children }) => {
+export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const [isTileLayerVisible, setIsTileLayerVisible] = useState(
 		defaultState.isTileLayerVisible
 	);
@@ -81,73 +79,62 @@ export const ToggleProvider: React.FC = ({ children }) => {
 			[key]: !prev[key],
 		}));
 	};
-	
-	useEffect(() => {
-        const storedRemovedFileIds = localStorage.getItem("removedFileIds");
-        if (storedRemovedFileIds) {
-            setRemovedFileIds(JSON.parse(storedRemovedFileIds));
-        }
-    }, []);
 
-	useEffect(() => {
-		if (removedFileIds.length > 0) {
-			if(removedFileIds[0].length > 0){
-			localStorage.setItem("removedFileIds", JSON.stringify(removedFileIds));}
+	const fetchUploadedFiles = async () => {
+		try {
+			const response = await fetch("/api/v1/all-uploaded-files");
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			const filesObject = await response.json();
+			const filesArray: UploadFileData[] = Object.keys(filesObject).map(
+				(key) => ({
+					...filesObject[key],
+					id: key,
+					cleanName: filesObject[key].name.includes("_")
+						? filesObject[key].name.split("_").slice(1).join("_")
+						: filesObject[key].name,
+				})
+			);
+			setUploadedFiles(filesArray);
+		} catch (error) {
+			console.error("Failed to fetch uploaded files:", error);
 		}
-	}, [removedFileIds]);
-
-	const fetchUploadedFiles: FetchUploadedFilesFunction = async () => {
-		return fetch("/api/v1/all-uploaded-files")
-			.then((response) => {
-				if (!response.ok) {
-					throw new Error(`HTTP error! Status: ${response.status}`);
-				}
-				return response.json();
-			})
-			.then((filesObject) => {
-				if (typeof filesObject === "object" && filesObject !== null) {
-					const filesArray = Object.keys(filesObject).map((key) => {
-						const originalName = filesObject[key].name;
-						let nameAfterUnderscore = "";
-						if (originalName !== undefined) {
-							const nameParts = originalName.split('_');
-							nameAfterUnderscore = nameParts.length > 1 ? nameParts.slice(1).join('_') : originalName;
-						}
-						return {
-							...filesObject[key],
-							id: key,
-							cleanName: nameAfterUnderscore,
-						};
-					});
-					
-					const filteredFile = filesArray.filter(
-						(file) => !removedFileIds.includes(file.id)
-					);
-					
-					setUploadedFiles(filteredFile);
-					return filteredFile;
-				} else {
-					throw new Error("Invalid response format");
-				}
-			})
-			.catch((error) => {
-				console.error("Failed to fetch uploaded files:", error);
-				throw error;
-			});
 	};
 
-	const removeUploadedFile = (index: number) => {
-        const fileId = uploadedFiles[index].id;
-		setRemovedFileIds((prevIds) => [...prevIds, fileId]);
+	const removeUploadedFile = async (index: number) => {
+		const fileId = uploadedFiles[index]?.id;
 
-		const newFiles = [...uploadedFiles];
-        newFiles.splice(index, 1);
-        setUploadedFiles(newFiles);
-    };
+		if (!fileId) {
+			console.log("File ID not found at index:", index);
+			return;
+		}
+
+		try {
+			const response = await fetch(`/api/v1/remove/${fileId}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+
+			console.log("File removed:", await response.json());
+			setRemovedFileIds((prevIds) => [...prevIds, fileId.toString()]);
+			setUploadedFiles((currentFiles) =>
+				currentFiles.filter((_, fileIndex) => fileIndex !== index)
+			);
+		} catch (error) {
+			console.error("Failed to remove file:", error);
+		}
+	};
 
 	useEffect(() => {
 		fetchUploadedFiles();
-	  }, [removedFileIds]);
+	}, []);
 
 	return (
 		<ToggleContext.Provider
