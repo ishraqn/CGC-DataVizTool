@@ -42,7 +42,7 @@ const App: React.FC = () => {
 	useEffect(() => {
 		if (uploadedFiles.length > 0) {
 			fetch("/api/v1/geo/geo-aggregate-data")
-				.then(async (response) => {
+				.then((response) => {
 					if (response.ok) {
 						return response.json();
 					} else if (response.status === 404) {
@@ -59,16 +59,6 @@ const App: React.FC = () => {
 				.catch((error) => {
 					console.error("Failed to load aggregated data:", error);
 					// If no aggregated data found or error occurs, fetch default data
-					fetch("/api/v1/data-folder/default-simplified.geojson")
-						.then((response) => response.json())
-						.then((defaultData) => {
-							setMapData(defaultData);
-							localStorage.setItem("hasAggregatedData", "false");
-							setCurrentFileIndex(-1); // Reset current file index as no file is selected
-						})
-						.catch((defaultError) => {
-							console.error("Failed to load default GeoJSON data:", defaultError);
-						});
 				});
 		} else {
 			// If no files are uploaded, fetch default data
@@ -83,7 +73,7 @@ const App: React.FC = () => {
 					console.error("Failed to load default GeoJSON data:", defaultError);
 				});
 		}
-	}, [setCurrentFileIndex, uploadedFiles.length]);
+	}, [setCurrentFileIndex, uploadedFiles]);
 
 	useEffect(() => {
 		// Update map data when a file is selected from the sidebar
@@ -105,15 +95,6 @@ const App: React.FC = () => {
 						`Failed to load GeoJSON data for ${selectedFile.name}:`,
 						error
 					);
-					// If loading data for selected file fails, load the default map
-					fetch("/api/v1/data-folder/default-simplified.geojson")
-						.then((response) => response.json())
-						.then((defaultData) => {
-							setMapData(defaultData);
-						})
-						.catch((defaultError) => {
-							console.error("Failed to load default GeoJSON data:", defaultError);
-						});
 				})
 		}
 	}, [currentFileIndex, isUploadedFileVisible, uploadedFiles]);
