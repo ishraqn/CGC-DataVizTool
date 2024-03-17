@@ -1,0 +1,8 @@
+.GuideTooltip .react-tooltip{
+    width: fit-content;
+    max-height: 500px;
+    overflow-y: auto;
+    background-color: beige;
+    opacity: 1;
+    color: black;
+}
