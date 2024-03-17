@@ -96,7 +96,6 @@ export const fileController = {
 	},
 
 	getFile: (req: Request, res: Response) => {
-		console.log("req.params.fileId", req.params.fileId);
 		const uploadFileList = req.session.uploadFileList;
 		const fileName = req.params.fileId;
 		if (!uploadFileList || Object.keys(uploadFileList).length === 0) {
@@ -109,7 +108,6 @@ export const fileController = {
 			basename(file.path, extname(file.path)) + "_totalSamples.geojson";
 		const convertedCSVFile = join(directory, newFileName);
 		if (file) {
-			console.log("Sending file:", convertedCSVFile);
 			res.sendFile(convertedCSVFile);
 		} else {
 			res.status(404).send("File not found.");

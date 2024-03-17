@@ -4,7 +4,6 @@ import "./sidebar.css";
 import { useToggle } from "../contexts/useToggle";
 import ColorPickerComponent from "./ColorPickerComponent";
 import ConfirmationDialog from "./ConfirmationDialog";
-import {geoJSON, geoJson} from "leaflet";
 
 type FilterGroup = {
     id: string;
@@ -13,7 +12,7 @@ type FilterGroup = {
 
 interface SidebarProps {
 	handleDownload: () => Promise<void>;
-	geoJsonData : any;
+	geoJsonData : unknown;
 }
 
 // mock data
@@ -25,7 +24,6 @@ const mockFilterGroups: FilterGroup[] = [
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
-    // const [selectedIds, setSelectedIds] = useState<{ [key: string]: boolean }>({});
 
     const {
         isTileLayerVisible,
@@ -127,7 +125,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 	const handleRemoveFile = (index: number) => {
 		setFileToDeleteIndex(index);
         setShowConfirmation(true);
-	  };
+	};
 
 	const handleDeleteConfirmed = () => {
 		if (fileToDeleteIndex !== null) {
@@ -140,6 +138,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 		setFileToDeleteIndex(null);
 		setShowConfirmation(false);
 	};
+	
     return (
 		<div className="sidebar">
 			<div className="sidebar-title">  Filters</div>

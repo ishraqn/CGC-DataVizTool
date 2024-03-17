@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import GeoJSONMap from "./components/geoJSONMap";
 import FileUploadForm from "./components/uploadForm";
 import "./App.css";
@@ -16,7 +16,8 @@ const App: React.FC = () => {
 		isUploadedFileVisible,
 		setCurrentFileIndex,
 	} = useToggle();
-
+	const selectedFile = useMemo(() => uploadedFiles[currentFileIndex], [uploadedFiles, currentFileIndex]);
+	
 	useEffect(() => {
 		// Initial data loading based on whether aggregated data should be used
 		const fetchData = async () => {
@@ -48,9 +49,11 @@ const App: React.FC = () => {
 
 	useEffect(() => {
 		if (uploadedFiles.length > 0) {
+			console.log("Fetching aggregated data");
 			fetch("/api/v1/geo/geo-aggregate-data")
 				.then((response) => {
 					if (response.ok) {
+						console.log("Aggregated data fetched successfully");
 						return response.json();
 					} else if (response.status === 404) {
 						throw new Error("No aggregated data found");
@@ -72,38 +75,34 @@ const App: React.FC = () => {
 			setCurrentFileIndex(-1);
 		}
 	}, [setCurrentFileIndex, uploadedFiles]);
-
+	
 	useEffect(() => {
 		// Update map data when a file is selected from the sidebar
-		if (
-			isUploadedFileVisible &&
-			uploadedFiles.length > 0 &&
-			uploadedFiles[currentFileIndex] != null
-		) {
-			const selectedFile = uploadedFiles[currentFileIndex];
-			const fileId = selectedFile ? selectedFile.id : undefined;
-			if (!fileId) {
-				console.error("No file ID found for selected file:", selectedFile);
-				return;
-			}
-			fetch(`/api/v1/${fileId}`)
-				.then((response) => {
+		const updateSelectedFile = async () => {
+			if (isUploadedFileVisible && uploadedFiles[currentFileIndex]) {
+				
+				const fileId = selectedFile ? selectedFile.id : undefined;
+				if (!fileId) {
+					console.error("No file ID found for selected file:", selectedFile);
+					return;
+				}
+				try {
+					const response = await fetch(`/api/v1/${selectedFile.id}`);
 					if (!response.ok) {
 						throw new Error(`HTTP error! Status: ${response.status}`);
 					}
-					return response.json();
-				})
-				.then((geojsonData) => {
+					const geojsonData = await response.json();
 					setMapData(geojsonData);
-				})
-				.catch((error) => {
+				} catch (error) {
 					console.error(
 						`Failed to load GeoJSON data for ${selectedFile.name}:`,
 						error
 					);
-				});
-		}
-	}, [currentFileIndex, isUploadedFileVisible, uploadedFiles]);
+				}
+			}
+		};
+		updateSelectedFile();
+	}, [currentFileIndex, isUploadedFileVisible, selectedFile, uploadedFiles]);
 
 	const handleDownload = async () => {
 		try {
