@@ -138,7 +138,7 @@ const App: React.FC = () => {
 	return (
 		<div className="App noise">
 			<h1> CGC Data Visualization</h1>
-			<Sidebar handleDownload = {handleDownload} />
+			<Sidebar handleDownload = {handleDownload} geoJsonData={mapData}/>
 			{mapData && (
 				<div className="map-frame">
 					<GeoJSONMap geoJsonData={mapData} />

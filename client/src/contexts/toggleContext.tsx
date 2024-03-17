@@ -26,6 +26,9 @@ type ToggleContextType = {
 	currentFileIndex        : number;
 	setCurrentFileIndex     : (index: number) => void;
 	fetchUploadedFiles      : FetchUploadedFilesFunction;
+	featureVisibility	    : {[key: string]: boolean};
+	toggleFeatureVisibility : (feature: string) => void;
+	setFeatureVisibility    : (visibility: {[key: string]: boolean}) => void;
 	removeUploadedFile		: (index: number) => void;
 };
 
@@ -44,6 +47,9 @@ const defaultState: ToggleContextType = {
 	setCurrentFileIndex     : () => {},
 	fetchUploadedFiles      : async () => [],
 	removeUploadedFile		: () => {},
+	featureVisibility       : {},
+	toggleFeatureVisibility : () => {},
+	setFeatureVisibility    : () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -64,6 +70,17 @@ export const ToggleProvider: React.FC = ({ children }) => {
 		defaultState.currentFileIndex
 	);
 	const [removedFileIds, setRemovedFileIds] = useState<string[]>([]);
+
+	const [featureVisibility, setFeatureVisibility] = useState<{
+		[key: string]: boolean;
+	}>(defaultState.featureVisibility);
+
+	const toggleFeatureVisibility = (key: string) => {
+		setFeatureVisibility((prev) => ({
+			...prev,
+			[key]: !prev[key],
+		}));
+	};
 	
 	useEffect(() => {
         const storedRemovedFileIds = localStorage.getItem("removedFileIds");
@@ -148,6 +165,9 @@ export const ToggleProvider: React.FC = ({ children }) => {
 				currentFileIndex,
 				setCurrentFileIndex,
 				fetchUploadedFiles,
+				featureVisibility,
+				toggleFeatureVisibility,
+				setFeatureVisibility,
 				removeUploadedFile,
 			}}
 		>
