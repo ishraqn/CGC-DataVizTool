@@ -40,44 +40,38 @@ const App: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		if (uploadedFiles.length > 0) {
-			fetch("/api/v1/geo/geo-aggregate-data")
-				.then((response) => {
-					if (response.ok) {
-						return response.json();
-					} else if (response.status === 404) {
-						throw new Error("No aggregated data found");
-					} else {
-						throw new Error(`Server error: ${response.status}`);
-					}
-				})
-				.then((data) => {
-					setMapData(data);
-					localStorage.setItem("hasAggregatedData", "true");
-					setCurrentFileIndex(uploadedFiles.length - 1);
-				})
-				.catch((error) => {
-					console.error("Failed to load aggregated data:", error);
-					// If no aggregated data found or error occurs, fetch default data
-				});
-		} else {
-			// If no files are uploaded, fetch default data
-			fetch("/api/v1/data-folder/default-simplified.geojson")
-				.then((response) => response.json())
-				.then((defaultData) => {
+		fetch("/api/v1/geo/geo-aggregate-data")
+			.then(async (response) => {
+				if (response.ok) {
+					return response.json();
+				} else if (response.status === 404) {
+					const defaultResponse = await fetch(
+						"/api/v1/data-folder/default-simplified.geojson"
+					);
+					const defaultData = await defaultResponse.json();
 					setMapData(defaultData);
 					localStorage.setItem("hasAggregatedData", "false");
-					setCurrentFileIndex(-1); // Reset current file index as no file is selected
-				})
-				.catch((defaultError) => {
-					console.error("Failed to load default GeoJSON data:", defaultError);
-				});
-		}
-	}, [setCurrentFileIndex, uploadedFiles]);
+					return null;
+				} else {
+					throw new Error(`Server error: ${response.status}`);
+				}
+			})
+			.then((data) => {
+				if (data) {
+					setMapData(data);
+					localStorage.setItem("hasAggregatedData", "true");
+					const newIndex = uploadedFiles.length - 1;
+					setCurrentFileIndex(newIndex);
+				}
+			})
+			.catch((error) => {
+				console.error("Failed to load data:", error);
+			});
+	}, [setCurrentFileIndex, uploadCount, uploadedFiles.length]);
 
 	useEffect(() => {
 		// Update map data when a file is selected from the sidebar
-		if (isUploadedFileVisible && uploadedFiles.length > 0 && uploadedFiles[currentFileIndex] != null) {
+		if (isUploadedFileVisible && uploadedFiles.length > 0) {
 			const selectedFile = uploadedFiles[currentFileIndex];
 			const fileId = selectedFile ? selectedFile.id : undefined;
 			if (!fileId) {
@@ -99,7 +93,7 @@ const App: React.FC = () => {
 						`Failed to load GeoJSON data for ${selectedFile.name}:`,
 						error
 					);
-				})
+				});
 		}
 	}, [currentFileIndex, isUploadedFileVisible, uploadedFiles]);
 

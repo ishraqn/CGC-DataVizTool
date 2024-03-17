@@ -29,7 +29,6 @@ type ToggleContextType = {
 	featureVisibility	    : {[key: string]: boolean};
 	toggleFeatureVisibility : (feature: string) => void;
 	setFeatureVisibility    : (visibility: {[key: string]: boolean}) => void;
-	removeUploadedFile		: (index: number) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -49,7 +48,6 @@ const defaultState: ToggleContextType = {
 	featureVisibility       : {},
 	toggleFeatureVisibility : () => {},
 	setFeatureVisibility    : () => {},
-	removeUploadedFile		: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -69,7 +67,6 @@ export const ToggleProvider: React.FC = ({ children }) => {
 	const [currentFileIndex, setCurrentFileIndex] = useState(
 		defaultState.currentFileIndex
 	);
-
 	const [featureVisibility, setFeatureVisibility] = useState<{
 		[key: string]: boolean;
 	}>(defaultState.featureVisibility);
@@ -80,22 +77,6 @@ export const ToggleProvider: React.FC = ({ children }) => {
 			[key]: !prev[key],
 		}));
 	};
-
-	const [removedFileIds, setRemovedFileIds] = useState<string[]>([]);
-	
-	useEffect(() => {
-        const storedRemovedFileIds = localStorage.getItem("removedFileIds");
-        if (storedRemovedFileIds) {
-            setRemovedFileIds(JSON.parse(storedRemovedFileIds));
-        }
-    }, []);
-
-	useEffect(() => {
-		if (removedFileIds.length > 0) {
-			if(removedFileIds[0].length > 0){
-			localStorage.setItem("removedFileIds", JSON.stringify(removedFileIds));}
-		}
-	}, [removedFileIds]);
 
 	const fetchUploadedFiles: FetchUploadedFilesFunction = async () => {
 		return fetch("/api/v1/all-uploaded-files")
@@ -120,13 +101,8 @@ export const ToggleProvider: React.FC = ({ children }) => {
 							cleanName: nameAfterUnderscore,
 						};
 					});
-					
-					const filteredFile = filesArray.filter(
-						(file) => !removedFileIds.includes(file.id)
-					);
-					
-					setUploadedFiles(filteredFile);
-					return filteredFile;
+					setUploadedFiles(filesArray);
+					return filesArray;
 				} else {
 					throw new Error("Invalid response format");
 				}
@@ -137,18 +113,9 @@ export const ToggleProvider: React.FC = ({ children }) => {
 			});
 	};
 
-	const removeUploadedFile = (index: number) => {
-        const fileId = uploadedFiles[index].id;
-		setRemovedFileIds((prevIds) => [...prevIds, fileId]);
-
-		const newFiles = [...uploadedFiles];
-        newFiles.splice(index, 1);
-        setUploadedFiles(newFiles);
-    };
-
 	useEffect(() => {
 		fetchUploadedFiles();
-	  }, [removedFileIds]);
+	}, []);
 
 	return (
 		<ToggleContext.Provider
@@ -169,7 +136,6 @@ export const ToggleProvider: React.FC = ({ children }) => {
 				featureVisibility,
 				toggleFeatureVisibility,
 				setFeatureVisibility,
-				removeUploadedFile,
 			}}
 		>
 			{children}
