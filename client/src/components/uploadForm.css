@@ -90,6 +90,19 @@
     clip: rect(0, 0, 0, 0);
     border: 0;
 }
+.question-icon {
+    color: #5C5C5C;
+    font-size: 15px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: all 0.4s;
+}
+
+.question-icon:hover {
+    color: #98afc7;
+    transform: scale(1.1); /* Scale up the icon slightly on hover */
+
+}
 
 /*drag and drop future implementation*/
 /* .dropzone {
