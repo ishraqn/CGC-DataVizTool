@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { aggregateSamplesInBorders } from "../utils/geoSpatialJoinUtil";
 import { join, dirname, basename, extname, resolve } from "path";
 import fs from "fs";
 
 export const geoController = {
-	getAggregatedData: async (req: Request, res: Response): Promise<void> => {
+	getAggregatedData: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 		if (
 			!req.session.uploadFileList ||
 			Object.keys(req.session.uploadFileList).length === 0
@@ -43,8 +43,8 @@ export const geoController = {
 			fs.writeFileSync(outputFilePath, JSON.stringify(aggregatedData));
 			res.json(aggregatedData);
 		} catch (error) {
-			console.error("Error in getAggregatedData:", error);
-			res.status(500).send({ error: "Internal Server Error" });
+			console.error("Error in getAggregatedData:");
+			next(error);
 		}
 	},
 };

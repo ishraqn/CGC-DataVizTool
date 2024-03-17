@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { convertCSVToGeoJSON as convertCsvToGeoJsonUtil } from '../utils/csv2GeojsonUtils';
 
 export const csvController = {
-    convert2JSON: async (req: Request, res: Response) => {
+    convert2JSON: async (req: Request, res: Response, next: NextFunction) => {
     if (!req.file) {
         res.status(400).send({ message: 'No file reached csv controller' });
-        return; // Explicitly return to stop execution
+        return; 
     }else{
 
         const fileDetails = res.locals.lastUploadedFile as {
@@ -18,16 +18,15 @@ export const csvController = {
 
         if(!fileDetails){
             res.status(400).send({ message: 'No file uploaded' });
-            return; // Explicitly return to stop execution
+            return; 
         }
 
         try {
-            const geoJson = await convertCsvToGeoJsonUtil(fileDetails.path, fileDetails.name);
-            res.json(geoJson);
+            await convertCsvToGeoJsonUtil(fileDetails.path, fileDetails.name);
         } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
-            res.status(500).send({ message: 'Error processing CSV file', error: errorMessage });
-            return; // Explicitly return to stop execution
+            console.error("Error in csvController.convert2JSON: ");
+            next(err);
+            return; 
         }
     }
     }
