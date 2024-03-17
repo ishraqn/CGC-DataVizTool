@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import GeoJSONMap from "./components/geoJSONMap";
 import FileUploadForm from "./components/uploadForm";
 import "./App.css";
@@ -9,41 +9,51 @@ import { useToggle } from "./contexts/useToggle";
 const App: React.FC = () => {
 	const [mapData, setMapData] = useState(null);
 	const [uploadCount, setUploadCount] = useState(0);
+	const [hasAggregatedData, setHasAggregatedData] = useState(false);
 	const {
 		uploadedFiles,
 		currentFileIndex,
 		isUploadedFileVisible,
 		setCurrentFileIndex,
 	} = useToggle();
-
+	const selectedFile = useMemo(() => uploadedFiles[currentFileIndex], [uploadedFiles, currentFileIndex]);
+	
 	useEffect(() => {
-		const hasAggregatedData =
-			localStorage.getItem("hasAggregatedData") === "true";
+		// Initial data loading based on whether aggregated data should be used
+		const fetchData = async () => {
+			try {
+				let response, data;
+				if (hasAggregatedData) {
+					response = await fetch("/api/v1/geo/geo-aggregate-data");
+					if (!response.ok) {
+						throw new Error(`HTTP error! Status: ${response.status}`);
+					}
+					data = await response.json();
+				} else {
+					response = await fetch(
+						"/api/v1/data-folder/default-simplified.geojson"
+					);
+					if (!response.ok) {
+						throw new Error(`HTTP error! Status: ${response.status}`);
+					}
+					data = await response.json();
+				}
+				setMapData(data);
+			} catch (error) {
+				console.error("Failed to load data:", error);
+			}
+		};
 
-		if (hasAggregatedData) {
-			fetch("/api/v1/geo/geo-aggregate-data")
-				.then((response) => response.json())
-				.then((data) => {
-					setMapData(data);
-				})
-				.catch((error) =>
-					console.error("Failed to load aggregated data:", error)
-				);
-		} else {
-			fetch("/api/v1/data-folder/default-simplified.geojson")
-				.then((response) => response.json())
-				.then((data) => {
-					setMapData(data);
-				})
-				.catch((error) => console.error("Failed to load GeoJSON data:", error));
-		}
-	}, []);
+		fetchData();
+	}, [hasAggregatedData]);
 
 	useEffect(() => {
 		if (uploadedFiles.length > 0) {
+			console.log("Fetching aggregated data");
 			fetch("/api/v1/geo/geo-aggregate-data")
 				.then((response) => {
 					if (response.ok) {
+						console.log("Aggregated data fetched successfully");
 						return response.json();
 					} else if (response.status === 404) {
 						throw new Error("No aggregated data found");
@@ -53,65 +63,56 @@ const App: React.FC = () => {
 				})
 				.then((data) => {
 					setMapData(data);
-					localStorage.setItem("hasAggregatedData", "true");
+					setHasAggregatedData(true);
 					setCurrentFileIndex(uploadedFiles.length - 1);
 				})
 				.catch((error) => {
 					console.error("Failed to load aggregated data:", error);
-					// If no aggregated data found or error occurs, fetch default data
+					setHasAggregatedData(false);
 				});
 		} else {
-			// If no files are uploaded, fetch default data
-			fetch("/api/v1/data-folder/default-simplified.geojson")
-				.then((response) => response.json())
-				.then((defaultData) => {
-					setMapData(defaultData);
-					localStorage.setItem("hasAggregatedData", "false");
-					setCurrentFileIndex(-1); // Reset current file index as no file is selected
-				})
-				.catch((defaultError) => {
-					console.error("Failed to load default GeoJSON data:", defaultError);
-				});
+			setHasAggregatedData(false);
+			setCurrentFileIndex(-1);
 		}
 	}, [setCurrentFileIndex, uploadedFiles]);
-
+	
 	useEffect(() => {
 		// Update map data when a file is selected from the sidebar
-		if (isUploadedFileVisible && uploadedFiles.length > 0 && uploadedFiles[currentFileIndex] != null) {
-			const selectedFile = uploadedFiles[currentFileIndex];
-			const fileId = selectedFile ? selectedFile.id : undefined;
-			if (!fileId) {
-				console.error("No file ID found for selected file:", selectedFile);
-				return;
-			} 
-			fetch(`/api/v1/${fileId}`)
-				.then((response) => {
+		const updateSelectedFile = async () => {
+			if (isUploadedFileVisible && uploadedFiles[currentFileIndex]) {
+				
+				const fileId = selectedFile ? selectedFile.id : undefined;
+				if (!fileId) {
+					console.error("No file ID found for selected file:", selectedFile);
+					return;
+				}
+				try {
+					const response = await fetch(`/api/v1/${selectedFile.id}`);
 					if (!response.ok) {
 						throw new Error(`HTTP error! Status: ${response.status}`);
 					}
-					return response.json();
-				})
-				.then((geojsonData) => {
+					const geojsonData = await response.json();
 					setMapData(geojsonData);
-				})
-				.catch((error) => {
+				} catch (error) {
 					console.error(
 						`Failed to load GeoJSON data for ${selectedFile.name}:`,
 						error
 					);
-				})
-		}
-	}, [currentFileIndex, isUploadedFileVisible, uploadedFiles]);
+				}
+			}
+		};
+		updateSelectedFile();
+	}, [currentFileIndex, isUploadedFileVisible, selectedFile, uploadedFiles]);
 
-	const handleDownload = async () => { 
+	const handleDownload = async () => {
 		try {
 			const selectedFile = uploadedFiles[currentFileIndex];
-			const response = await fetch("/api/v1/map/render-map",{
-				method: "POST", 
+			const response = await fetch("/api/v1/map/render-map", {
+				method: "POST",
 				headers: {
-					'Content-Type': 'application/json',
+					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({"filePath": selectedFile.path}),
+				body: JSON.stringify({ filePath: selectedFile.path }),
 			});
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -119,12 +120,11 @@ const App: React.FC = () => {
 
 			const blob = await response.blob();
 			const url = window.URL.createObjectURL(blob);
-			const a = document.createElement('a');
+			const a = document.createElement("a");
 			a.href = url;
-			if (selectedFile.cleanName.trim().length > 0){
+			if (selectedFile.cleanName.trim().length > 0) {
 				a.download = selectedFile.cleanName + ".png";
-			}
-			else {
+			} else {
 				a.download = "default-map.png";
 			}
 			document.body.appendChild(a);
@@ -138,7 +138,7 @@ const App: React.FC = () => {
 	return (
 		<div className="App noise">
 			<h1> CGC Data Visualization</h1>
-			<Sidebar handleDownload = {handleDownload} geoJsonData={mapData}/>
+			<Sidebar handleDownload={handleDownload} geoJsonData={mapData} />
 			{mapData && (
 				<div className="map-frame">
 					<GeoJSONMap geoJsonData={mapData} />

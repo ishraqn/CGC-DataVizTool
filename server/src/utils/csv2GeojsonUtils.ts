@@ -41,7 +41,6 @@ async function convertCSVToGeoJSON(csvFilePath: string, filename: string) {
 
         fs.writeFile(geojsonFilePath, JSON.stringify(geoJSON, null, 2), (err) => {
             if (err) throw err;
-            console.log(`GeoJSON file saved to ${geojsonFilePath}`);
         });
     } catch (error) {
         console.error("Failed to convert CSV to GeoJSON:", error);
