@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./sidebar.css";
 import { useToggle } from "../contexts/useToggle";
 import { geoJSON, geoJson } from "leaflet";
+import { FaTimes } from "react-icons/fa";
+import ColorPickerComponent from "./ColorPickerComponent";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 type FilterGroup = {
     id: string;
@@ -15,6 +18,7 @@ interface SidebarProps {
 
 // mock data
 const mockFilterGroups: FilterGroup[] = [
+	{ id: "1", name: "Color Picker" },
     { id: "3", name: "Select File" },
     { id: "4", name: "Download Map" },
     { id: "5", name: "Select Crop Region" },
@@ -35,6 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({ handleDownload, geoJsonData }) => {
         featureVisibility,
         toggleFeatureVisibility,
         setFeatureVisibility,
+        removeUploadedFile,
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
@@ -42,6 +47,8 @@ const Sidebar: React.FC<SidebarProps> = ({ handleDownload, geoJsonData }) => {
         null
     );
     const [showFeatureVisibility, setShowFeatureVisibility] = useState(false);
+	  const [showConfirmation, setShowConfirmation] = useState(false);
+	  const [fileToDeleteIndex, setFileToDeleteIndex] = useState<number | null>(null);
 
     const handleCardClick = (id: string) => {
         switch (id) {
@@ -121,11 +128,28 @@ const Sidebar: React.FC<SidebarProps> = ({ handleDownload, geoJsonData }) => {
             setFeatureVisibility(intialVisibility);
         }
     }, [geoJsonData, setFeatureVisibility]);
+    
+    const handleRemoveFile = (index: number) => {
+		    setFileToDeleteIndex(index);
+        setShowConfirmation(true);
+	  };
+
+	  const handleDeleteConfirmed = () => {
+		  if (fileToDeleteIndex !== null) {
+			    removeUploadedFile(fileToDeleteIndex);
+			    setShowConfirmation(false);
+		  }
+	  };
+
+	   const handleCancelDelete = () => {
+		  setFileToDeleteIndex(null);
+		  setShowConfirmation(false);
+	  };
 
     return (
         <div className="sidebar">
             <div className="sidebar-title"> Filters</div>
-            <ul className="sidebar-menu">
+            <ul className={`sidebar-menu${showConfirmation ? "-dialog-open" : ""}`}>
                 {mockFilterGroups.map((group) => (
                     <li
                         key={group.id}
@@ -196,6 +220,10 @@ const Sidebar: React.FC<SidebarProps> = ({ handleDownload, geoJsonData }) => {
                                             >
                                                 {file.cleanName}
                                             </label>
+                                            <FaTimes
+											                      className="remove-icon"
+											                      onClick={() => handleRemoveFile(index)}
+											                      />
                                         </div>
                                     </li>
                                 ))}
@@ -212,6 +240,13 @@ const Sidebar: React.FC<SidebarProps> = ({ handleDownload, geoJsonData }) => {
                     </li>
                 ))}
             </ul>
+           {showConfirmation && (
+                <ConfirmationDialog
+                    message="Are you sure you want to delete this file?"
+                    onConfirm={handleDeleteConfirmed}
+                    onCancel={handleCancelDelete}
+                />
+            )}
         </div>
     );
 };
