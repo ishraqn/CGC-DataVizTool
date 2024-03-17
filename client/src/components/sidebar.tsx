@@ -1,6 +1,8 @@
 import React, {useState} from "react";
+import { FaTimes } from "react-icons/fa";
 import "./sidebar.css";
 import { useToggle } from "../contexts/useToggle";
+import ConfirmationDialog from "./ConfirmationDialog";
 
 type FilterGroup = {
     id: string;
@@ -29,10 +31,13 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
         baseMapColor,
         setBaseMapColor,
         currentFileIndex,
+		removeUploadedFile
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
     const [selectedFileIndex, setSelectedFileIndex] = useState<number | null>(null);
+	const [showConfirmation, setShowConfirmation] = useState(false);
+	const [fileToDeleteIndex, setFileToDeleteIndex] = useState<number | null>(null);
 
     const handleCardClick = (id: string) => {
 		switch (id) {
@@ -62,10 +67,26 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
         event.stopPropagation();
     };
 
+	const handleRemoveFile = (index: number) => {
+		setFileToDeleteIndex(index);
+        setShowConfirmation(true);
+	  };
+
+	const handleDeleteConfirmed = () => {
+		if (fileToDeleteIndex !== null) {
+			removeUploadedFile(fileToDeleteIndex);
+			setShowConfirmation(false);
+		}
+	};
+
+	const handleCancelDelete = () => {
+		setFileToDeleteIndex(null);
+		setShowConfirmation(false);
+	};
     return (
 		<div className="sidebar">
 			<div className="sidebar-title">  Filters</div>
-			<ul className="sidebar-menu">
+			<ul className={`sidebar-menu${showConfirmation ? "-dialog-open" : ""}`}>
 				{mockFilterGroups.map((group) => (
 					<li
 						key={group.id}
@@ -125,6 +146,10 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
 											>
 												{file.cleanName}
 											</label>
+											<FaTimes
+											className="remove-icon"
+											onClick={() => handleRemoveFile(index)}
+											/>
 										</div>
 									</li>
 								))}
@@ -133,6 +158,13 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
 					</li>
 				))}
 			</ul>
+			{showConfirmation && (
+                <ConfirmationDialog
+                    message="Are you sure you want to delete this file?"
+                    onConfirm={handleDeleteConfirmed}
+                    onCancel={handleCancelDelete}
+                />
+            )}
 		</div>
 	);
 };
