@@ -41,21 +41,20 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange }) => 
   const styles = reactCSS({
     default: {
       swatch: {
-        padding: '5px',
-        background: '#fff',
-        borderRadius: '1px',
-        boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-        display: 'inline-block',
-        cursor: 'pointer',
+        width: '100%',
+        display: 'block',
       },
       popover: {
-        width: '500px',
-        position: 'absolute' as 'absolute',
-        zIndex: '700',
-        right: '37%',
+        position: 'absolute',
+        zIndex: '2',
+        right: '0%',
+      },
+      sliderContainer: {
+        marginTop: '10px',
       },
       cover: {
         position: 'fixed' as 'fixed',
+        borderRadius: '2px',
       },
     },
   });
@@ -63,10 +62,10 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange }) => 
   return (
     <div>
       <div style={styles.swatch} onClick={handleClick}>
-        <div style={{ backgroundColor: color.hex, width: '36px', height: '14px', borderRadius: '2px' }} />
+        <div style={{ backgroundColor: color.hex, width: '28px', height: '24px', borderRadius: '2px' }} />
       </div>
       {displayColorPicker ? (
-        <div style={styles.popover}>
+        <div style={styles.sliderContainer}>
           <div style={styles.cover} onClick={handleClose} />
           <SliderPicker color={color as any} onChange={handleChange} />
         </div>
