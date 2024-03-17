@@ -1,9 +1,10 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { FaTimes } from "react-icons/fa";
 import "./sidebar.css";
 import { useToggle } from "../contexts/useToggle";
 import ColorPickerComponent from "./ColorPickerComponent";
 import ConfirmationDialog from "./ConfirmationDialog";
+import {geoJSON, geoJson} from "leaflet";
 
 type FilterGroup = {
     id: string;
@@ -12,16 +13,18 @@ type FilterGroup = {
 
 interface SidebarProps {
 	handleDownload: () => Promise<void>;
+	geoJsonData : any;
 }
 
 // mock data
 const mockFilterGroups: FilterGroup[] = [
 	{ id: "1", name: "Color Picker" },
     { id: "3", name: "Select File" },
-	{ id: "4", name: "Download Map" },
+	{ id: "4", name: "Select Crop Region" },
+	{ id: "5", name: "Download Map" },
 ];
 
-const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
+const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
     // const [selectedIds, setSelectedIds] = useState<{ [key: string]: boolean }>({});
 
     const {
@@ -33,11 +36,15 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
         colorPickerColor,
         setColorPickerColor,
         currentFileIndex,
-		removeUploadedFile
+		featureVisibility,
+        toggleFeatureVisibility,
+        setFeatureVisibility,
+		removeUploadedFile,
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
     const [selectedFileIndex, setSelectedFileIndex] = useState<number | null>(null);
+	const [showFeatureVisibility, setShowFeatureVisibility] = useState(false);
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [fileToDeleteIndex, setFileToDeleteIndex] = useState<number | null>(null);
 
@@ -52,12 +59,40 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
 				setShowFileList(!showFileList);
 				break;
 			case "4":
+				setShowFeatureVisibility(!showFeatureVisibility);
+				break;
+			case "5":
 				handleDownload();
 				break;
 			default:
 				break;
 		}
     };
+
+	const renderFeatureVisibilityToggles = () => {
+        if (!geoJsonData || !geoJsonData.features) return null;
+
+        return geoJsonData.features.map((feature, index) => {
+            const key = feature.properties?.CARUID;
+            if (!key) return null;
+
+            return (
+                <li key={`feature-${index}`}>
+                    <div className="file-item-checkbox">
+                        <input
+                            type="checkbox"
+                            id={`feature-visibility-${key}`}
+                            checked={featureVisibility[key] ?? false}
+                            onChange={() => toggleFeatureVisibility(key)}
+                        />
+                        <label htmlFor={`feature-visibility-${key}`}>
+                            {`${key}`}
+                        </label>
+                    </div>
+                </li>
+            );
+        });
+	};
 
     const handleFileSelection = (index: number) => {
         setCurrentFileIndex(index);
@@ -68,6 +103,19 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         event.stopPropagation();
     };
+
+	useEffect(() => {
+        if (geoJsonData && "features" in geoJsonData) {
+            const intialVisibility = {};
+            geoJsonData.features.forEach((feature) => {
+                if (feature.properties && feature.properties.CARUID) {
+                    const key = feature.properties.CARUID;
+                    intialVisibility[key] = true;
+                }
+            });
+            setFeatureVisibility(intialVisibility);
+        }
+    }, [geoJsonData, setFeatureVisibility]);
 
 	const handleRemoveFile = (index: number) => {
 		setFileToDeleteIndex(index);
@@ -157,6 +205,14 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload}) => {
 										</div>
 									</li>
 								))}
+							</ul>
+						)}
+					{group.id === "4" && showFeatureVisibility && (
+                            <ul
+                                className="file-dropdown"
+                                onClick={(event) => event.stopPropagation()}
+                            >
+                                {renderFeatureVisibilityToggles()}
 							</ul>
 						)}
 					</li>

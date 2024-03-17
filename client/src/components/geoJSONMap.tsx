@@ -22,7 +22,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     const [colorGradient, setColorGradient] = useState<{ [key: number]: string }>({});
     const [allValues, setValues] = useState<number[]>([]);
     const [steps, setSteps] = useState<number>(5); // State for steps
-    const { colorPickerColor} = useToggle();
+    const { colorPickerColor, featureVisibility} = useToggle();
 
   // Effect to initialize color gradient and data values
   useEffect(() => {
@@ -33,17 +33,27 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     }
     }, [geoJsonData, colorPickerColor, steps]);
 
+    const defaultStyle = {
+      fillColor: '#98AFC7',
+      weight: 1,
+      color: 'white',
+      fillOpacity: 0.5,
+    };
+
   const geoJsonStyle = (feature: any) => {
   const currValue = feature.properties.totalSamples as number;
   const fillColorIndex = getColor(currValue, allValues, steps); // Call getColor function to get the fill color
+  if (!featureVisibility[feature.properties.CARUID]) {
+    return { fillOpacity: 0, weight: 0, color: 'white', fillColor: 'gray' };
+  }
 
   return {
     fillColor: colorGradient[fillColorIndex] || 'gray',
     weight: 1,
     color: 'white',
     fillOpacity: 0.5,
-   };
- };
+  };
+};
 
   // A component to automatically adjust the map view to fit all our GeoJSON features.
   
