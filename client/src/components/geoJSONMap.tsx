@@ -56,15 +56,15 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
                 fillOpacity: 0,
                 weight: 0,
                 color: "white",
-                fillColor: "gray",
+                fillColor: colorGradient[fillColorIndex],
             };
         }
 
         return {
-            fillColor: colorGradient[fillColorIndex] || "gray",
-            weight: 1,
-            color: "white",
-            fillOpacity: 0.5,
+            fillColor: colorGradient[fillColorIndex] || "white",
+            weight: 0.7,
+            color: "black",
+            fillOpacity: 1,
         };
     };
 
@@ -117,7 +117,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
         <>
             <MapContainer
                 key={mapKey}
-                zoom={0}
+                zoom={1}
                 zoomControl={true}
                 keyboard={false}
                 preferCanvas={false}
