@@ -66,7 +66,7 @@ export const ToggleProvider: React.FC = ({ children }) => {
 	const [removedFileIds, setRemovedFileIds] = useState<string[]>([]);
 	
 	useEffect(() => {
-        const storedRemovedFileIds = sessionStorage.getItem("removedFileIds");
+        const storedRemovedFileIds = localStorage.getItem("removedFileIds");
         if (storedRemovedFileIds) {
             setRemovedFileIds(JSON.parse(storedRemovedFileIds));
         }
@@ -75,7 +75,7 @@ export const ToggleProvider: React.FC = ({ children }) => {
 	useEffect(() => {
 		if (removedFileIds.length > 0) {
 			if(removedFileIds[0].length > 0){
-			sessionStorage.setItem("removedFileIds", JSON.stringify(removedFileIds));}
+			localStorage.setItem("removedFileIds", JSON.stringify(removedFileIds));}
 		}
 	}, [removedFileIds]);
 
