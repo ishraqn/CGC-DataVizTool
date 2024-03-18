@@ -16,25 +16,25 @@ const TooltipContent = () => {
         <li>CSV (Comma-Separated Values)</li>
       </ul>
       <h3>Accepted Types of Geospatial Identification:</h3>
-      <p>Geospatial identification can be represented using one of the following accepted types: latitude/longitude coordinates, CARUID, or Abbreviated Province and Crop District (CD). It is essential to maintain consistency in the chosen type throughout the entire dataset.</p>
+      <p>Geospatial identification can be represented using one of the following accepted types: lat/long coordinates, CARUID, or Abbreviated Province and Crop District (CD). It is essential to maintain consistency in the chosen type throughout the entire dataset.</p>
       <blockquote>
         <p><strong>Note:</strong> If you opt for using Crop District (CD), ensure to include the Abbreviated Province as well. For reference regarding expected abbreviations, consult the <a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/completing-slips-summaries/financial-slips-summaries/return-investment-income-t5/provincial-territorial-codes.html">provincial and territorial codes</a>.</p>
       </blockquote>
       <h3>1. Order of Columns:</h3>
       <p>Arrange the columns in your dataset in the following order:</p>
       <ol>
-        <li><strong>Geospatial Identification</strong>: Place this as the first column in your file. Choose one consistent method (latitude/longitude, CARUID, or Abbreviated Province and Crop District) for identifying sample locations.</li>
+        <li><strong>Geospatial Identification</strong>: Place this as the first column in your file. Choose one consistent method (lat/long, CARUID, or Abbreviated Province and Crop District) for identifying sample locations.</li>
         <li><strong>Sample Count</strong></li>
         <li><strong>Additional Properties</strong>: Include any relevant additional properties, such as year or station, in subsequent columns.</li>
       </ol>
       <h3>2. Header Names:</h3>
       <p>Adhere to the specified naming conventions for the headers:</p>
-      <p><strong>Latitude/Longitude:</strong></p>
+      <p><strong>Lat/Long:</strong></p>
       <table>
         <thead>
           <tr>
-            <th>Latitude</th>
-            <th>Longitude</th>
+            <th>Lat</th>
+            <th>Long</th>
             <th>Samples</th>
           </tr>
         </thead>
