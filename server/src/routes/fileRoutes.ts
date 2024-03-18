@@ -3,10 +3,11 @@ import { Router } from "express";
 import { upload } from "../middleware/uploadMiddleware"; // multer middleware import goes here
 import { fileController } from "../controller/fileController";
 import { csvController } from "../controller/csvController";
+import { geoController } from "../controller/geoController";
 
 const router = Router();
 
-router.post("/upload", upload.single('csvFile'),fileController.upload, fileController.packLastUploadFile,csvController.convert2JSON); // route to upload a csv file, convert it to JSON and save it to local storage
+router.post("/upload", upload.single('csvFile'),fileController.upload, fileController.packLastUploadFile,csvController.convert2JSON, geoController.getAggregatedData); // route to upload a csv file, convert it to JSON and save it to local storage
 router.get("/last-upload-file", fileController.sendLastUploadFile); // route to list the uploaded files
 router.get("/all-uploaded-files", fileController.listAllFiles); // route to list all the uploaded files
 router.get("/:fileId", fileController.getFile); // route to get a file

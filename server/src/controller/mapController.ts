@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import {resolve} from 'path';
 import { renderMap } from "../utils/renderMapUtil";
 
 export const mapController = {
-    renderMap : async(req: Request, res: Response) => {
+    renderMap : async(req: Request, res: Response, next: NextFunction) => {
         try {
             let filePath = req.body;
             if (Object.keys (filePath).length === 0) {
@@ -15,8 +15,8 @@ export const mapController = {
             const screenshotBuffer = await renderMap(filePath);
             res.type("image/png").send(screenshotBuffer);
         } catch (error) {
-            console.error("Error rendering map: ", error);
-            res.status(500).send("Error rendering map");
+            console.error("Error rendering map: ");
+            next(error);
         }
     }
 };
