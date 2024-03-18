@@ -1,6 +1,8 @@
 import React from 'react';
 import { useToggle } from '../contexts/useToggle';
 import './uploadForm.css';
+import GuideTooltip from './GuideTooltip';
+import { FaRegQuestionCircle } from "react-icons/fa";
 
 const FileUploadForm = ({onUploadSuccess}) => {
     const { fetchUploadedFiles } = useToggle();
@@ -44,6 +46,9 @@ const FileUploadForm = ({onUploadSuccess}) => {
     return (
         <div className="upload-form-container">
             <form className="upload-form" encType="multipart/form-data" onSubmit={handleFileUpload}>
+                <GuideTooltip id='test'>
+                    <FaRegQuestionCircle className="question-icon" />
+                </GuideTooltip>
                 <label htmlFor="csvFile" className="visually-hidden">Choose CSV file</label>
                 <input id="csvFile" className="upload-input" type="file" name="csvFile" accept=".csv"/>
                 <button className="upload-button" type="submit">Upload CSV</button>
