@@ -128,24 +128,20 @@
   .dropzone-active {
     background-color: #b8c5c7;
   } */
-
-  .tooltip-container {
-    position: relative;
-    display: inline-block;
-  }
+  /* Media queries */
+@media screen and (max-width: 768px) {
+    .upload-form-container {
+      position: relative; /* Change the position of upload form container */
+      z-index: 0;
+    }
   
-  .tooltip {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #333;
-    color: #fff;
-    padding: 5px;
-    border-radius: 5px;
-    font-size: 14px;
-    opacity: 0.9;
-    pointer-events: none; /* Prevent tooltip from interfering with mouse events */
-    z-index: 999;
-    white-space: nowrap;
+    .upload-form {
+      width: 100%;
+      justify-content: flex-end;
+      align-items: flex-end;
+    }
+  
+    .upload-button {
+      max-width: none;
+    }
   }

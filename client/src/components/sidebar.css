@@ -160,3 +160,23 @@
 .file-dropdown{
     overflow: auto;
 }
+
+/* Media queries */
+@media screen and (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .sidebar-item {
+        margin-bottom: 0;
+        margin-right: 20px;
+    }
+
+    .sidebar-item:not(:last-child) {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+}
