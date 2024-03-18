@@ -27,15 +27,13 @@ export const fileController = {
 			req.session.uploadFileList[fileDetails.name] = fileDetails;
 		} catch (error) {
 			// An error occurred
-			console.error("Error in adding the file to the list", error);
-			res
-				.status(500)
-				.send("An error occurred while adding the file to the list.");
+			console.error("Error in adding the file to the list");
+			next(error);
 			return;
 		}
 
 		// File uploaded successfully
-		res.status(200).send("File uploaded successfully.");
+		console.log("File uploaded successfully.");
 		next();
 		return;
 	},
@@ -57,7 +55,7 @@ export const fileController = {
 		}
 	},
 
-	// package the last uploaded file details and send it to the client
+	// package the last uploaded file details and send it to the next middleware
 	packLastUploadFile: (
 		req: Request,
 		res: Response,

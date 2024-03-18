@@ -8,10 +8,10 @@ import {
 import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
 import fs from "fs";
 
-export const aggregateSamplesInBorders = (
+export const aggregateSamplesInBorders = async (
     pointsFilePath: string,
     bordersFilePath: string
-): FeatureCollection => {
+): Promise<FeatureCollection> => {
     const pointsGeoJSON: FeatureCollection = JSON.parse(
         fs.readFileSync(pointsFilePath, "utf-8")
     );
