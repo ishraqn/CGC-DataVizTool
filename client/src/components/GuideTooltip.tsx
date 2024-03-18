@@ -74,6 +74,7 @@ const GuideTooltip: React.FC<GuideTooltipProps> = ({ id, children }) => {
         <div className='GuideTooltip'>
             <a data-tooltip-id={id}
                 data-tooltip-delay-hide={0}>
+                aria-label="Guide Tooltip">
                 {children}
             </a>
             <Tooltip id={id} clickable>
