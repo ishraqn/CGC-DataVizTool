@@ -1,8 +1,51 @@
-.GuideTooltip .react-tooltip{
-    width: fit-content;
+  /* Tooltip styling */
+  .GuideTooltip .react-tooltip {
+    max-width: 45vw; /* Example: Set maximum width to 300 pixels */
     max-height: 500px;
     overflow-y: auto;
-    background-color: beige;
-    opacity: 1;
-    color: black;
-}
+    color: #4a4a4a;
+    position: absolute;
+    background-color: #F8FAFC;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* Table styling */
+  table, th, td {
+    border: 1px solid black;
+  }
+  
+  /* Tooltip content styling */
+  .GuideTooltip .tooltip-content h2 {
+    margin-top: 0;
+  }
+  
+  .GuideTooltip .tooltip-content h3 {
+    margin-top: 1.5em;
+  }
+  
+  .GuideTooltip .tooltip-content p {
+    margin-bottom: 1em;
+  }
+  
+  .GuideTooltip .tooltip-content ul,
+  .GuideTooltip .tooltip-content ol {
+    margin-bottom: 1em;
+    margin-left: 1.5em;
+  }
+  
+  .GuideTooltip .tooltip-content li {
+    margin-bottom: 0.5em;
+  }
+  
+  /* Responsive design */
+  @media screen and (max-width: 768px) {
+    .GuideTooltip .react-tooltip {
+      max-width: 300px;
+    }
+  }
+  

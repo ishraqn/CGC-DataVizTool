@@ -95,13 +95,13 @@
     font-size: 15px;
     margin-right: 5px;
     cursor: pointer;
-    transition: all 0.4s;
+    transition: all 0.9s;
 }
 
-.question-icon:hover {
+/* Question icon hover effect */
+.GuideTooltip:hover .question-icon {
     color: #98afc7;
     transform: scale(1.1); /* Scale up the icon slightly on hover */
-
 }
 
 /*drag and drop future implementation*/
@@ -128,11 +128,11 @@
   .dropzone-active {
     background-color: #b8c5c7;
   } */
+
   /* Media queries */
 @media screen and (max-width: 768px) {
     .upload-form-container {
       position: relative; /* Change the position of upload form container */
-      z-index: 0;
     }
   
     .upload-form {
