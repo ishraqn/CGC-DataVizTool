@@ -41,7 +41,7 @@ export const geoController = {
 					"_totalSamples.geojson"
 			);
 			fs.writeFileSync(outputFilePath, JSON.stringify(aggregatedData));
-			res.json(aggregatedData);
+			res.status(200).send("Aggregated data written.");
 		} catch (error) {
 			console.error("Error in getAggregatedData:");
 			next(error);

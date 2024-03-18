@@ -23,6 +23,7 @@ export const csvController = {
 
         try {
             await convertCsvToGeoJsonUtil(fileDetails.path, fileDetails.name);
+            next();
         } catch (err) {
             console.error("Error in csvController.convert2JSON: ");
             next(err);

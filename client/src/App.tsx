@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import GeoJSONMap from "./components/geoJSONMap";
 import FileUploadForm from "./components/uploadForm";
 import "./App.css";
@@ -9,100 +9,97 @@ import { useToggle } from "./contexts/useToggle";
 const App: React.FC = () => {
 	const [mapData, setMapData] = useState(null);
 	const [uploadCount, setUploadCount] = useState(0);
-	const [hasAggregatedData, setHasAggregatedData] = useState(false);
-	const {
-		uploadedFiles,
-		currentFileIndex,
-		isUploadedFileVisible,
-		setCurrentFileIndex,
-	} = useToggle();
-	const selectedFile = useMemo(() => uploadedFiles[currentFileIndex], [uploadedFiles, currentFileIndex]);
-	
+	const { uploadedFiles, currentFileIndex, setCurrentFileIndex } = useToggle();
+	const [previousFileIndex, setPreviousFileIndex] = useState(-1);
+
+	const getCurrentSelectedFile = async () => {
+		const fileId = uploadedFiles[currentFileIndex]
+			? uploadedFiles[currentFileIndex].id
+			: undefined;
+		if (!fileId) {
+			console.error(
+				"No file ID found for selected file:",
+				uploadedFiles[currentFileIndex]
+			);
+		} else {
+			return await fetch(`/api/v1/${fileId}`);
+		}
+	};
+
 	useEffect(() => {
 		// Initial data loading based on whether aggregated data should be used
 		const fetchData = async () => {
 			try {
-				let response, data;
-				if (hasAggregatedData) {
-					response = await fetch("/api/v1/geo/geo-aggregate-data");
-					if (!response.ok) {
-						throw new Error(`HTTP error! Status: ${response.status}`);
-					}
-					data = await response.json();
-				} else {
-					response = await fetch(
+				if (uploadedFiles.length == 0) {
+					const response = await fetch(
 						"/api/v1/data-folder/default-simplified.geojson"
 					);
 					if (!response.ok) {
 						throw new Error(`HTTP error! Status: ${response.status}`);
+					} else {
+						const data = await response.json();
+						setMapData(data);
 					}
-					data = await response.json();
 				}
-				setMapData(data);
 			} catch (error) {
 				console.error("Failed to load data:", error);
 			}
 		};
 
 		fetchData();
-	}, [hasAggregatedData]);
+	}, [uploadedFiles.length]);
 
 	useEffect(() => {
-		if (uploadedFiles.length > 0) {
-			console.log("Fetching aggregated data");
-			fetch("/api/v1/geo/geo-aggregate-data")
-				.then((response) => {
-					if (response.ok) {
-						console.log("Aggregated data fetched successfully");
-						return response.json();
-					} else if (response.status === 404) {
-						throw new Error("No aggregated data found");
-					} else {
-						throw new Error(`Server error: ${response.status}`);
-					}
-				})
-				.then((data) => {
-					setMapData(data);
-					setHasAggregatedData(true);
-					setCurrentFileIndex(uploadedFiles.length - 1);
-				})
-				.catch((error) => {
-					console.error("Failed to load aggregated data:", error);
-					setHasAggregatedData(false);
-				});
-		} else {
-			setHasAggregatedData(false);
-			setCurrentFileIndex(-1);
-		}
-	}, [setCurrentFileIndex, uploadedFiles]);
-	
-	useEffect(() => {
-		// Update map data when a file is selected from the sidebar
-		const updateSelectedFile = async () => {
-			if (isUploadedFileVisible && uploadedFiles[currentFileIndex]) {
-				
-				const fileId = selectedFile ? selectedFile.id : undefined;
-				if (!fileId) {
-					console.error("No file ID found for selected file:", selectedFile);
-					return;
-				}
+		const loadUploadedFile = async () => {
+			if (uploadedFiles.length == 1) {
+				setCurrentFileIndex(0);
+			} else {
+				setCurrentFileIndex(uploadedFiles.length - 1);
+			}
+			if (uploadedFiles.length > 0) {
+				let response, data;
 				try {
-					const response = await fetch(`/api/v1/${selectedFile.id}`);
-					if (!response.ok) {
+					response = await getCurrentSelectedFile();
+					if (response && !response.ok) {
 						throw new Error(`HTTP error! Status: ${response.status}`);
+					} else if (response) {
+						data = await response.json();
+						setMapData(data);
 					}
-					const geojsonData = await response.json();
-					setMapData(geojsonData);
 				} catch (error) {
-					console.error(
-						`Failed to load GeoJSON data for ${selectedFile.name}:`,
-						error
-					);
+					console.error("Failed to load aggregated data:", error);
 				}
 			}
 		};
-		updateSelectedFile();
-	}, [currentFileIndex, isUploadedFileVisible, selectedFile, uploadedFiles]);
+		loadUploadedFile();
+	}, [currentFileIndex, uploadedFiles]);
+
+	useEffect(() => {
+		// Update map data when a file is selected from the sidebar
+		if (previousFileIndex != currentFileIndex) {
+			const updateSelectedFile = async () => {
+				if (uploadedFiles[currentFileIndex]) {
+					let response, data;
+					try {
+						response = await getCurrentSelectedFile();
+						if (response && !response.ok) {
+							throw new Error(`HTTP error! Status: ${response.status}`);
+						} else if (response) {
+							data = await response.json();
+							setMapData(data);
+							setPreviousFileIndex(currentFileIndex);
+						}
+					} catch (error) {
+						console.error(
+							`Failed to load GeoJSON data for ${uploadedFiles[currentFileIndex].name}:`,
+							error
+						);
+					}
+				}
+			};
+			updateSelectedFile();
+		}
+	}, [uploadedFiles[currentFileIndex]]);
 
 	const handleDownload = async () => {
 		try {
