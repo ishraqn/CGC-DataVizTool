@@ -16,7 +16,7 @@ const TooltipContent = () => {
         <li>CSV (Comma-Separated Values)</li>
       </ul>
       <h3>Accepted Types of Geospatial Identification:</h3>
-      <p>Geospatial identification can be represented using one of the following accepted types: lat/long coordinates, CARUID, or Abbreviated Province and Crop District (CD). It is essential to maintain consistency in the chosen type throughout the entire dataset.</p>
+      <p>Geospatial identification can be represented using one of the following accepted types: latitude/longitude (lat/long) coordinates, CARUID, or Abbreviated Province and Crop District (CD). It is essential to maintain consistency in the chosen type throughout the entire dataset.</p>
       <blockquote>
         <p><strong>Note:</strong> If you opt for using Crop District (CD), ensure to include the Abbreviated Province as well. For reference regarding expected abbreviations, consult the <a href="https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/completing-slips-summaries/financial-slips-summaries/return-investment-income-t5/provincial-territorial-codes.html">provincial and territorial codes</a>.</p>
       </blockquote>
