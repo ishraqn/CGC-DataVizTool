@@ -13,6 +13,7 @@ import {
     convertColorToString,
 } from "../utils/colourUtils";
 import "./geoJSONMap.css";
+import TitleComponent from "./TitleComponent";
 // Defining a custom interface for GeoJSON features with additional properties.
 interface GeoJSONFeature extends Feature<Geometry> {
     properties: { [key: string]: unknown };
@@ -125,6 +126,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
             >
                 {geoJsonData && (
                     <>
+                        <TitleComponent/>
                         <GeoJSON
                             data={geoJsonData}
                             style={geoJsonStyle}
