@@ -50,6 +50,26 @@
     user-select: none;
     display: block;
     width: 100%;
+    font-weight: 500;
+}
+
+.selection-toggles {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0 20px;
+}
+
+.selection-toggle {
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+    margin: 5px 0;
+    font-weight: 380;
+}
+
+.selection-toggle:hover {
+    color: #007bff;
 }
 
 .file-item-checkbox input[type="checkbox"] {
@@ -77,6 +97,16 @@
     background-color: #28a745;
     border-color: #28a745;
     color: white;
+}
+
+.file-item-checkbox label{
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+    font-weight: 300;
+}
+
+.file-item-checkbox label:hover{
+    color: #007bff;
 }
 
 @keyframes pulse {

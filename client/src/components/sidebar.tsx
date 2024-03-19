@@ -117,6 +117,28 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
         }
     }, [geoJsonData, setFeatureVisibility]);
 
+	const handleSelectAll = () => {
+		Object.keys(featureVisibility).forEach((key) => {
+			if(!featureVisibility[key]) {
+				toggleFeatureVisibility(key);
+			}
+		});
+	};
+
+	const handleDeselectAll = () => {
+		Object.keys(featureVisibility).forEach((key) => {
+			if(featureVisibility[key]) {
+				toggleFeatureVisibility(key);
+			}
+		});
+	};
+
+	const handleInversionSelect = () => {
+		Object.keys(featureVisibility).forEach((key) => {
+			toggleFeatureVisibility(key);
+		});
+	};
+
 	const handleRemoveFile = (index: number) => {
 		setFileToDeleteIndex(index);
         setShowConfirmation(true);
@@ -202,12 +224,20 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 							</ul>
 						)}
 					{group.id === "4" && showFeatureVisibility && (
+						<div 
+							className="file-dropdown"
+							onClick={(event) => event.stopPropagation()}
+						>
+							<div className='selection-toggles'>
+								<span onClick={handleSelectAll} className='selection-toggle'>Select All</span>
+								<span onClick={handleDeselectAll} className='selection-toggle'>Deselect All</span>
+								<span onClick={handleInversionSelect} className='selection-toggle'>Inversion Select</span>
+							</div>
                             <ul
-                                className="file-dropdown"
-                                onClick={(event) => event.stopPropagation()}
-                            >
+                                className="feature-list" >
                                 {renderFeatureVisibilityToggles()}
 							</ul>
+						</div>
 						)}
 					</li>
 				))}
