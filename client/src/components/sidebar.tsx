@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaRegSave } from "react-icons/fa";
 import "./sidebar.css";
 import { useToggle } from "../contexts/useToggle";
 import ColorPickerComponent from "./ColorPickerComponent";
@@ -38,6 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
         toggleFeatureVisibility,
         setFeatureVisibility,
 		removeUploadedFile,
+		setTitleName,
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
@@ -45,6 +46,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 	const [showFeatureVisibility, setShowFeatureVisibility] = useState(false);
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [fileToDeleteIndex, setFileToDeleteIndex] = useState<number | null>(null);
+	const [titleInputValue, setTitleInputValue] = useState("");
 
     const handleCardClick = (id: string) => {
 		switch (id) {
@@ -121,6 +123,11 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
             setFeatureVisibility(intialVisibility);
         }
     }, [geoJsonData, setFeatureVisibility]);
+
+	const handleNewTitle = (title: string) => {
+		console.log(title);
+		setTitleName(title);
+	};
 
 	const handleRemoveFile = (index: number) => {
 		setFileToDeleteIndex(index);
@@ -223,6 +230,19 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 						)}
 					</li>
 				))}
+				<form className="titleForm">
+					<input
+                        className="titleInput"
+                        type="text"
+                        placeholder="Map Title"
+                        value={titleInputValue}
+                        onChange={(e) => setTitleInputValue(e.target.value)}
+                    />
+					<FaRegSave
+					className="save-icon"
+					onClick={() => handleNewTitle(titleInputValue)}
+					/>
+				</form>
 			</ul>
 			{showConfirmation && (
                 <ConfirmationDialog
