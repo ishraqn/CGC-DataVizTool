@@ -30,8 +30,6 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
         setIsTileLayerVisible,
         uploadedFiles,
         setCurrentFileIndex,
-        setIsUploadedFileVisible,
-        colorPickerColor,
         setColorPickerColor,
         currentFileIndex,
 		featureVisibility,
@@ -41,7 +39,6 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
-    const [selectedFileIndex, setSelectedFileIndex] = useState<number | null>(null);
 	const [showFeatureVisibility, setShowFeatureVisibility] = useState(false);
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [fileToDeleteIndex, setFileToDeleteIndex] = useState<number | null>(null);
@@ -101,8 +98,6 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 
     const handleFileSelection = (index: number) => {
         setCurrentFileIndex(index);
-        setIsUploadedFileVisible(true);
-        setSelectedFileIndex(index);
     };
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -121,6 +116,28 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
             setFeatureVisibility(intialVisibility);
         }
     }, [geoJsonData, setFeatureVisibility]);
+
+	const handleSelectAll = () => {
+		Object.keys(featureVisibility).forEach((key) => {
+			if(!featureVisibility[key]) {
+				toggleFeatureVisibility(key);
+			}
+		});
+	};
+
+	const handleDeselectAll = () => {
+		Object.keys(featureVisibility).forEach((key) => {
+			if(featureVisibility[key]) {
+				toggleFeatureVisibility(key);
+			}
+		});
+	};
+
+	const handleInversionSelect = () => {
+		Object.keys(featureVisibility).forEach((key) => {
+			toggleFeatureVisibility(key);
+		});
+	};
 
 	const handleRemoveFile = (index: number) => {
 		setFileToDeleteIndex(index);
@@ -162,12 +179,6 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 										onColorChange={(colorResult) => setColorPickerColor(colorResult.hex)} /></>
 							) : (
 								<>
-									<input
-										type="checkbox"
-										id={`checkbox-${group.id}`}
-										checked={group.id === "2" && isTileLayerVisible}
-										onChange={handleCheckboxChange}
-									/>
 									<label
 										htmlFor={`checkbox-${group.id}`}
 										className="menu-item-label"
@@ -183,20 +194,19 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 									<li
 										key={index}
 										className={`file-item ${
-											index === selectedFileIndex ? "file-selected" : ""
+											index === currentFileIndex ? "file-selected" : ""
 										}`}
-										onClick={(event) => {
-											handleFileSelection(index);
-											event.stopPropagation();
-										}}
 									>
-										<div className="file-item-checkbox">
+										<div className="file-item-checkbox"
+											onClick={(event) => {
+												handleFileSelection(index);
+												event.stopPropagation();
+											}}
+										>
 											<input
 												type="checkbox"
 												id={`file-checkbox-${index}`}
 												checked={index === currentFileIndex}
-												onChange={handleCheckboxChange}
-												readOnly // This makes the input not clickable, but it's controlled by the label click
 											/>
 											<label
 												htmlFor={`file-checkbox-${index}`}
@@ -214,12 +224,20 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 							</ul>
 						)}
 					{group.id === "4" && showFeatureVisibility && (
+						<div 
+							className="file-dropdown"
+							onClick={(event) => event.stopPropagation()}
+						>
+							<div className='selection-toggles'>
+								<span onClick={handleSelectAll} className='selection-toggle'>Select All</span>
+								<span onClick={handleDeselectAll} className='selection-toggle'>Deselect All</span>
+								<span onClick={handleInversionSelect} className='selection-toggle'>Inversion Select</span>
+							</div>
                             <ul
-                                className="file-dropdown"
-                                onClick={(event) => event.stopPropagation()}
-                            >
+                                className="feature-list" >
                                 {renderFeatureVisibilityToggles()}
 							</ul>
+						</div>
 						)}
 					</li>
 				))}

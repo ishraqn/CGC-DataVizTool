@@ -50,12 +50,32 @@
     user-select: none;
     display: block;
     width: 100%;
+    font-weight: 500;
 }
 
-.menu-item-checkbox input[type="checkbox"] {
+.selection-toggles {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0 20px;
+}
+
+.selection-toggle {
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+    margin: 5px 0;
+    font-weight: 380;
+}
+
+.selection-toggle:hover {
+    color: #007bff;
+}
+
+.file-item-checkbox input[type="checkbox"] {
     display: none;
 }
-.menu-item-checkbox input[type="checkbox"] + label:before {
+.file-item-checkbox input[type="checkbox"] + label:before {
     content: "";
     display: inline-block;
     vertical-align: middle;
@@ -72,13 +92,21 @@
     text-align: center;
 }
 
-.menu-item-checkbox input[type="checkbox"]:checked + label:before {
+.file-item-checkbox input[type="checkbox"]:checked + label:before {
     content: "✔";
     background-color: #28a745;
     border-color: #28a745;
-    box-shadow: 0 0 10px #28a745;
-    animation: pulse 1s infinite;
     color: white;
+}
+
+.file-item-checkbox label{
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+    font-weight: 300;
+}
+
+.file-item-checkbox label:hover{
+    color: #007bff;
 }
 
 @keyframes pulse {
@@ -93,14 +121,18 @@
     }
 }
 
-.menu-item:hover .menu-item-label {
+.file-item:hover .file-item-label{
+    cursor: pointer;
+}
+
+.menu-item:hover .menu-item-label:hover {
     cursor: pointer;
 }
 
 /* Disable hover effects on children when confirmation dialog is visible */
-.sidebar-menu-dialog-open .menu-item:hover {
+.sidebar-menu-dialog-open{
     pointer-events: none;
-    cursor: default;
+    cursor: pointer;
     background-color: #f4f6f9;
 }
 .sidebar-title {
