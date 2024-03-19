@@ -52,10 +52,10 @@
     width: 100%;
 }
 
-.menu-item-checkbox input[type="checkbox"] {
+.file-item-checkbox input[type="checkbox"] {
     display: none;
 }
-.menu-item-checkbox input[type="checkbox"] + label:before {
+.file-item-checkbox input[type="checkbox"] + label:before {
     content: "";
     display: inline-block;
     vertical-align: middle;
@@ -72,12 +72,10 @@
     text-align: center;
 }
 
-.menu-item-checkbox input[type="checkbox"]:checked + label:before {
+.file-item-checkbox input[type="checkbox"]:checked + label:before {
     content: "✔";
     background-color: #28a745;
     border-color: #28a745;
-    box-shadow: 0 0 10px #28a745;
-    animation: pulse 1s infinite;
     color: white;
 }
 
@@ -93,14 +91,18 @@
     }
 }
 
-.menu-item:hover .menu-item-label {
+.file-item:hover .file-item-label{
+    cursor: pointer;
+}
+
+.menu-item:hover .menu-item-label:hover {
     cursor: pointer;
 }
 
 /* Disable hover effects on children when confirmation dialog is visible */
-.sidebar-menu-dialog-open .menu-item:hover {
+.sidebar-menu-dialog-open{
     pointer-events: none;
-    cursor: default;
+    cursor: pointer;
     background-color: #f4f6f9;
 }
 .sidebar-title {
