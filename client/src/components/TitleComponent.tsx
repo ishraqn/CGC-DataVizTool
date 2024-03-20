@@ -1,8 +1,10 @@
+import React from 'react';
 import "./TitleComponent.css";
-const TitleComponent = () => {
+
+const TitleComponent = ({ title = "Title" }) => {
     return (
         <div className="title">
-            <h2>Title</h2>
+            <h2>{title}</h2>
         </div>
     );
 };
