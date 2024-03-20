@@ -37,6 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
         setFeatureVisibility,
 		removeUploadedFile,
 		handleChangeTitle,
+		currentFileTitle
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
@@ -100,6 +101,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 
     const handleFileSelection = (index: number) => {
         setCurrentFileIndex(index);
+		setTitleInputValue(uploadedFiles[index].title);
     };
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -253,11 +255,11 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
                         className="titleInput"
                         type="text"
                         placeholder="Map Title"
-                        value={titleInputValue}
+						value={titleInputValue}
                         onChange={(e) => setTitleInputValue(e.target.value)}
                     />
 					<FaRegSave
-					className="save-icon"
+					className="save-icon"   
 					onClick={() => handleNewTitle(titleInputValue)}
 					/>
 				</form>
