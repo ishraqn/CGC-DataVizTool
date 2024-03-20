@@ -8,6 +8,7 @@ interface UploadFileData {
 	type            : string;
 	lastModifiedDate: Date;
 	cleanName       : string;
+    title           : string;
 }
 
 type ToggleContextType = {
@@ -28,8 +29,8 @@ type ToggleContextType = {
 	toggleFeatureVisibility : (feature: string) => void;
 	setFeatureVisibility    : (visibility: {[key: string]: boolean}) => void;
 	removeUploadedFile		: (index: number) => void;
-	titleName				: string;
-	setTitleName			: (title: string) => void;
+	handleChangeTitle		: (title: string) => void;
+    getTitleName            : () => string | "";
 };
 
 const defaultState: ToggleContextType = {
@@ -50,8 +51,8 @@ const defaultState: ToggleContextType = {
 	featureVisibility       : {},
 	toggleFeatureVisibility : () => {},
 	setFeatureVisibility    : () => {},
-	titleName				: "",
-	setTitleName			: () => {},
+	handleChangeTitle		: () => {},
+    getTitleName            : () => "",
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -72,7 +73,6 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		defaultState.currentFileIndex
 	);
 	const [removedFileIds, setRemovedFileIds] = useState<string[]>([]);
-	const [titleName, setTitleName] = useState(defaultState.titleName);
 	const [featureVisibility, setFeatureVisibility] = useState<{
 		[key: string]: boolean;
 	}>(defaultState.featureVisibility);
@@ -83,6 +83,37 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 			[key]: !prev[key],
 		}));
 	};
+
+	const handleChangeTitle = async (newTitle: string) => {
+		const fileId = uploadedFiles[currentFileIndex]?.id;
+		try {
+			const response = await fetch(`/api/v1/changeTitle/${fileId}`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({title: newTitle}),
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+
+			const data = await response.json();
+			console.log(data);
+
+		} catch (error) {
+			console.error("Error updating title:", error);
+		}
+	}
+	
+    const getTitleName = (): string | "" => {
+        if (currentFileIndex >= 0 && currentFileIndex < uploadedFiles.length) {
+			console.log(uploadedFiles[currentFileIndex].title)
+            return uploadedFiles[currentFileIndex].title;
+        }
+        return "";
+    };
 
 	const fetchUploadedFiles = async () => {
 		try {
@@ -160,8 +191,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				toggleFeatureVisibility,
 				setFeatureVisibility,
 				removeUploadedFile,
-				titleName,
-				setTitleName
+				handleChangeTitle,
+				getTitleName
 			}}
 		>
 			{children}

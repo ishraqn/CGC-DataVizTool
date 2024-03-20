@@ -38,7 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
         toggleFeatureVisibility,
         setFeatureVisibility,
 		removeUploadedFile,
-		setTitleName,
+		handleChangeTitle,
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
@@ -126,7 +126,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 
 	const handleNewTitle = (title: string) => {
 		console.log(title);
-		setTitleName(title);
+		handleChangeTitle(title);
 	};
 
 	const handleRemoveFile = (index: number) => {
