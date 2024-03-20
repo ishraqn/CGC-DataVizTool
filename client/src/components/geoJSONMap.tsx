@@ -31,7 +31,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     }>({});
     const [allValues, setValues] = useState<number[]>([]);
     const [steps, setSteps] = useState<number>(5); // State for steps
-    const { colorPickerColor, featureVisibility, getTitleName} = useToggle();
+    const { colorPickerColor, featureVisibility, currentFileTitle} = useToggle();
 
     // Effect to initialize color gradient and data values
     useEffect(() => {
@@ -126,7 +126,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
             >
                 {geoJsonData && (
                     <>
-                        <TitleComponent title = {getTitleName()}/>
+                        <TitleComponent title = {currentFileTitle}/>
                         <GeoJSON
                             data={geoJsonData}
                             style={geoJsonStyle}

@@ -30,7 +30,8 @@ type ToggleContextType = {
 	setFeatureVisibility    : (visibility: {[key: string]: boolean}) => void;
 	removeUploadedFile		: (index: number) => void;
 	handleChangeTitle		: (title: string) => void;
-    getTitleName            : () => string | "";
+	currentFileTitle		: string;
+	setCurrentFileTitle		: (title: string) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -52,7 +53,8 @@ const defaultState: ToggleContextType = {
 	toggleFeatureVisibility : () => {},
 	setFeatureVisibility    : () => {},
 	handleChangeTitle		: () => {},
-    getTitleName            : () => "",
+	currentFileTitle		: "",
+	setCurrentFileTitle		: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -77,6 +79,10 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		[key: string]: boolean;
 	}>(defaultState.featureVisibility);
 
+	const [currentFileTitle, setCurrentFileTitle] = useState(
+		uploadedFiles[currentFileIndex]?.title || ""
+	);
+
 	const toggleFeatureVisibility = (key: string) => {
 		setFeatureVisibility((prev) => ({
 			...prev,
@@ -99,21 +105,14 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				throw new Error(`HTTP error! Status: ${response.status}`);
 			}
 
+			setCurrentFileTitle(newTitle);
+			uploadedFiles[currentFileIndex].title = newTitle;
 			const data = await response.json();
 			console.log(data);
-
 		} catch (error) {
 			console.error("Error updating title:", error);
 		}
 	}
-	
-    const getTitleName = (): string | "" => {
-        if (currentFileIndex >= 0 && currentFileIndex < uploadedFiles.length) {
-			console.log(uploadedFiles[currentFileIndex].title)
-            return uploadedFiles[currentFileIndex].title;
-        }
-        return "";
-    };
 
 	const fetchUploadedFiles = async () => {
 		try {
@@ -171,6 +170,13 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		fetchUploadedFiles();
 	}, []);
 
+	useEffect(() => {
+		if (currentFileIndex >= 0 && currentFileIndex < uploadedFiles.length) {
+			setCurrentFileTitle(uploadedFiles[currentFileIndex].title);
+			console.log("changing title");
+		}
+	}, [currentFileIndex, uploadedFiles]);
+
 	return (
 		<ToggleContext.Provider
 			value={{
@@ -192,7 +198,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				setFeatureVisibility,
 				removeUploadedFile,
 				handleChangeTitle,
-				getTitleName
+				currentFileTitle,
+				setCurrentFileTitle
 			}}
 		>
 			{children}
