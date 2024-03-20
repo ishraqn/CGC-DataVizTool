@@ -28,6 +28,8 @@ type ToggleContextType = {
 	toggleFeatureVisibility : (feature: string) => void;
 	setFeatureVisibility    : (visibility: {[key: string]: boolean}) => void;
 	removeUploadedFile		: (index: number) => void;
+	errors: string[];
+    setErrors: (errors: string[]) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -48,6 +50,8 @@ const defaultState: ToggleContextType = {
 	featureVisibility       : {},
 	toggleFeatureVisibility : () => {},
 	setFeatureVisibility    : () => {},
+	errors: [],
+    setErrors: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -79,6 +83,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 			[key]: !prev[key],
 		}));
 	};
+
+	const [errors, setErrors] = useState<string[]>(defaultState.errors);
 
 	const fetchUploadedFiles = async () => {
 		try {
@@ -156,6 +162,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				toggleFeatureVisibility,
 				setFeatureVisibility,
 				removeUploadedFile,
+				errors,
+				setErrors,
 			}}
 		>
 			{children}
