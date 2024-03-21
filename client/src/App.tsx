@@ -121,9 +121,11 @@ const App: React.FC = () => {
 			const blob = await response.blob();
 			const url = window.URL.createObjectURL(blob);
 			const a = document.createElement("a");
+			const cleanNameWithoutExtension = selectedFile.cleanName.replace(/\.[^/.]+$/, "");
+			
 			a.href = url;
-			if (selectedFile.cleanName.trim().length > 0) {
-				a.download = selectedFile.cleanName + ".png";
+			if (cleanNameWithoutExtension.trim().length > 0) {
+				a.download = cleanNameWithoutExtension + ".png";
 			} else {
 				a.download = "default-map.png";
 			}
