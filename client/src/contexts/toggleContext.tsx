@@ -173,7 +173,6 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 	useEffect(() => {
 		if (currentFileIndex >= 0 && currentFileIndex < uploadedFiles.length) {
 			setCurrentFileTitle(uploadedFiles[currentFileIndex].title);
-			console.log("changing title");
 		}
 	}, [currentFileIndex, uploadedFiles]);
 
