@@ -1,7 +1,7 @@
 import * as puppeteer from "puppeteer";
 import fs from "fs/promises";
 
-const renderMap = async (filePath: string): Promise<Buffer> => {
+const renderMap = async (filePath: string, title: string): Promise<Buffer> => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
@@ -59,7 +59,7 @@ const renderMap = async (filePath: string): Promise<Buffer> => {
 </head>
 <body>
     <div id="map"></div>
-    <div class="map-title">Your Title Here</div>
+    <div class="map-title">${title}</div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
