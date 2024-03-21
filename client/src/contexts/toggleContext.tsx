@@ -94,7 +94,7 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		const fileId = uploadedFiles[currentFileIndex]?.id;
 		try {
 			const response = await fetch(`/api/v1/changeTitle/${fileId}`, {
-				method: "POST",
+				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
 				},
