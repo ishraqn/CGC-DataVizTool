@@ -47,10 +47,19 @@ const renderMap = async (filePath: string): Promise<Buffer> => {
             border-radius: 10px;
             background-color: #e0e7e7;
           }          
+            .map-title{
+            position:relative;
+            padding: 6px 8px;
+            color: #4a4a4a;
+            z-index: 400;
+            font-size: 35px;
+            text-align: center;
+        }   
     </style>
 </head>
 <body>
     <div id="map"></div>
+    <div class="map-title">Your Title Here</div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
