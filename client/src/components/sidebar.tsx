@@ -34,8 +34,8 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
         setPrimaryColorPicker,
 		secondaryColorPicker,
         setSecondaryColorPicker,
-		isMonochromeMap,
-		setIsMonochromeMap,
+		autoColourRange,
+		setAutoColourRange,
         currentFileIndex,
 		featureVisibility,
         toggleFeatureVisibility,
@@ -162,7 +162,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 	};
 
 	const handleColorMethodSwitch = () => {
-		setIsMonochromeMap(!isMonochromeMap);
+		setAutoColourRange(!autoColourRange);
 	};
 	
     return (
@@ -194,9 +194,9 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 												handleColorMethodSwitch();
 											}}
 										>
-											{isMonochromeMap ? "Switch to Dual-color Map" : "Switch to Monochrome Map"}
+											{autoColourRange ? "Auto-Color Range":"Manual Color Range"}
 										</button>
-										{!isMonochromeMap && (
+										{!autoColourRange && (
 											<div>
 												<label className="menu-item-label">
 													{group.name}
