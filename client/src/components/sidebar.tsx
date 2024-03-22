@@ -30,7 +30,9 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
         setIsTileLayerVisible,
         uploadedFiles,
         setCurrentFileIndex,
+		primaryColorPicker,
         setPrimaryColorPicker,
+		secondaryColorPicker,
         setSecondaryColorPicker,
 		isMonochromeMap,
 		setIsMonochromeMap,
@@ -161,11 +163,6 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 
 	const handleColorMethodSwitch = () => {
 		setIsMonochromeMap(!isMonochromeMap);
-		if(isMonochromeMap){
-			setSecondaryColorPicker('null');
-		} else {
-			setSecondaryColorPicker('#98afc7');
-		}
 	};
 	
     return (
@@ -189,6 +186,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 										</label>
 										<ColorPickerComponent
 											onColorChange={(colorResult) => setPrimaryColorPicker(colorResult.hex)}
+											backgroundColor = {primaryColorPicker}
 										/>
 										<button
 											className="toggle-button"
@@ -196,15 +194,16 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 												handleColorMethodSwitch();
 											}}
 										>
-											{!isMonochromeMap ? "Switch to Dual-color Map" : "Switch to Monochrome Map"}
+											{isMonochromeMap ? "Switch to Dual-color Map" : "Switch to Monochrome Map"}
 										</button>
-										{isMonochromeMap && (
+										{!isMonochromeMap && (
 											<div>
 												<label className="menu-item-label">
 													{group.name}
 												</label>
 												<ColorPickerComponent
 													onColorChange={(colorResult) => setSecondaryColorPicker(colorResult.hex)}
+													backgroundColor = {secondaryColorPicker}
 												/>
 											</div>
 										)}

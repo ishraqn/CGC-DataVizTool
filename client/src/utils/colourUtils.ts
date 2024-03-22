@@ -4,13 +4,14 @@ import { RGBColor } from "react-color";
 export function generateColorGradient(
     numSteps: number = 10,
     startColor: string = 'rgb(152, 175, 199)',
-    endColor: string = 'null'
+    endColor: string = 'null',
+    calcMonochrome: boolean
 ): string[] {
     // Parse the start and end colors
     const startRGB: number[] = parseRGB(startColor);
 
     // Calculate the end color based on the start color values
-    if(endColor == 'null' || endColor == 'rgb(NaN, NaN, NaN)'){
+    if(calcMonochrome){
         endColor = 'rgb(';
             for (let i = 0; i < startRGB.length; i++) {
                 if (startRGB[i] > 153) {

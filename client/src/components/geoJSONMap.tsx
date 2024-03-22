@@ -30,7 +30,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     }>({});
     const [allValues, setValues] = useState<number[]>([]);
     const [steps, setSteps] = useState<number>(5); // State for steps
-    const {primaryColorPicker, secondaryColorPicker, featureVisibility} = useToggle();
+    const {primaryColorPicker, secondaryColorPicker, featureVisibility, isMonochromeMap} = useToggle();
 
     // Effect to initialize color gradient and data values
     useEffect(() => {
@@ -38,9 +38,9 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
             setValues(extractValuesFromGeoJSON(geoJsonData));
             const rgbColor = hexToRgb(primaryColorPicker);
             const rgbColor_2 = hexToRgb(secondaryColorPicker);
-            setColorGradient(generateColorGradient(steps, rgbColor, rgbColor_2));
+            setColorGradient(generateColorGradient(steps, rgbColor, rgbColor_2, isMonochromeMap));
         }
-    }, [geoJsonData, primaryColorPicker, secondaryColorPicker, steps]);
+    }, [geoJsonData, primaryColorPicker, secondaryColorPicker, isMonochromeMap, steps]);
 
     const defaultStyle = {
         fillColor: "#98AFC7",

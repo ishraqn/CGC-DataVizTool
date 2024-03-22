@@ -4,12 +4,13 @@ import { SliderPicker, ColorResult } from 'react-color';
 
 interface ColorPickerProps {
   onColorChange: (color: ColorResult) => void;
+  backgroundColor: string;
 }
 
-const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange }) => {
+const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange, backgroundColor}) => {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [color, setColor] = useState<ColorResult>({
-    hex: '#98afc7',
+    hex: '#755b73',
     rgb: {
       r: 152,
       g: 175,
@@ -62,12 +63,12 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange }) => 
   return (
     <div>
       <div style={styles.swatch} onClick={handleClick}>
-        <div style={{ backgroundColor: color.hex, width: '28px', height: '24px', borderRadius: '2px' }} />
+        <div style={{ backgroundColor: backgroundColor, width: '28px', height: '24px', borderRadius: '2px' }} />
       </div>
       {displayColorPicker ? (
         <div style={styles.sliderContainer}>
           <div style={styles.cover} onClick={handleClose} />
-          <SliderPicker color={color as any} onChange={handleChange} />
+          <SliderPicker color={backgroundColor} onChange={handleChange} />
         </div>
       ) : null}
     </div>
