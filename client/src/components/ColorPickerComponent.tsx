@@ -8,7 +8,7 @@ interface ColorPickerProps {
 }
 
 const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange, backgroundColor}) => {
-  const [displayColorPicker, setDisplayColorPicker] = useState(false);
+  const [displayColorPicker, setDisplayColorPicker] = useState(true);
   const [color, setColor] = useState<ColorResult>({
     hex: '#755b73',
     rgb: {
@@ -61,7 +61,7 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange, backg
   });
 
   return (
-    <div>
+    <div className='color-picker-container'>
       <div style={styles.swatch} onClick={handleClick}>
         <div style={{ backgroundColor: backgroundColor, width: '28px', height: '24px', borderRadius: '2px' }} />
       </div>

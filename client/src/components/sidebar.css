@@ -75,6 +75,7 @@
 .file-item-checkbox input[type="checkbox"] {
     display: none;
 }
+
 .file-item-checkbox input[type="checkbox"] + label:before {
     content: "";
     display: inline-block;
@@ -147,12 +148,22 @@
     opacity: 0.9;
 }
 
+.color-picker-container {
+    margin: 20px;
+}
+
+.color-picker-wrapper {
+    display: flex;
+    flex-direction: column; /* Display sliders below one another */
+}
+
 /* Disable hover effects on children when confirmation dialog is visible */
 .sidebar-menu-dialog-open{
     pointer-events: none;
     cursor: pointer;
     background-color: #f4f6f9;
 }
+
 .sidebar-title {
     display: flex;
     align-items: justify;
