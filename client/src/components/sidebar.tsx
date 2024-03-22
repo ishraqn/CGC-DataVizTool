@@ -17,7 +17,7 @@ interface SidebarProps {
 
 // mock data
 const mockFilterGroups: FilterGroup[] = [
-	{ id: "1", name: "Color Picker" },
+	{ id: "1", name: "Map Colors" },
     { id: "3", name: "Select File" },
 	{ id: "4", name: "Select Crop Region" },
 	{ id: "5", name: "Download Map" },
@@ -51,6 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
     const handleCardClick = (id: string) => {
 		switch (id) {
 			case "1":
+				console.log("click");
 				break;
 			case "2":
 				setIsTileLayerVisible(!isTileLayerVisible);
@@ -184,29 +185,26 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 										<label className="menu-item-label">
 											{group.name}
 										</label>
-										<ColorPickerComponent
-											onColorChange={(colorResult) => setPrimaryColorPicker(colorResult.hex)}
-											backgroundColor = {primaryColorPicker}
-										/>
 										<button
 											className="toggle-button"
 											onClick={() => {
 												handleColorMethodSwitch();
 											}}
 										>
-											{autoColourRange ? "Auto-Color Range":"Manual Color Range"}
+											{!autoColourRange ? "Auto-Color Range":"Manual Color Range"}
 										</button>
-										{!autoColourRange && (
-											<div>
-												<label className="menu-item-label">
-													{group.name}
-												</label>
+										<div className="color-picker-wrapper">
+											<ColorPickerComponent
+												onColorChange={(colorResult) => setPrimaryColorPicker(colorResult.hex)}
+												backgroundColor={primaryColorPicker}
+											/>
+											{!autoColourRange && (
 												<ColorPickerComponent
 													onColorChange={(colorResult) => setSecondaryColorPicker(colorResult.hex)}
-													backgroundColor = {secondaryColorPicker}
+													backgroundColor={secondaryColorPicker}
 												/>
-											</div>
-										)}
+											)}
+										</div>
 									</>
 								</>
 							) : (
