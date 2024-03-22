@@ -31,6 +31,9 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
         uploadedFiles,
         setCurrentFileIndex,
         setColorPickerColor,
+        setColorPickerColor_2,
+		isMonochromeMap,
+		setIsMonochromeMap,
         currentFileIndex,
 		featureVisibility,
         toggleFeatureVisibility,
@@ -155,6 +158,13 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 		setFileToDeleteIndex(null);
 		setShowConfirmation(false);
 	};
+
+	const handleColorMethodSwitch = () => {
+		setIsMonochromeMap(!isMonochromeMap);
+		if(isMonochromeMap){
+			setColorPickerColor_2('null');
+		}
+	};
 	
     return (
 		<div className="sidebar">
@@ -170,24 +180,42 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 					>
 						<div className="menu-item-checkbox">
 							{group.id === "1" ? (
-								<><label
-									htmlFor={`checkbox-${group.id}`}
-									className="menu-item-label"
-								>
-									{group.name}
-								</label><ColorPickerComponent
-										onColorChange={(colorResult) => setColorPickerColor(colorResult.hex)} /></>
+								<>
+									<>
+										<label htmlFor={`checkbox-${group.id}`} className="menu-item-label">
+											{group.name}
+										</label>
+										<ColorPickerComponent
+											onColorChange={(colorResult) => setColorPickerColor(colorResult.hex)}
+										/>
+										<button
+											className="toggle-button"
+											onClick={() => {
+												handleColorMethodSwitch();
+											}}
+										>
+											{!isMonochromeMap ? "Switch to Dual-color Map" : "Switch to Monochrome Map"}
+										</button>
+										{isMonochromeMap && (
+											<div>
+												<label htmlFor={`checkbox-${group.id}`} className="menu-item-label">
+													{group.name}
+												</label>
+												<ColorPickerComponent
+													onColorChange={(colorResult) => setColorPickerColor_2(colorResult.hex)}
+												/>
+											</div>
+										)}
+									</>
+								</>
 							) : (
 								<>
-									<label
-										htmlFor={`checkbox-${group.id}`}
-										className="menu-item-label"
-									>
+									<label htmlFor={`checkbox-${group.id}`} className="menu-item-label">
 										{group.name}
 									</label>
 								</>
 							)}
-						</div>
+					</div>
 						{group.id === "3" && showFileList && (
 							<ul className="file-dropdown">
 								{uploadedFiles.map((file, index) => (

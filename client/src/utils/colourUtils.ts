@@ -4,10 +4,28 @@ import { RGBColor } from "react-color";
 export function generateColorGradient(
     numSteps: number = 10,
     startColor: string = 'rgb(152, 175, 199)',
-    endColor: string = 'rgb(72, 19, 102)'
+    endColor: string = 'null'
 ): string[] {
     // Parse the start and end colors
     const startRGB: number[] = parseRGB(startColor);
+
+    // Calculate the end color based on the start color values
+    if(endColor == 'null' || endColor == 'rgb(NaN, NaN, NaN)'){
+        endColor = 'rgb(';
+            for (let i = 0; i < startRGB.length; i++) {
+                if (startRGB[i] > 153) {
+                    endColor += (startRGB[i] - 153).toString();
+                } else {
+                    endColor += (startRGB[i] + 153).toString();
+                }
+                if (i < startRGB.length - 1) {
+                    endColor += ', ';
+                }
+            }
+        endColor += ')';
+    }
+    
+    // Parse the end color
     const endRGB: number[] = parseRGB(endColor);
     
     // Calculate the step size for each color channel 

@@ -19,6 +19,10 @@ type ToggleContextType = {
 	setUploadedFile         : (file: UploadFileData | null) => void;
 	colorPickerColor        : string;
 	setColorPickerColor     : (color: string) => void;
+	colorPickerColor_2      : string;
+	setColorPickerColor_2   : (color: string) => void;
+	isMonochromeMap			: boolean;
+	setIsMonochromeMap		: (isMonochrome: boolean) => void;
 	uploadedFiles           : UploadFileData[];
 	setUploadedFiles        : (files: UploadFileData[]) => void;
 	currentFileIndex        : number;
@@ -39,6 +43,10 @@ const defaultState: ToggleContextType = {
 	setUploadedFile         : () => {},
 	colorPickerColor        : "#98AFC7",
 	setColorPickerColor     : () => {},
+	colorPickerColor_2      : "#98AFC7",
+	setColorPickerColor_2   : () => {},
+	isMonochromeMap			: true,
+	setIsMonochromeMap		: () => {},
 	uploadedFiles           : [],
 	setUploadedFiles        : () => {},
 	currentFileIndex        : 0,
@@ -61,6 +69,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 	);
 	const [uploadedFile, setUploadedFile]   = useState(defaultState.uploadedFile);
 	const [colorPickerColor, setColorPickerColor]           = useState(defaultState.colorPickerColor);
+	const [colorPickerColor_2, setColorPickerColor_2]           = useState(defaultState.colorPickerColor_2);
+	const [isMonochromeMap, setIsMonochromeMap] = useState(defaultState.isMonochromeMap);
 	const [uploadedFiles, setUploadedFiles] = useState(
 		defaultState.uploadedFiles
 	);
@@ -147,6 +157,10 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				setUploadedFile,
 				colorPickerColor,
 				setColorPickerColor,
+				colorPickerColor_2,
+				setColorPickerColor_2,
+				isMonochromeMap,
+				setIsMonochromeMap,
 				uploadedFiles,
 				setUploadedFiles,
 				currentFileIndex,
