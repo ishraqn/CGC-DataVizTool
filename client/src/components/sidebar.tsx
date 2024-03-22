@@ -30,8 +30,8 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
         setIsTileLayerVisible,
         uploadedFiles,
         setCurrentFileIndex,
-        setColorPickerColor,
-        setColorPickerColor_2,
+        setPrimaryColorPicker,
+        setSecondaryColorPicker,
 		isMonochromeMap,
 		setIsMonochromeMap,
         currentFileIndex,
@@ -162,7 +162,9 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 	const handleColorMethodSwitch = () => {
 		setIsMonochromeMap(!isMonochromeMap);
 		if(isMonochromeMap){
-			setColorPickerColor_2('null');
+			setSecondaryColorPicker('null');
+		} else {
+			setSecondaryColorPicker('#98afc7');
 		}
 	};
 	
@@ -186,7 +188,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 											{group.name}
 										</label>
 										<ColorPickerComponent
-											onColorChange={(colorResult) => setColorPickerColor(colorResult.hex)}
+											onColorChange={(colorResult) => setPrimaryColorPicker(colorResult.hex)}
 										/>
 										<button
 											className="toggle-button"
@@ -202,7 +204,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 													{group.name}
 												</label>
 												<ColorPickerComponent
-													onColorChange={(colorResult) => setColorPickerColor_2(colorResult.hex)}
+													onColorChange={(colorResult) => setSecondaryColorPicker(colorResult.hex)}
 												/>
 											</div>
 										)}

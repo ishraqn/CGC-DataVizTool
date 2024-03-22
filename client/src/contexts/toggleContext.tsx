@@ -17,10 +17,10 @@ type ToggleContextType = {
 	setIsUploadedFileVisible: (isVisible: boolean) => void;
 	uploadedFile            : UploadFileData | null;
 	setUploadedFile         : (file: UploadFileData | null) => void;
-	colorPickerColor        : string;
-	setColorPickerColor     : (color: string) => void;
-	colorPickerColor_2      : string;
-	setColorPickerColor_2   : (color: string) => void;
+	primaryColorPicker        : string;
+	setPrimaryColorPicker     : (color: string) => void;
+	secondaryColorPicker      : string;
+	setSecondaryColorPicker   : (color: string) => void;
 	isMonochromeMap			: boolean;
 	setIsMonochromeMap		: (isMonochrome: boolean) => void;
 	uploadedFiles           : UploadFileData[];
@@ -41,10 +41,10 @@ const defaultState: ToggleContextType = {
 	setIsUploadedFileVisible: () => {},
 	uploadedFile            : null,
 	setUploadedFile         : () => {},
-	colorPickerColor        : "#98AFC7",
-	setColorPickerColor     : () => {},
-	colorPickerColor_2      : "#98AFC7",
-	setColorPickerColor_2   : () => {},
+	primaryColorPicker        : "#98AFC7",
+	setPrimaryColorPicker     : () => {},
+	secondaryColorPicker      : "#98AFC7",
+	setSecondaryColorPicker   : () => {},
 	isMonochromeMap			: true,
 	setIsMonochromeMap		: () => {},
 	uploadedFiles           : [],
@@ -68,8 +68,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		defaultState.isUploadedFileVisible
 	);
 	const [uploadedFile, setUploadedFile]   = useState(defaultState.uploadedFile);
-	const [colorPickerColor, setColorPickerColor]           = useState(defaultState.colorPickerColor);
-	const [colorPickerColor_2, setColorPickerColor_2]           = useState(defaultState.colorPickerColor_2);
+	const [primaryColorPicker, setPrimaryColorPicker]           = useState(defaultState.primaryColorPicker);
+	const [secondaryColorPicker, setSecondaryColorPicker]           = useState(defaultState.secondaryColorPicker);
 	const [isMonochromeMap, setIsMonochromeMap] = useState(defaultState.isMonochromeMap);
 	const [uploadedFiles, setUploadedFiles] = useState(
 		defaultState.uploadedFiles
@@ -155,10 +155,10 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				setIsUploadedFileVisible,
 				uploadedFile,
 				setUploadedFile,
-				colorPickerColor,
-				setColorPickerColor,
-				colorPickerColor_2,
-				setColorPickerColor_2,
+				primaryColorPicker,
+				setPrimaryColorPicker,
+				secondaryColorPicker,
+				setSecondaryColorPicker,
 				isMonochromeMap,
 				setIsMonochromeMap,
 				uploadedFiles,
