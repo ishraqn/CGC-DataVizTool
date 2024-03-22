@@ -184,7 +184,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 							{group.id === "1" ? (
 								<>
 									<>
-										<label htmlFor={`checkbox-${group.id}`} className="menu-item-label">
+										<label className="menu-item-label">
 											{group.name}
 										</label>
 										<ColorPickerComponent
@@ -200,7 +200,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 										</button>
 										{isMonochromeMap && (
 											<div>
-												<label htmlFor={`checkbox-${group.id}`} className="menu-item-label">
+												<label className="menu-item-label">
 													{group.name}
 												</label>
 												<ColorPickerComponent

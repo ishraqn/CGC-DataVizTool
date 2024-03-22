@@ -129,6 +129,24 @@
     cursor: pointer;
 }
 
+.toggle-button {
+    margin: 8px auto;
+    padding: 8px 12px;
+    width: 17vw;
+    background-color: #656667;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.toggle-button:hover {
+    opacity: 0.9;
+}
+
 /* Disable hover effects on children when confirmation dialog is visible */
 .sidebar-menu-dialog-open{
     pointer-events: none;
