@@ -40,9 +40,10 @@ export function generateColorGradient(
     
     // Push white color for 0
     gradientColors.push('rgb(255, 255, 255)');
+    gradientColors.push(startColor);
 
     // Generate the gradient colors for other steps
-    for (let i = 1; i <= numSteps; i++) {
+    for (let i = 2; i <= numSteps; i++) {
         const r: number = Math.round(startRGB[0] + stepSize[0] * i);
         const g: number = Math.round(startRGB[1] + stepSize[1] * i);
         const b: number = Math.round(startRGB[2] + stepSize[2] * i);
