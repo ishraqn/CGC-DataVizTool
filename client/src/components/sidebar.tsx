@@ -51,7 +51,6 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
     const handleCardClick = (id: string) => {
 		switch (id) {
 			case "1":
-				console.log("click");
 				break;
 			case "2":
 				setIsTileLayerVisible(!isTileLayerVisible);
