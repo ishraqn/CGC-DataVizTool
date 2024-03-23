@@ -142,10 +142,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: 0.3s;
 }
 
 .toggle-button:hover {
-    opacity: 0.9;
+    background-color: #9ea2a5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: #fff;
 }
 
 .color-picker-container {
