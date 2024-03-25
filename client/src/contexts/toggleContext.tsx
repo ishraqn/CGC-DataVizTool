@@ -28,6 +28,11 @@ type ToggleContextType = {
 	toggleFeatureVisibility : (feature: string) => void;
 	setFeatureVisibility    : (visibility: {[key: string]: boolean}) => void;
 	removeUploadedFile		: (index: number) => void;
+	fileErrors: string[];
+	setFileErrors: (errors: string[]) => void;
+    errorFileInfo: string [];  // Allow errorFileID to be string or null
+    setErrorFileInfo: (errorFileInfo: string []) => void;
+	handleRetryConversion: (filePath: string, fileID: string) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -48,9 +53,15 @@ const defaultState: ToggleContextType = {
 	featureVisibility       : {},
 	toggleFeatureVisibility : () => {},
 	setFeatureVisibility    : () => {},
+	fileErrors: [],
+	setFileErrors: () => {},
+	errorFileInfo: [],
+	setErrorFileInfo: () => {},
+	handleRetryConversion: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
+
 
 export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const [isTileLayerVisible, setIsTileLayerVisible] = useState(
@@ -132,6 +143,34 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		}
 	};
 
+	const handleRetryConversion = async (filePath: string, fileId: string) => {
+		try {
+			const response = await fetch(`api/v1/retry-conversion`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify([filePath, fileId]), // Include filePath and fileId in the request body
+			});
+	
+			if (response.ok) {
+				console.log('Conversion retried successfully.');
+				// Optionally reset or update any relevant state here, like clearing errors
+				setFileErrors([]);
+			} else {
+				console.error('Failed to retry conversion');
+				// It might be helpful to also log the response body for more detailed error messages
+				const errorBody = await response.json();
+				console.error('Error details:', errorBody);
+			}
+		} catch (error) {
+			console.error('Error retrying conversion:', error);
+		}
+	};
+
+	const [fileErrors, setFileErrors] = useState(defaultState.fileErrors); // State for managing file errors
+	const [errorFileInfo, setErrorFileInfo] = useState(defaultState.errorFileInfo); // State for managing file errors
+
 	useEffect(() => {
 		fetchUploadedFiles();
 	}, []);
@@ -156,6 +195,11 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				toggleFeatureVisibility,
 				setFeatureVisibility,
 				removeUploadedFile,
+				fileErrors,
+				setFileErrors,
+				errorFileInfo,
+				setErrorFileInfo,
+				handleRetryConversion,
 			}}
 		>
 			{children}
