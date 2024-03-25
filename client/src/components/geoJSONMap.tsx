@@ -36,9 +36,9 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     useEffect(() => {
         if (geoJsonData) {
             setValues(extractValuesFromGeoJSON(geoJsonData));
-            const rgbColor = hexToRgb(primaryColorPicker);
-            const rgbColor_2 = hexToRgb(secondaryColorPicker);
-            setColorGradient(generateColorGradient(steps, rgbColor, rgbColor_2, autoColourRange));
+            const primaryRGB = hexToRgb(primaryColorPicker);
+            const secondaryRGB = hexToRgb(secondaryColorPicker);
+            setColorGradient(generateColorGradient(steps, primaryRGB, secondaryRGB, autoColourRange));
         }
     }, [geoJsonData, primaryColorPicker, secondaryColorPicker, autoColourRange, steps]);
 

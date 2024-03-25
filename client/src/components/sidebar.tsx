@@ -185,7 +185,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 											{group.name}
 										</label>
 										<button
-											className="toggle-button"
+											className="color-range-toggle-button"
 											onClick={() => {
 												handleColorMethodSwitch();
 											}}
