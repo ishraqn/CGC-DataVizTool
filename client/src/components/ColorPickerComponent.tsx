@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import reactCSS from 'reactcss';
 import { SliderPicker, ColorResult } from 'react-color';
+import { useToggle } from '../contexts/useToggle';
 
 interface ColorPickerProps {
   onColorChange: (color: ColorResult) => void;
+  backgroundColor: string;
 }
 
-const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange }) => {
-  const [displayColorPicker, setDisplayColorPicker] = useState(false);
+const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange, backgroundColor}) => {
+  const { autoColourRange } = useToggle();
+  const [displayColorPicker, setDisplayColorPicker] = useState(true);
   const [color, setColor] = useState<ColorResult>({
-    hex: '#98afc7',
+    hex: '#755b73',
     rgb: {
       r: 152,
       g: 175,
@@ -59,15 +62,19 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange }) => 
     },
   });
 
+  useEffect(() => {
+    setDisplayColorPicker(true);
+  }, [autoColourRange]);
+
   return (
-    <div>
+    <div className='color-picker-container'>
       <div style={styles.swatch} onClick={handleClick}>
-        <div style={{ backgroundColor: color.hex, width: '28px', height: '24px', borderRadius: '2px' }} />
+        <div style={{ backgroundColor: backgroundColor, width: '28px', height: '24px', borderRadius: '2px' }} />
       </div>
       {displayColorPicker ? (
         <div style={styles.sliderContainer}>
           <div style={styles.cover} onClick={handleClose} />
-          <SliderPicker color={color as any} onChange={handleChange} />
+          <SliderPicker color={backgroundColor} onChange={handleChange} />
         </div>
       ) : null}
     </div>

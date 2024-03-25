@@ -17,8 +17,12 @@ type ToggleContextType = {
 	setIsUploadedFileVisible: (isVisible: boolean) => void;
 	uploadedFile            : UploadFileData | null;
 	setUploadedFile         : (file: UploadFileData | null) => void;
-	colorPickerColor        : string;
-	setColorPickerColor     : (color: string) => void;
+	primaryColorPicker        : string;
+	setPrimaryColorPicker     : (color: string) => void;
+	secondaryColorPicker      : string;
+	setSecondaryColorPicker   : (color: string) => void;
+	autoColourRange			: boolean;
+	setAutoColourRange		: (isMonochrome: boolean) => void;
 	uploadedFiles           : UploadFileData[];
 	setUploadedFiles        : (files: UploadFileData[]) => void;
 	currentFileIndex        : number;
@@ -37,8 +41,12 @@ const defaultState: ToggleContextType = {
 	setIsUploadedFileVisible: () => {},
 	uploadedFile            : null,
 	setUploadedFile         : () => {},
-	colorPickerColor        : "#98AFC7",
-	setColorPickerColor     : () => {},
+	primaryColorPicker        : "#98AFC7",
+	setPrimaryColorPicker     : () => {},
+	secondaryColorPicker      : "#98AFC7",
+	setSecondaryColorPicker   : () => {},
+	autoColourRange			: true,
+	setAutoColourRange		: () => {},
 	uploadedFiles           : [],
 	setUploadedFiles        : () => {},
 	currentFileIndex        : 0,
@@ -60,7 +68,9 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		defaultState.isUploadedFileVisible
 	);
 	const [uploadedFile, setUploadedFile]   = useState(defaultState.uploadedFile);
-	const [colorPickerColor, setColorPickerColor]           = useState(defaultState.colorPickerColor);
+	const [primaryColorPicker, setPrimaryColorPicker]           = useState(defaultState.primaryColorPicker);
+	const [secondaryColorPicker, setSecondaryColorPicker]           = useState(defaultState.secondaryColorPicker);
+	const [autoColourRange, setAutoColourRange] = useState(defaultState.autoColourRange);
 	const [uploadedFiles, setUploadedFiles] = useState(
 		defaultState.uploadedFiles
 	);
@@ -145,8 +155,12 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				setIsUploadedFileVisible,
 				uploadedFile,
 				setUploadedFile,
-				colorPickerColor,
-				setColorPickerColor,
+				primaryColorPicker,
+				setPrimaryColorPicker,
+				secondaryColorPicker,
+				setSecondaryColorPicker,
+				autoColourRange,
+				setAutoColourRange,
 				uploadedFiles,
 				setUploadedFiles,
 				currentFileIndex,

@@ -75,6 +75,7 @@
 .file-item-checkbox input[type="checkbox"] {
     display: none;
 }
+
 .file-item-checkbox input[type="checkbox"] + label:before {
     content: "";
     display: inline-block;
@@ -129,12 +130,43 @@
     cursor: pointer;
 }
 
+.color-range-toggle-button {
+    margin: 8px auto;
+    padding: 8px 12px;
+    width: 100%;
+    background-color: #656667;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.color-range-toggle-button:hover {
+    background-color: #9ea2a5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: #fff;
+}
+
+.color-picker-container {
+    margin: 20px;
+}
+
+.color-picker-wrapper {
+    display: flex;
+    flex-direction: column; /* Display sliders below one another */
+}
+
 /* Disable hover effects on children when confirmation dialog is visible */
 .sidebar-menu-dialog-open{
     pointer-events: none;
     cursor: pointer;
     background-color: #f4f6f9;
 }
+
 .sidebar-title {
     display: flex;
     align-items: justify;

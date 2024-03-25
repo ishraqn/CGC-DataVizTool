@@ -17,7 +17,7 @@ interface SidebarProps {
 
 // mock data
 const mockFilterGroups: FilterGroup[] = [
-	{ id: "1", name: "Color Picker" },
+	{ id: "1", name: "Map Colors" },
     { id: "3", name: "Select File" },
 	{ id: "4", name: "Select Crop Region" },
 	{ id: "5", name: "Download Map" },
@@ -30,7 +30,12 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
         setIsTileLayerVisible,
         uploadedFiles,
         setCurrentFileIndex,
-        setColorPickerColor,
+		primaryColorPicker,
+        setPrimaryColorPicker,
+		secondaryColorPicker,
+        setSecondaryColorPicker,
+		autoColourRange,
+		setAutoColourRange,
         currentFileIndex,
 		featureVisibility,
         toggleFeatureVisibility,
@@ -155,6 +160,10 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 		setFileToDeleteIndex(null);
 		setShowConfirmation(false);
 	};
+
+	const handleColorMethodSwitch = () => {
+		setAutoColourRange(!autoColourRange);
+	};
 	
     return (
 		<div className="sidebar">
@@ -170,24 +179,41 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 					>
 						<div className="menu-item-checkbox">
 							{group.id === "1" ? (
-								<><label
-									htmlFor={`checkbox-${group.id}`}
-									className="menu-item-label"
-								>
-									{group.name}
-								</label><ColorPickerComponent
-										onColorChange={(colorResult) => setColorPickerColor(colorResult.hex)} /></>
+								<>
+									<>
+										<label className="menu-item-label">
+											{group.name}
+										</label>
+										<button
+											className="color-range-toggle-button"
+											onClick={() => {
+												handleColorMethodSwitch();
+											}}
+										>
+											{!autoColourRange ? "Auto-Color Range":"Manual Color Range"}
+										</button>
+										<div className="color-picker-wrapper">
+											<ColorPickerComponent
+												onColorChange={(colorResult) => setPrimaryColorPicker(colorResult.hex)}
+												backgroundColor={primaryColorPicker}
+											/>
+											{!autoColourRange && (
+												<ColorPickerComponent
+													onColorChange={(colorResult) => setSecondaryColorPicker(colorResult.hex)}
+													backgroundColor={secondaryColorPicker}
+												/>
+											)}
+										</div>
+									</>
+								</>
 							) : (
 								<>
-									<label
-										htmlFor={`checkbox-${group.id}`}
-										className="menu-item-label"
-									>
+									<label htmlFor={`checkbox-${group.id}`} className="menu-item-label">
 										{group.name}
 									</label>
 								</>
 							)}
-						</div>
+					</div>
 						{group.id === "3" && showFileList && (
 							<ul className="file-dropdown">
 								{uploadedFiles.map((file, index) => (
