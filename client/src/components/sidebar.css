@@ -133,7 +133,7 @@
 .color-range-toggle-button {
     margin: 8px auto;
     padding: 8px 12px;
-    width: 17vw;
+    width: 100%;
     background-color: #656667;
     color: #fff;
     border: none;
@@ -145,7 +145,7 @@
     transition: 0.3s;
 }
 
-.toggle-button:hover {
+.color-range-toggle-button:hover {
     background-color: #9ea2a5;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     color: #fff;
