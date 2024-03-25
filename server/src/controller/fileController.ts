@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { join, extname, dirname, basename } from "path";
+import { validateCsvRecords } from '../utils/inputValidationUtil';
 
 // handles the file after it has been uploaded (do something with the file after multer middleware has processed it)
 export const fileController = {
@@ -8,6 +9,7 @@ export const fileController = {
 		if (!req.file) {
 			return res.status(400).send("No file uploaded.");
 		}
+
 		try {
 			// Create the file details data
 			const fileDetails = {
@@ -15,7 +17,7 @@ export const fileController = {
 				path: join(req.file.destination, req.file.filename),
 				size: req.file.size,
 				type: req.file.mimetype,
-				lastModifiedDate: new Date(),
+				lastModifiedDate: new Date()
 			};
 
 			// init the session uploadFileList if it doesn't exist

@@ -4,6 +4,7 @@ import "./sidebar.css";
 import { useToggle } from "../contexts/useToggle";
 import ColorPickerComponent from "./ColorPickerComponent";
 import ConfirmationDialog from "./ConfirmationDialog";
+import ErrorDropdown from "./displayErrors";
 
 type FilterGroup = {
     id: string;
@@ -268,6 +269,9 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 					</li>
 				))}
 			</ul>
+
+			<div> <ErrorDropdown/> </div>
+
 			{showConfirmation && (
                 <ConfirmationDialog
                     message="Are you sure you want to delete this file?"
