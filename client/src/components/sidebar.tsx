@@ -144,6 +144,21 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 		});
 	};
 
+	const handleNonzeroSelect = () => {
+		geoJsonData.features.forEach((feature) => {
+			const key = feature.properties.CARUID;
+			if (feature.properties.totalSamples as number > 0) {
+				if(!featureVisibility[key]) {
+					toggleFeatureVisibility(key);
+				}
+			} else {
+				if(featureVisibility[key]) {
+					toggleFeatureVisibility(key);
+				}
+			}
+		});
+	};
+
 	const handleRemoveFile = (index: number) => {
 		setFileToDeleteIndex(index);
         setShowConfirmation(true);
@@ -258,6 +273,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 								<span onClick={handleSelectAll} className='selection-toggle'>Select All</span>
 								<span onClick={handleDeselectAll} className='selection-toggle'>Deselect All</span>
 								<span onClick={handleInversionSelect} className='selection-toggle'>Inversion Select</span>
+								<span onClick={handleNonzeroSelect} className='selection-toggle'>Select Regions with Data</span>
 							</div>
                             <ul
                                 className="feature-list" >
