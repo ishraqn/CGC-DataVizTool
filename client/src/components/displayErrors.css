@@ -1,0 +1,48 @@
+.error-dropdown {
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 240px; /* Adjusted to provide more space for actions and longer error messages */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px; /* Slightly reduced padding to allow more space for content */
+    z-index: 1;
+}
+
+.error-content {
+    max-height: 200px; /* Keeps a scrollbar for overflow, adjust if needed */
+    overflow-y: auto;
+}
+
+.error-content ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0; /* Removes default margin to maximize space */
+}
+
+.error-content ul li {
+    padding: 8px 0; /* Consistent padding for error messages */
+    border-bottom: 1px solid #ddd;
+    color: #000000;
+    font-size: 14px; /* Ensures text is readable without taking too much space */
+}
+
+.error-content ul li:last-child {
+    border-bottom: none; /* Removes the border from the last item to avoid doubling up with the actions border */
+}
+
+.error-dropdown .conversion-options, .error-actions {
+    display: flex;
+    justify-content: space-between; /* Spreads the buttons out to use available space */
+    padding-top: 10px;
+    border-top: 1px solid #ccc; /* Separates actions from error list */
+}
+
+.error-dropdown .conversion-options button, .error-actions button {
+    padding: 6px 12px; /* Comfortable padding for button text */
+    font-size: 14px; /* Matches the dropdown text size */
+    color: #ffffff;
+    background-color: #000000; /* Primary action color */
+    border: none;
+    border-radius: 4px; /* Adds a modern, rounded look */
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
