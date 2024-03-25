@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import reactCSS from 'reactcss';
 import { SliderPicker, ColorResult } from 'react-color';
+import { useToggle } from '../contexts/useToggle';
 
 interface ColorPickerProps {
   onColorChange: (color: ColorResult) => void;
@@ -8,6 +9,7 @@ interface ColorPickerProps {
 }
 
 const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange, backgroundColor}) => {
+  const { autoColourRange } = useToggle();
   const [displayColorPicker, setDisplayColorPicker] = useState(true);
   const [color, setColor] = useState<ColorResult>({
     hex: '#755b73',
@@ -59,6 +61,10 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange, backg
       },
     },
   });
+
+  useEffect(() => {
+    setDisplayColorPicker(true);
+  }, [autoColourRange]);
 
   return (
     <div className='color-picker-container'>
