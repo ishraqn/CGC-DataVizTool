@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import reactCSS from 'reactcss';
 import { SliderPicker, ColorResult } from 'react-color';
+import { EditableInput } from 'react-color/lib/components/common';
 import { useToggle } from '../contexts/useToggle';
+import './ColorPickerComponent.css';
 
 interface ColorPickerProps {
   onColorChange: (color: ColorResult) => void;
@@ -10,19 +12,19 @@ interface ColorPickerProps {
 
 const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange, backgroundColor}) => {
   const { autoColourRange } = useToggle();
-  const [displayColorPicker, setDisplayColorPicker] = useState(true);
+  const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const [color, setColor] = useState<ColorResult>({
-    hex: '#755b73',
+    hex: '#DDE6B3',
     rgb: {
-      r: 152,
-      g: 175,
-      b: 199,
+      r: 221,
+      g: 230,
+      b: 179,
       a: 1,
     },
     hsl: {
-      h: 211,
-      s: 30,
-      l: 69,
+      h: 71,
+      s: 50,
+      l: 80,
       a: 1,
     },
   });
@@ -31,49 +33,28 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange, backg
     setDisplayColorPicker(!displayColorPicker);
   };
 
-  const handleClose = () => {
-    setDisplayColorPicker(false);
-  };
-
   const handleChange = (newColor: ColorResult) => {
     setColor(newColor);
-    // Invoke the callback function with the selected color
     onColorChange(newColor);
   };
 
-  const styles = reactCSS({
-    default: {
-      swatch: {
-        width: '100%',
-        display: 'block',
-      },
-      popover: {
-        position: 'absolute',
-        zIndex: '2',
-        right: '0%',
-      },
-      sliderContainer: {
-        marginTop: '10px',
-      },
-      cover: {
-        position: 'fixed' as 'fixed',
-        borderRadius: '2px',
-      },
-    },
-  });
-
   useEffect(() => {
-    setDisplayColorPicker(true);
+    setDisplayColorPicker(false);
   }, [autoColourRange]);
 
   return (
     <div className='color-picker-container'>
-      <div style={styles.swatch} onClick={handleClick}>
-        <div style={{ backgroundColor: backgroundColor, width: '28px', height: '24px', borderRadius: '2px' }} />
+      <div className='swatch-container'>
+        <div className = 'swatch' style={{ backgroundColor: backgroundColor, width: '28px', height: '24px', borderRadius: '2px' }} onClick={handleClick}/>
+        <EditableInput
+          label="hex"
+          value={color.hex}
+          onChange={handleChange}
+        />
       </div>
       {displayColorPicker ? (
-        <div style={styles.sliderContainer}>
-          <div style={styles.cover} onClick={handleClose} />
+        <div className = 'slider-container' >
+          <div className = 'cover' onClick={handleClick}/>
           <SliderPicker color={backgroundColor} onChange={handleChange} />
         </div>
       ) : null}
