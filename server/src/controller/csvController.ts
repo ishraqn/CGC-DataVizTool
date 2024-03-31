@@ -29,9 +29,8 @@ export const csvController = {
                         errors: validation.errors,
                         fileInfo: [fileDetails.path, fileDetails.name],
                     });
-                    return;
                 }
-
+                
                 await convertCsvToGeoJsonUtil(fileDetails.path, fileDetails.name);
 
                 next();

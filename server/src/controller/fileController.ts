@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import { join, extname, dirname, basename } from "path";
-import { validateCsvRecords } from '../utils/inputValidationUtil';
 
 // handles the file after it has been uploaded (do something with the file after multer middleware has processed it)
 export const fileController = {
