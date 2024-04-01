@@ -13,6 +13,11 @@ router.get("/all-uploaded-files", fileController.listAllFiles); // route to list
 router.get("/:fileId", fileController.getFile); // route to get a file
 router.post("/remove/:fileId", fileController.removeFile); // route to remove a file
 router.post("/retry-conversion", csvController.retryConversion, fileController.sendLastUploadFile, geoController.getAggregatedData);
+router.get("/csv-errors", (req, res) => {
+    // Retrieve errors using type assertion
+    const csvErrors = (req.session as any).csvErrors;
+    res.json(csvErrors || []);
+});
 // router.post('/upload', upload.single('csvFile'), CSVToGeoJSONControl);
 // router.get('/download', fileController.download); // route to download a file
 

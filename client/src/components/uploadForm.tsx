@@ -5,7 +5,7 @@ import GuideTooltip from './GuideTooltip';
 import { FaRegQuestionCircle } from "react-icons/fa";
 
 const FileUploadForm = ({ onUploadSuccess }) => {
-    const { fetchUploadedFiles, setFileErrors, updateFileErrors } = useToggle();
+    const { fetchUploadedFiles, updateFileErrors } = useToggle();
     const handleFileUpload = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevent the default form submission behavior
 

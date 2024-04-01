@@ -1,48 +1,58 @@
 .error-dropdown {
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 240px; /* Adjusted to provide more space for actions and longer error messages */
+    min-width: 240px;
+    max-width: 90vw;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px; /* Slightly reduced padding to allow more space for content */
+    padding: 12px;
     z-index: 1;
+    overflow-x: auto;
 }
 
 .error-content {
-    max-height: 200px; /* Keeps a scrollbar for overflow, adjust if needed */
+    max-height: 200px;
     overflow-y: auto;
 }
 
-.error-content ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0; /* Removes default margin to maximize space */
+.error-dropdown table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.error-content ul li {
-    padding: 8px 0; /* Consistent padding for error messages */
-    border-bottom: 1px solid #ddd;
-    color: #000000;
-    font-size: 14px; /* Ensures text is readable without taking too much space */
+.error-dropdown th,
+.error-dropdown td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ddd;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #000000; /* Set text color to black */
 }
 
-.error-content ul li:last-child {
-    border-bottom: none; /* Removes the border from the last item to avoid doubling up with the actions border */
+.error-dropdown th {
+    background-color: #f2f2f2;
 }
 
-.error-dropdown .conversion-options, .error-actions {
+.error-dropdown .conversion-options,
+.error-actions {
     display: flex;
-    justify-content: space-between; /* Spreads the buttons out to use available space */
+    justify-content: space-between;
     padding-top: 10px;
-    border-top: 1px solid #ccc; /* Separates actions from error list */
+    border-top: 1px solid #ccc;
 }
 
-.error-dropdown .conversion-options button, .error-actions button {
-    padding: 6px 12px; /* Comfortable padding for button text */
-    font-size: 14px; /* Matches the dropdown text size */
+.error-dropdown .conversion-options button,
+.error-actions button {
+    padding: 6px 12px;
+    font-size: 14px;
     color: #ffffff;
-    background-color: #000000; /* Primary action color */
+    background-color: #000000;
     border: none;
-    border-radius: 4px; /* Adds a modern, rounded look */
+    border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.2s;
+    white-space: nowrap;
+    margin-left: 10px;
 }

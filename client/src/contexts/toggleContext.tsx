@@ -35,10 +35,9 @@ type ToggleContextType = {
 	removeUploadedFile		: (index: number) => void;
 	fileErrors: FileErrors; // Errors for each uploaded file
 	setFileErrors: (errors: FileErrors[]) => void;
-    errorFileInfo: string [];  // Allow errorFileID to be string or null
-    setErrorFileInfo: (errorFileInfo: string []) => void;
 	handleRetryConversion: (filePath: string, fileID: string) => void;
 	updateFileErrors: (fileID: string, errors: string []) => void;
+	clearFileErrors: (fileID: string) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -61,10 +60,9 @@ const defaultState: ToggleContextType = {
 	setFeatureVisibility    : () => {},
 	fileErrors: {},
 	setFileErrors: () => {},
-	errorFileInfo: [],
-	setErrorFileInfo: () => {},
 	handleRetryConversion: () => {},
 	updateFileErrors: () => {},
+	clearFileErrors: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -183,9 +181,16 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		}));
 	};
 
-	const [fileErrors, setFileErrors] = useState<FileErrors>({}); // Initialize as an empty object
 
-	const [errorFileInfo, setErrorFileInfo] = useState([]); // State for managing file errors
+	const clearFileErrors = (fileId: string) => {
+		setFileErrors(prevErrors => {
+			const updatedErrors = { ...prevErrors };
+			delete updatedErrors[fileId];
+			return updatedErrors;
+		});
+	};
+
+	const [fileErrors, setFileErrors] = useState<FileErrors>({}); // Initialize as an empty objecty
 
 
 	useEffect(() => {
@@ -214,9 +219,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				removeUploadedFile,
 				fileErrors,
 				setFileErrors,
-				errorFileInfo,
-				setErrorFileInfo,
 				handleRetryConversion,
+				clearFileErrors,
 				updateFileErrors,
 			}}
 		>

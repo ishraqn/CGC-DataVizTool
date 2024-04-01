@@ -1,9 +1,15 @@
 import { parse } from 'csv-parse';
 import fs from 'fs';
 
+interface ValidationError {
+  row: number; // This will now accurately reflect the row number from the CSV file
+  header: string[];
+  rowData: string[];
+}
+
 interface ValidationResult {
   hasErrors: boolean;
-  errors: string[];
+  errors: ValidationError[];
 }
 
 export function validateCsvRecords(filePath: string): Promise<ValidationResult> {
@@ -14,18 +20,23 @@ export function validateCsvRecords(filePath: string): Promise<ValidationResult> 
       skip_empty_lines: true
     });
 
-    const errors: string[] = [];
-    let rowIndex = 0;
+    const errors: ValidationError[] = [];
+    const headers: string[] = [];
+    let currentRow = 0; // Variable to track the current row number
 
     parser.on('readable', () => {
       let record;
       while (record = parser.read()) {
-        rowIndex++;
-        for (const [column, value] of Object.entries(record)) {
-          const stringValue = String(value).trim();
-          if (stringValue === '0' || stringValue.toLowerCase() === 'na' || stringValue === '') {
-            errors.push(`Missing or invalid data in row ${rowIndex}, column ${column}`);
-          }
+        currentRow++; // Increment the row counter for each row read
+        if (headers.length === 0) {
+          headers.push(...Object.keys(record));
+        }
+
+        const rowData = Object.values(record).map(value => String(value).trim());
+        const errorDetected = rowData.some(value => value === '0' || value.toLowerCase() === 'na' || value === '');
+
+        if (errorDetected) {
+          errors.push({ row: currentRow, header: headers, rowData }); // Use currentRow for the error row number
         }
       }
     });
