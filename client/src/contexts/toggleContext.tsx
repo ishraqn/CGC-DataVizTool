@@ -31,6 +31,9 @@ type ToggleContextType = {
 	featureVisibility       : { [key: string]: boolean };
 	toggleFeatureVisibility : (feature: string) => void;
 	setFeatureVisibility    : (visibility: {[key: string]: boolean}) => void;
+	provinceVisibility       : { [key: string]: boolean };
+	toggleProvinceVisibility : (feature: string) => void;
+	setProvinceVisibility    : (visibility: {[key: string]: boolean}) => void;
 	removeUploadedFile		: (index: number) => void;
 };
 
@@ -56,6 +59,9 @@ const defaultState: ToggleContextType = {
 	featureVisibility       : {},
 	toggleFeatureVisibility : () => {},
 	setFeatureVisibility    : () => {},
+	provinceVisibility      : {},
+	toggleProvinceVisibility: () => {},
+	setProvinceVisibility   : () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -85,6 +91,16 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
 	const toggleFeatureVisibility = (key: string) => {
 		setFeatureVisibility((prev) => ({
+			...prev,
+			[key]: !prev[key],
+		}));
+	};
+	const [provinceVisibility, setProvinceVisibility] = useState<{
+		[key: string]: boolean;
+	}>(defaultState.provinceVisibility);
+
+	const toggleProvinceVisibility = (key: string) => {
+		setProvinceVisibility((prev) => ({
 			...prev,
 			[key]: !prev[key],
 		}));
@@ -169,6 +185,9 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				featureVisibility,
 				toggleFeatureVisibility,
 				setFeatureVisibility,
+				provinceVisibility,
+				toggleProvinceVisibility,
+				setProvinceVisibility,
 				removeUploadedFile,
 			}}
 		>
