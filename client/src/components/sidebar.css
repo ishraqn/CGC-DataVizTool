@@ -157,10 +157,9 @@
 
 .color-picker-wrapper {
     display: flex;
-    flex-direction: column; /* Display sliders below one another */
+    flex-direction: column;
 }
 
-/* Disable hover effects on children when confirmation dialog is visible */
 .sidebar-menu-dialog-open{
     pointer-events: none;
     cursor: pointer;
