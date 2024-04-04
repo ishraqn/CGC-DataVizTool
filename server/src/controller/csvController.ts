@@ -25,7 +25,6 @@ export const csvController = {
                 const validation = await validateCsvRecords(fileDetails.path);
 
                 if (validation.hasErrors) {
-                    (req.session as any).csvErrors = validation.errors;
 
                     res.status(422).json({
                         errors: validation.errors,

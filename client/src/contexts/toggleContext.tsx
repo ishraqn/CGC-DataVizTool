@@ -35,6 +35,8 @@ type ToggleContextType = {
 	removeUploadedFile		: (index: number) => void;
 	fileErrors: FileErrors; // Errors for each uploaded file
 	setFileErrors: (errors: FileErrors[]) => void;
+	errorFileID: string;
+	setErrorFileID: (fileID: string) => void;
 	handleRetryConversion: (filePath: string, fileID: string) => void;
 	updateFileErrors: (fileID: string, errors: string []) => void;
 	clearFileErrors: (fileID: string) => void;
@@ -60,6 +62,8 @@ const defaultState: ToggleContextType = {
 	setFeatureVisibility    : () => {},
 	fileErrors: {},
 	setFileErrors: () => {},
+	errorFileID: {},
+	setErrorFileID: () => {},
 	handleRetryConversion: () => {},
 	updateFileErrors: () => {},
 	clearFileErrors: () => {},
@@ -175,22 +179,28 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 	};
 
 	const updateFileErrors = (fileId: string, errors: string[]) => {
-		setFileErrors((prevErrors) => ({
-			...prevErrors,
-			[fileId]: errors,
-		}));
+		setFileErrors((prevErrors) => {
+			const updatedErrors = { ...prevErrors, [fileId]: errors };
+			localStorage.setItem('fileErrors', JSON.stringify(updatedErrors)); // Store updated errors in local storage
+			return updatedErrors;
+		});
 	};
-
-
+	
 	const clearFileErrors = (fileId: string) => {
-		setFileErrors(prevErrors => {
+		setFileErrors((prevErrors) => {
 			const updatedErrors = { ...prevErrors };
 			delete updatedErrors[fileId];
+			localStorage.setItem('fileErrors', JSON.stringify(updatedErrors)); // Update local storage after clearing errors
 			return updatedErrors;
 		});
 	};
 
-	const [fileErrors, setFileErrors] = useState<FileErrors>({}); // Initialize as an empty objecty
+	// Initialize fileErrors from local storage, or fallback to default if not found
+    const [fileErrors, setFileErrors] = useState<FileErrors>(() => {
+        const storedErrors = localStorage.getItem('fileErrors');
+        return storedErrors ? JSON.parse(storedErrors) : defaultState.fileErrors;
+    });
+	// const [errorFileID, setErrorFileID] = use 
 
 
 	useEffect(() => {

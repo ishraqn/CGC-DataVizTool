@@ -243,9 +243,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 					</li>
 				))}
 			</ul>
-
 			<div> <ErrorDropdown/> </div>
-
 			{showConfirmation && (
                 <ConfirmationDialog
                     message="Are you sure you want to delete this file?"

@@ -1,24 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './displayErrors.css';
 import { useToggle } from "../contexts/useToggle";
 
 const ErrorDropdown = () => {
-    const { uploadedFiles, currentFileIndex, fileErrors, updateFileErrors } = useToggle();
+    const { uploadedFiles, currentFileIndex, fileErrors } = useToggle();
     const [isOpen, setIsOpen] = useState(false);
 
+    // handling the local statemanagement during file alternating.
     const currentFileId = uploadedFiles[currentFileIndex]?.id;
     const currentFileErrors = fileErrors[currentFileId] || [];
-
-    useEffect(() => {
-        fetch('/api/csv-errors')
-            .then(response => response.json())
-            .then(errors => {
-                if (errors && errors.length > 0) {
-                    updateFileErrors(currentFileId, errors);
-                }
-            })
-            .catch(console.error); // Error handling for the fetch request
-    }, [currentFileId, updateFileErrors]); // Dependencies for useEffect
 
     if (currentFileErrors.length === 0) return null;
 
