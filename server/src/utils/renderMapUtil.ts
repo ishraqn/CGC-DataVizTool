@@ -40,13 +40,7 @@ const renderMap = async (filePath: string,
     <style>
         #map { height: 100vh; width: 100vw; }
         .leaflet-container {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            bottom: 10px;
-            left: 10px;
-            border-radius: 10px;
-            background-color: #e0e7e7;
+            background-color:  #ffffff;
           }          
     </style>
 </head>
