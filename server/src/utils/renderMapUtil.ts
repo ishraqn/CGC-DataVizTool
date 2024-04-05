@@ -1,7 +1,8 @@
 import * as puppeteer from "puppeteer";
 import fs from "fs/promises";
 
-const renderMap = async (filePath: string): Promise<Buffer> => {
+const renderMap = async (filePath: string,
+    fillColors: {[key:string]: boolean}, visibleFeatures: {[key: string]: boolean}): Promise<Buffer> => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
