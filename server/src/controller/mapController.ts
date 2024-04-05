@@ -7,7 +7,7 @@ export const mapController = {
         try {
             let filePath = req.body;
             const fillColors = req.body.fillColors;
-            const visibleFeatures = req.body.visibleFeatures;
+            const visibleFeatures = req.body.visibileFeatures;
             if (Object.keys (filePath).length === 0) {
                 filePath = resolve(__dirname, "..", "data", "default", "simplified", "default-simplified.geojson");
             }

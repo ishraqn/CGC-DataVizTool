@@ -1,15 +1,21 @@
 import * as puppeteer from "puppeteer";
 import fs from "fs/promises";
 
-const renderMap = async (filePath: string,
-    fillColors: {[key:string]: boolean}, visibleFeatures: {[key: string]: boolean}): Promise<Buffer> => {
+const renderMap = async (
+    filePath: string,
+    fillColors: undefined,
+    visibleFeatures: undefined
+): Promise<Buffer> => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
+    await page.setBypassCSP(true);
 
     page.on("console", (consoleMessage) =>
         console.log("PAGE LOG:", consoleMessage.text())
     );
-
+    console.log("File Path: ", filePath);
+    console.log("Fill Colors: ", fillColors);
+    console.log("Visible Features: ", visibleFeatures);
     await page.setViewport({
         width: 1920,
         height: 1080,
@@ -50,50 +56,50 @@ const renderMap = async (filePath: string,
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
     <script>
-        const geoJsonData = ${JSON.stringify(geoJsonData)};
-        const featureVisibility = ${JSON.stringify(visibleFeatures)};
-        const featureColors = ${JSON.stringify(fillColors)};
+    const geoJsonData = ${JSON.stringify(geoJsonData)};
+    const featureColors = ${JSON.stringify(fillColors)};
+    const featureVisibility = ${JSON.stringify(visibleFeatures)};
 
-        const geoJsonStyle = (feature) => {
-            if (!featureVisibility[feature.properties.CARUID]) {
-                return {
-                    fillOpacity: 0,
-                    weight: 0,
-                    color: "white",
-                    fillColor: featureColors[feature.properties.CARUID],
-                };
-            } else {
-                return {
-                    fillColor: featureColors[feature.properties.CARUID],
-                    weight: 3,
-                    color: "#46554F",
-                    fillOpacity: 1,
-                };
+    const geoJsonStyle = (feature) => {
+        if (!featureVisibility[feature.properties.CARUID]) {
+            return {
+                fillOpacity: 0,
+                weight: 0,
+                color: "white",
+                fillColor: featureColors[feature.properties.CARUID],
+            };
+        } else {
+            return {
+                fillColor: featureColors[feature.properties.CARUID],
+                weight: 3,
+                color: "#46554F",
+                fillOpacity: 1,
+            };
+        }
+    };
+
+    const initMap = () => {
+        const map = L.map('map', {
+            zoom: 1,
+            zoomControl: false,
+        });
+
+        const geoJSONLayer = L.geoJson(geoJsonData, {
+            style: geoJsonStyle,
+            filter: (feature) => {
+                return featureVisibility[feature.properties.CARUID];
             }
-        };
+        }).addTo(map);
 
-        const initMap = () => {
-            const map = L.map('map', {
-                zoom: 1,
-                zoomControl: false,
-            });
+        const bounds = geoJSONLayer.getBounds();
 
-            const geoJSONLayer = L.geoJson(geoJsonData, {
-                style: geoJsonStyle,
-                filter: (feature) => {
-                    return featureVisibility[feature.properties.CARUID];
-                }
-            }).addTo(map);
-
-            const bounds = geoJSONLayer.getBounds();
-
-            if (bounds.isValid()) {
-                map.fitBounds(bounds);
-            }
-            else{
-                map.fitBounds(-146.77734375000003,20.797201434307,-46.75781250000001,86.77799674310461);
-            }
-        };
+        if (bounds.isValid()) {
+            map.fitBounds(bounds);
+        }
+        else{
+            map.fitBounds(-146.77734375000003,20.797201434307,-46.75781250000001,86.77799674310461);
+        }
+    };
 
         document.addEventListener('DOMContentLoaded', initMap);
     </script>
