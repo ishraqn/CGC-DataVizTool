@@ -9,7 +9,7 @@ import { useToggle } from "./contexts/useToggle";
 const App: React.FC = () => {
 	const [mapData, setMapData] = useState(null);
 	const [uploadCount, setUploadCount] = useState(0);
-	const { uploadedFiles, currentFileIndex, setCurrentFileIndex } = useToggle();
+	const { uploadedFiles, currentFileIndex, setCurrentFileIndex, featureColors } = useToggle();
 	const [previousFileIndex, setPreviousFileIndex] = useState(-1);
 
 	const getCurrentSelectedFile = async () => {
