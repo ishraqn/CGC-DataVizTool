@@ -80,14 +80,25 @@ const renderMap = async (filePath: string,
 
         const initMap = () => {
             const map = L.map('map', {
-                center: [74.14008387440462, -96.767578125],
-                zoom: 3,
+                zoom: 1,
                 zoomControl: false,
             });
 
-            L.geoJson(geoJsonData, {style: geoJsonStyle}).addTo(map);
+            const geoJSONLayer = L.geoJson(geoJsonData, {
+                style: geoJsonStyle,
+                filter: (feature) => {
+                    return featureVisibility[feature.properties.CARUID];
+                }
+            }).addTo(map);
 
-            map.fitBounds(-146.77734375000003,20.797201434307,-46.75781250000001,86.77799674310461);
+            const bounds = geoJSONLayer.getBounds();
+
+            if (bounds.isValid()) {
+                map.fitBounds(bounds);
+            }
+            else{
+                map.fitBounds(-146.77734375000003,20.797201434307,-46.75781250000001,86.77799674310461);
+            }
         };
 
         document.addEventListener('DOMContentLoaded', initMap);
