@@ -57,47 +57,26 @@ const renderMap = async (filePath: string,
     crossorigin=""></script>
     <script>
         const geoJsonData = ${JSON.stringify(geoJsonData)};
+        const featureVisibility = ${JSON.stringify(visibleFeatures)};
+        const featureColors = ${JSON.stringify(fillColors)};
 
-        const getColor = totalSamples =>  {
-            return totalSamples > 28
-                ? "#29394a"
-                : totalSamples > 26
-                ? "#304152"
-                : totalSamples > 24
-                ? "#38495b"
-                : totalSamples > 22
-                ? "#405264"
-                : totalSamples > 20
-                ? "#485a6d"
-                : totalSamples > 18
-                ? "#506376"
-                : totalSamples > 16
-                ? "#586b7f"
-                : totalSamples > 14
-                ? "#607488"
-                : totalSamples > 12
-                ? "#687c91"
-                : totalSamples > 10
-                ? "#70849a"
-                : totalSamples > 8
-                ? "#788da3"
-                : totalSamples > 6
-                ? "#8095ac"
-                : totalSamples > 4
-                ? "#889eb5"
-                : totalSamples > 2
-                ? "#90a6be"
-                : totalSamples > 0
-                ? "#98afc7"
-                : "white"; // missing/0
+        const geoJsonStyle = (feature) => {
+            if (!featureVisibility[feature.properties.CARUID]) {
+                return {
+                    fillOpacity: 0,
+                    weight: 0,
+                    color: "white",
+                    fillColor: featureColors[feature.properties.CARUID],
+                };
+            } else {
+                return {
+                    fillColor: featureColors[feature.properties.CARUID],
+                    weight: 3,
+                    color: "#46554F",
+                    fillOpacity: 1,
+                };
+            }
         };
-
-        const geoJsonStyle = feature => ({
-            fillColor: getColor(feature.properties.totalSamples),
-            weight: 2,
-            color: "#46554F",
-            fillOpacity: 1,
-        });
 
         const initMap = () => {
             const map = L.map('map', {
