@@ -13,9 +13,7 @@ const renderMap = async (
     page.on("console", (consoleMessage) =>
         console.log("PAGE LOG:", consoleMessage.text())
     );
-    console.log("File Path: ", filePath);
-    console.log("Fill Colors: ", fillColors);
-    console.log("Visible Features: ", visibleFeatures);
+
     await page.setViewport({
         width: 1920,
         height: 1080,

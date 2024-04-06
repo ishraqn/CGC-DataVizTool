@@ -120,7 +120,7 @@ const App: React.FC = () => {
 			const a = document.createElement("a");
 			a.href = url;
 			if (selectedFile.cleanName.trim().length > 0) {
-				a.download = selectedFile.cleanName + ".png";
+				a.download = selectedFile.cleanName.split('.').slice(0,-1).join('.') + ".png";
 			} else {
 				a.download = "default-map.png";
 			}
