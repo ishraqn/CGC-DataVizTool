@@ -33,7 +33,6 @@ export const fileController = {
 		}
 
 		// File uploaded successfully
-		console.log("File uploaded successfully.");
 		next();
 		return;
 	},
