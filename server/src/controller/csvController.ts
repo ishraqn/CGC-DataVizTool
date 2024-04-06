@@ -22,7 +22,8 @@ export const csvController = {
         }
 
         try {
-            await convertCsvToGeoJsonUtil(fileDetails.path, fileDetails.name);
+            const geoJson = await convertCsvToGeoJsonUtil(fileDetails.path, fileDetails.name);
+            res.locals.convertedCsvToGeoJson = geoJson;
             next();
         } catch (err) {
             console.error("Error in csvController.convert2JSON: ");
