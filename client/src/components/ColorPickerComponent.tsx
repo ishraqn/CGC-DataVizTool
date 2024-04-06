@@ -55,10 +55,12 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange, backg
   }, [autoColourRange]);
 
   useEffect(() => {
-    const input = document.querySelector(`input[id^="rc-editable-input"]`)as HTMLInputElement | null;;
-        if (input !== null) {
-            input.maxLength = 7;
-        }
+    const input = document.querySelectorAll('input[id^="rc-editable-input"]') as NodeListOf<HTMLInputElement>;
+    input.forEach((input) => {
+      if (input !== null) {
+              input.maxLength = 7;
+          }
+      });
   },[]);
 
   return (
