@@ -9,7 +9,7 @@ import { useToggle } from "./contexts/useToggle";
 const App: React.FC = () => {
 	const [mapData, setMapData] = useState(null);
 	const [uploadCount, setUploadCount] = useState(0);
-	const { uploadedFiles, currentFileIndex, setCurrentFileIndex } = useToggle();
+	const { uploadedFiles, currentFileIndex, setCurrentFileIndex, featureColors, featureVisibility } = useToggle();
 	const [previousFileIndex, setPreviousFileIndex] = useState(-1);
 
 	const getCurrentSelectedFile = async () => {
@@ -109,7 +109,7 @@ const App: React.FC = () => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ filePath: selectedFile.path }),
+				body: JSON.stringify({ filePath: selectedFile.path, fillColors: featureColors, visibileFeatures: featureVisibility}),
 			});
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -120,7 +120,7 @@ const App: React.FC = () => {
 			const a = document.createElement("a");
 			a.href = url;
 			if (selectedFile.cleanName.trim().length > 0) {
-				a.download = selectedFile.cleanName + ".png";
+				a.download = selectedFile.cleanName.split('.').slice(0,-1).join('.') + ".png";
 			} else {
 				a.download = "default-map.png";
 			}

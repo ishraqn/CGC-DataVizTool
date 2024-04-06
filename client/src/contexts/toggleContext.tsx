@@ -35,6 +35,8 @@ type ToggleContextType = {
 	toggleProvinceVisibility : (feature: string) => void;
 	setProvinceVisibility    : (visibility: {[key: string]: boolean}) => void;
 	removeUploadedFile		: (index: number) => void;
+	featureColors 			: { [key: string]: string };
+	setFeatureColors 		: (colors: { [key: string]: string }) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -59,6 +61,8 @@ const defaultState: ToggleContextType = {
 	featureVisibility       : {},
 	toggleFeatureVisibility : () => {},
 	setFeatureVisibility    : () => {},
+	featureColors 			: {},
+	setFeatureColors 		: () => {},
 	provinceVisibility      : {},
 	toggleProvinceVisibility: () => {},
 	setProvinceVisibility   : () => {},
@@ -84,6 +88,10 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		defaultState.currentFileIndex
 	);
 	const [removedFileIds, setRemovedFileIds] = useState<string[]>([]);
+
+	const [featureColors, setFeatureColors] = useState<{
+		[key: string]: string;
+	}>(defaultState.featureColors);
 
 	const [featureVisibility, setFeatureVisibility] = useState<{
 		[key: string]: boolean;
@@ -189,6 +197,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				toggleProvinceVisibility,
 				setProvinceVisibility,
 				removeUploadedFile,
+				featureColors,
+				setFeatureColors,
 			}}
 		>
 			{children}
