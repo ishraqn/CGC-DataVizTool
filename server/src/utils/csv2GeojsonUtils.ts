@@ -23,7 +23,7 @@ async function convertCSVToGeoJSON(csvFilePath: string, _filename: string) {
 			features: features,
 		};
 
-		return JSON.stringify(geoJSON, null, 2);
+		return geoJSON;
 	} catch (error) {
 		console.error("Failed to convert CSV to GeoJSON:", error);
 		return null;
