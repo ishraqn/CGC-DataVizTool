@@ -1,0 +1,40 @@
+.swatch-container {
+    display: flex;
+    align-items: center;
+}
+
+.swatch {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+  
+.swatch:hover {
+transform: scale(1.1);
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+input[id^="rc-editable-input"] {
+border: 1px solid #f4f6f9;
+border-radius: 4px;
+margin: 0 10px;
+width: 70px;
+padding: 6px;
+}
+
+label[for ^="rc-editable-input"] {
+font-size: 12px;
+color: #999;
+}
+
+.slider-container {
+margin-top: 10px;
+}
+
+.cover {
+position: fixed;
+border-radius: 2px;
+}
+
+#errorText{
+    font-size: 12px;
+    color: red;
+}
