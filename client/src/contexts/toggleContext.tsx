@@ -31,6 +31,9 @@ type ToggleContextType = {
 	featureVisibility       : { [key: string]: boolean };
 	toggleFeatureVisibility : (feature: string) => void;
 	setFeatureVisibility    : (visibility: {[key: string]: boolean}) => void;
+	provinceVisibility       : { [key: string]: boolean };
+	toggleProvinceVisibility : (feature: string) => void;
+	setProvinceVisibility    : (visibility: {[key: string]: boolean}) => void;
 	removeUploadedFile		: (index: number) => void;
 	featureColors 			: { [key: string]: string };
 	setFeatureColors 		: (colors: { [key: string]: string }) => void;
@@ -43,9 +46,9 @@ const defaultState: ToggleContextType = {
 	setIsUploadedFileVisible: () => {},
 	uploadedFile            : null,
 	setUploadedFile         : () => {},
-	primaryColorPicker        : "#98AFC7",
+	primaryColorPicker        : "#DDE6B3",
 	setPrimaryColorPicker     : () => {},
-	secondaryColorPicker      : "#98AFC7",
+	secondaryColorPicker      : "#DDE6B3",
 	setSecondaryColorPicker   : () => {},
 	autoColourRange			: true,
 	setAutoColourRange		: () => {},
@@ -60,6 +63,9 @@ const defaultState: ToggleContextType = {
 	setFeatureVisibility    : () => {},
 	featureColors 			: {},
 	setFeatureColors 		: () => {},
+	provinceVisibility      : {},
+	toggleProvinceVisibility: () => {},
+	setProvinceVisibility   : () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -93,6 +99,16 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
 	const toggleFeatureVisibility = (key: string) => {
 		setFeatureVisibility((prev) => ({
+			...prev,
+			[key]: !prev[key],
+		}));
+	};
+	const [provinceVisibility, setProvinceVisibility] = useState<{
+		[key: string]: boolean;
+	}>(defaultState.provinceVisibility);
+
+	const toggleProvinceVisibility = (key: string) => {
+		setProvinceVisibility((prev) => ({
 			...prev,
 			[key]: !prev[key],
 		}));
@@ -177,6 +193,9 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				featureVisibility,
 				toggleFeatureVisibility,
 				setFeatureVisibility,
+				provinceVisibility,
+				toggleProvinceVisibility,
+				setProvinceVisibility,
 				removeUploadedFile,
 				featureColors,
 				setFeatureColors,

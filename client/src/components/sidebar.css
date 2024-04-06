@@ -157,10 +157,9 @@
 
 .color-picker-wrapper {
     display: flex;
-    flex-direction: column; /* Display sliders below one another */
+    flex-direction: column;
 }
 
-/* Disable hover effects on children when confirmation dialog is visible */
 .sidebar-menu-dialog-open{
     pointer-events: none;
     cursor: pointer;
@@ -179,7 +178,18 @@
     border-bottom: 0.5px solid #c2c6c6;
 }
 
-.remove-icon {
+.expand-carrot {
+    font-size: 15px;
+    margin-right: 5px;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.expand-carrot:hover {
+    color: black;
+    transform: scale(1.1);
+}
+
+.remove-icon, .expand-carrot{
     color: #5C5C5C;
     font-size: 12px;
     cursor: pointer;
