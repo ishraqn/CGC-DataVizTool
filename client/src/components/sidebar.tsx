@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { FaTimes, FaAngleRight, FaAngleDown } from "react-icons/fa";
+import { FaTimes, FaRegSave, FaAngleRight, FaAngleDown } from "react-icons/fa";
 import "./sidebar.css";
 import { useToggle } from "../contexts/useToggle";
 import ColorPickerComponent from "./ColorPickerComponent";
@@ -21,6 +21,7 @@ const mockFilterGroups: FilterGroup[] = [
     { id: "3", name: "Select File" },
 	{ id: "4", name: "Select Crop Region" },
 	{ id: "6", name: "Toggle Tile Layer" },
+	{ id: "7", name: "Toggle Legend" },
 	{ id: "5", name: "Download Map" },
 ];
 
@@ -38,8 +39,8 @@ const caruidToProvinceMap: Record<number, string> = {
 	60: "Yukon",
 	61: "Northwest Territories",
 	62: "Nunavut",
-  };
-  
+};
+
 const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 
     const {
@@ -63,12 +64,17 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 		removeUploadedFile,
 		toggleTileLayer,
 		setToggleTileLayer,
+		handleChangeTitle,
+		currentFileTitle,
+		toggleLegendVisibility,
+		setLegendVisibility,
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
 	const [showFeatureVisibility, setShowFeatureVisibility] = useState(false);
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [fileToDeleteIndex, setFileToDeleteIndex] = useState<number | null>(null);
+	const [titleInputValue, setTitleInputValue] = useState("");
 
     const handleCardClick = (id: string) => {
 		switch (id) {
@@ -88,6 +94,9 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 				break;
 			case "6":
 				setToggleTileLayer(!toggleTileLayer);
+        break;
+			case "7":
+				setLegendVisibility(!toggleLegendVisibility);
 				break;
 			default:
 				break;
@@ -184,6 +193,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 
     const handleFileSelection = (index: number) => {
         setCurrentFileIndex(index);
+		setTitleInputValue(uploadedFiles[index].title);
     };
 
     const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -225,6 +235,9 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 		});
 	};
 
+	const handleNewTitle = (title: string) => {
+		handleChangeTitle(title);
+	};
 
 	const handleNonzeroSelect = () => {
 		geoJsonData.features.forEach((feature) => {
@@ -382,6 +395,19 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 						)}
 					</li>
 				))}
+				<form className="titleForm">
+					<input
+                        className="titleInput"
+                        type="text"
+                        placeholder="Map Title"
+						value={titleInputValue}
+                        onChange={(e) => setTitleInputValue(e.target.value)}
+                    />
+					<FaRegSave
+					className="save-icon"   
+					onClick={() => handleNewTitle(titleInputValue)}
+					/>
+				</form>
 			</ul>
 			{showConfirmation && (
                 <ConfirmationDialog

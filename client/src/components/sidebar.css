@@ -33,7 +33,7 @@
     list-style-type: none;
     overflow: auto;
 }
-.menu-item {
+.menu-item, .titleForm {
     color: rgb(0, 0, 0);
     padding: 15px 20px;
     position: relative;
@@ -46,7 +46,7 @@
     box-shadow: rgba(33, 35, 38, 0.1) 0px 10px -1px -10px;
 }
 
-.menu-item-label {
+.menu-item-label, .titleInput {
     user-select: none;
     display: block;
     width: 100%;
@@ -178,6 +178,21 @@
     border-bottom: 0.5px solid #c2c6c6;
 }
 
+.titleForm{
+    display: flex;
+    align-items: center;
+}
+
+.titleInput {
+    flex: 2;
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+    max-width: 150px;
+}
+
 .expand-carrot {
     font-size: 15px;
     margin-right: 5px;
@@ -200,6 +215,17 @@
 .remove-icon:hover {
     opacity: 0.7;
     color: red;
+}
+
+.save-icon {
+    color: #5C5C5C;
+    font-size: 20px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.save-icon:hover {
+    color: #898952;
 }
 
 .confirmation-dialog {

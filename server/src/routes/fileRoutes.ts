@@ -12,6 +12,7 @@ router.get("/last-upload-file", fileController.sendLastUploadFile); // route to 
 router.get("/all-uploaded-files", fileController.listAllFiles); // route to list all the uploaded files
 router.get("/:fileId", fileController.getFile); // route to get a file
 router.post("/remove/:fileId", fileController.removeFile); // route to remove a file
+router.put("/changeTitle/:fileId", fileController.changeTitleName); //route to change file name
 // router.post('/upload', upload.single('csvFile'), CSVToGeoJSONControl);
 // router.get('/download', fileController.download); // route to download a file
 

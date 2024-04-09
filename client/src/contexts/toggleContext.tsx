@@ -8,6 +8,7 @@ interface UploadFileData {
 	type            : string;
 	lastModifiedDate: Date;
 	cleanName       : string;
+    title           : string;
 }
 
 type ToggleContextType = {
@@ -35,10 +36,15 @@ type ToggleContextType = {
 	toggleProvinceVisibility : (feature: string) => void;
 	setProvinceVisibility    : (visibility: {[key: string]: boolean}) => void;
 	removeUploadedFile		: (index: number) => void;
+	handleChangeTitle		: (title: string) => void;
+	currentFileTitle		: string;
+	setCurrentFileTitle		: (title: string) => void;
 	featureColors 			: { [key: string]: string };
 	setFeatureColors 		: (colors: { [key: string]: string }) => void;
 	toggleTileLayer			: boolean;
 	setToggleTileLayer		: (toggle: boolean) => void;
+	toggleLegendVisibility	: boolean;
+	setLegendVisibility		: (isVisible: boolean) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -63,6 +69,9 @@ const defaultState: ToggleContextType = {
 	featureVisibility       : {},
 	toggleFeatureVisibility : () => {},
 	setFeatureVisibility    : () => {},
+	handleChangeTitle		: () => {},
+	currentFileTitle		: "",
+	setCurrentFileTitle		: () => {},
 	featureColors 			: {},
 	setFeatureColors 		: () => {},
 	provinceVisibility      : {},
@@ -70,6 +79,8 @@ const defaultState: ToggleContextType = {
 	setProvinceVisibility   : () => {},
 	toggleTileLayer			: false,
 	setToggleTileLayer		: () => {},
+	toggleLegendVisibility	: true,
+	setLegendVisibility		: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -93,6 +104,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 	);
 	const [removedFileIds, setRemovedFileIds] = useState<string[]>([]);
 
+	const [toggleLegendVisibility, setLegendVisibility] = useState(defaultState.toggleLegendVisibility);
+
 	const [featureColors, setFeatureColors] = useState<{
 		[key: string]: string;
 	}>(defaultState.featureColors);
@@ -102,6 +115,10 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 	const [featureVisibility, setFeatureVisibility] = useState<{
 		[key: string]: boolean;
 	}>(defaultState.featureVisibility);
+
+	const [currentFileTitle, setCurrentFileTitle] = useState(
+		uploadedFiles[currentFileIndex]?.title || ""
+	);
 
 	const toggleFeatureVisibility = (key: string) => {
 		setFeatureVisibility((prev) => ({
@@ -119,6 +136,29 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 			[key]: !prev[key],
 		}));
 	};
+
+	const handleChangeTitle = async (newTitle: string) => {
+		const fileId = uploadedFiles[currentFileIndex]?.id;
+		try {
+			const response = await fetch(`/api/v1/changeTitle/${fileId}`, {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({title: newTitle}),
+			});
+
+			if (!response.ok) {
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+
+			setCurrentFileTitle(newTitle);
+			uploadedFiles[currentFileIndex].title = newTitle;
+			const data = await response.json();
+		} catch (error) {
+			console.error("Error updating title:", error);
+		}
+	}
 
 	const fetchUploadedFiles = async () => {
 		try {
@@ -176,6 +216,12 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		fetchUploadedFiles();
 	}, []);
 
+	useEffect(() => {
+		if (currentFileIndex >= 0 && currentFileIndex < uploadedFiles.length) {
+			setCurrentFileTitle(uploadedFiles[currentFileIndex].title);
+		}
+	}, [currentFileIndex, uploadedFiles]);
+
 	return (
 		<ToggleContext.Provider
 			value={{
@@ -203,10 +249,15 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				toggleProvinceVisibility,
 				setProvinceVisibility,
 				removeUploadedFile,
+				handleChangeTitle,
+				currentFileTitle,
+				setCurrentFileTitle,
 				featureColors,
 				setFeatureColors,
 				toggleTileLayer,
 				setToggleTileLayer,
+				toggleLegendVisibility,
+				setLegendVisibility,
 			}}
 		>
 			{children}
