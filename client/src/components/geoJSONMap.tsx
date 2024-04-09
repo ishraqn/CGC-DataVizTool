@@ -32,7 +32,6 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     const [allValues, setValues] = useState<number[]>([]);
 
     const [steps, setSteps] = useState<number>(500); // State for steps
-    const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, toggleTileLayer} = useToggle();
     const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, currentFileTitle, toggleLegendVisibility, toggleTileLayer} = useToggle();
     const featureColorMapRef = useRef({});
 
