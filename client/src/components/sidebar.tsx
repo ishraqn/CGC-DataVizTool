@@ -84,7 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 				setIsTileLayerVisible(!isTileLayerVisible);
 				break;
 			case "3":
-				setShowFileList(!showFileList);
+				setShowFileList(prev => !prev);
 				break;
 			case "4":
 				setShowFeatureVisibility(!showFeatureVisibility);
@@ -208,6 +208,12 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
             setFeatureVisibility(intialVisibility);
         }
     }, [geoJsonData, setFeatureVisibility]);
+
+	useEffect(() => {
+		if (uploadedFiles.length > 0){
+			setShowFileList(true);
+		}
+	}, [uploadedFiles.length]);
 
 	const handleSelectAll = () => {
 		Object.keys(featureVisibility).forEach((key) => {
