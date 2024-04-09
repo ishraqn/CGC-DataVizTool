@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Tooltip } from 'react-tooltip';
 import './GuideTooltip.css';
 
