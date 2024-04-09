@@ -32,7 +32,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     const [allValues, setValues] = useState<number[]>([]);
 
     const [steps, setSteps] = useState<number>(500); // State for steps
-    const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, currentFileTitle} = useToggle();
+    const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, currentFileTitle, toggleLegendVisibility} = useToggle();
     const featureColorMapRef = useRef({});
 
     // Effect to initialize color gradient and data values
@@ -58,6 +58,56 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
             featureColorMapRef.current = featureColorMap;
         }
     }, [colorGradient, steps, allValues, geoJsonData]);
+
+    const Legend = ({ colorGradient, allValues }) => {
+        const map = useMap();
+    
+        useEffect(() => {
+        const legend = L.control({ position: "bottomright" });
+    
+        legend.onAdd = function () {
+            const div = L.DomUtil.create("div", "info legend");
+            let labels = ['<strong>Legend</strong>'];
+
+            const featuresColorMap = Object.values(featureColorMapRef.current).map((item, index) => {return [item, allValues[index]]});
+            const featuresWithValues = featuresColorMap.sort((a, b) => a[1] - b[1]).filter(item => item[1] !== 0);
+            
+            const numberOfLegendItems = 10;
+            const maxValue = Math.max(...featuresWithValues.map(item => item[1]));
+            const minValue = Math.min(...featuresWithValues.map(item => item[1]));
+            const interval = (maxValue - minValue) / numberOfLegendItems;
+
+            for (let i = 0; i < numberOfLegendItems; i++) {
+              const threshold = minValue + i * interval;
+            const upperBound = threshold + interval;
+            const colorIndex = getColor(upperBound - 1, allValues, steps);
+            const color = colorGradient[colorIndex];
+            
+            if (!isNaN(threshold) && !isNaN(upperBound)) {
+                labels.push(
+                    `<i style="background:${color}; width:18px; height:18px; display:inline-block; margin-right:4px;"></i> ` +
+                    `<span style="color: black;">${threshold.toFixed(0)} &ndash; ${upperBound.toFixed(0)}</span>`
+                );
+            }
+        }
+
+            div.innerHTML = labels.join('<br>');
+            return div;
+        };
+
+        if (toggleLegendVisibility) {
+            legend.addTo(map);
+        } else {
+            legend.remove();
+        }
+
+        return () => {
+            legend.remove();
+        };
+        }, [map, colorGradient, allValues, steps, toggleLegendVisibility]);
+
+        return null;
+    };
 
     const defaultStyle = {
         fillColor: "#98AFC7",
@@ -141,6 +191,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
                 preferCanvas={false}
                 inertia={false}
             >
+                <Legend colorGradient={colorGradient} allValues={allValues} />
                 {geoJsonData && (
                     <>
                         <TitleComponent title = {currentFileTitle}/>
