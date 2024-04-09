@@ -37,6 +37,8 @@ type ToggleContextType = {
 	removeUploadedFile		: (index: number) => void;
 	featureColors 			: { [key: string]: string };
 	setFeatureColors 		: (colors: { [key: string]: string }) => void;
+	toggleTileLayer			: boolean;
+	setToggleTileLayer		: (toggle: boolean) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -66,6 +68,8 @@ const defaultState: ToggleContextType = {
 	provinceVisibility      : {},
 	toggleProvinceVisibility: () => {},
 	setProvinceVisibility   : () => {},
+	toggleTileLayer			: false,
+	setToggleTileLayer		: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -92,6 +96,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 	const [featureColors, setFeatureColors] = useState<{
 		[key: string]: string;
 	}>(defaultState.featureColors);
+
+	const [toggleTileLayer, setToggleTileLayer] = useState(defaultState.toggleTileLayer);
 
 	const [featureVisibility, setFeatureVisibility] = useState<{
 		[key: string]: boolean;
@@ -199,6 +205,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				removeUploadedFile,
 				featureColors,
 				setFeatureColors,
+				toggleTileLayer,
+				setToggleTileLayer,
 			}}
 		>
 			{children}
