@@ -41,6 +41,8 @@ type ToggleContextType = {
 	setCurrentFileTitle		: (title: string) => void;
 	featureColors 			: { [key: string]: string };
 	setFeatureColors 		: (colors: { [key: string]: string }) => void;
+	toggleTileLayer			: boolean;
+	setToggleTileLayer		: (toggle: boolean) => void;
 	toggleLegendVisibility	: boolean;
 	setLegendVisibility		: (isVisible: boolean) => void;
 };
@@ -75,6 +77,8 @@ const defaultState: ToggleContextType = {
 	provinceVisibility      : {},
 	toggleProvinceVisibility: () => {},
 	setProvinceVisibility   : () => {},
+	toggleTileLayer			: false,
+	setToggleTileLayer		: () => {},
 	toggleLegendVisibility	: true,
 	setLegendVisibility		: () => {},
 };
@@ -105,6 +109,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 	const [featureColors, setFeatureColors] = useState<{
 		[key: string]: string;
 	}>(defaultState.featureColors);
+
+	const [toggleTileLayer, setToggleTileLayer] = useState(defaultState.toggleTileLayer);
 
 	const [featureVisibility, setFeatureVisibility] = useState<{
 		[key: string]: boolean;
@@ -248,6 +254,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				setCurrentFileTitle,
 				featureColors,
 				setFeatureColors,
+				toggleTileLayer,
+				setToggleTileLayer,
 				toggleLegendVisibility,
 				setLegendVisibility,
 			}}

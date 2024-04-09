@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MapContainer, GeoJSON, useMap } from "react-leaflet";
+import { MapContainer, GeoJSON, useMap, TileLayer } from "react-leaflet";
 import { GeoJsonObject, Feature, Geometry } from "geojson";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -32,7 +32,8 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     const [allValues, setValues] = useState<number[]>([]);
 
     const [steps, setSteps] = useState<number>(500); // State for steps
-    const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, currentFileTitle, toggleLegendVisibility} = useToggle();
+    const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, toggleTileLayer} = useToggle();
+    const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, currentFileTitle, toggleLegendVisibility, toggleTileLayer} = useToggle();
     const featureColorMapRef = useRef({});
 
     // Effect to initialize color gradient and data values
@@ -129,7 +130,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
             fillColor: colorGradient[fillColorIndex] || "white",
             weight: 0.7,
             color: "black",
-            fillOpacity: 1,
+            fillOpacity: toggleTileLayer ? 0.4 : 1,
         };
     };
 
@@ -188,6 +189,13 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
                 preferCanvas={false}
                 inertia={false}
             >
+                {toggleTileLayer && (
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">
+                        OpenStreetMap</a> contributors'
+                    />
+                )}
                 <Legend colorGradient={colorGradient} allValues={allValues} />
                 {geoJsonData && (
                     <>
