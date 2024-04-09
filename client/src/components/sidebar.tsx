@@ -196,10 +196,6 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 		setTitleInputValue(uploadedFiles[index].title);
     };
 
-    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        event.stopPropagation();
-    };
-
 	useEffect(() => {
         if (geoJsonData && "features" in geoJsonData) {
             const intialVisibility = {};
