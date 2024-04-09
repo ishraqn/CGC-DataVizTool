@@ -289,6 +289,11 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 	const handleColorMethodSwitch = () => {
 		setAutoColourRange(!autoColourRange);
 	};
+
+	const handleSubmit = (event: React.FormEvent) => {
+		event.preventDefault();
+		handleNewTitle(titleInputValue);
+	}
 	
     return (
 		<div className="sidebar">
@@ -391,7 +396,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 						)}
 					</li>
 				))}
-				<form className="titleForm">
+				<form className="titleForm" onSubmit={handleSubmit}>
 					<input
                         className="titleInput"
                         type="text"
@@ -399,10 +404,11 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 						value={titleInputValue}
                         onChange={(e) => setTitleInputValue(e.target.value)}
                     />
-					<FaRegSave
-					className="save-icon"   
+				<button type="submit" style={{ display: 'none' }} aria-hidden="true"></button>
+				<FaRegSave
+					className="save-icon"
 					onClick={() => handleNewTitle(titleInputValue)}
-					/>
+				/>
 				</form>
 			</ul>
 			{showConfirmation && (
