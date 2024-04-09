@@ -109,13 +109,6 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
         return null;
     };
 
-    const defaultStyle = {
-        fillColor: "#98AFC7",
-        weight: 1,
-        color: "white",
-        fillOpacity: 0.5,
-    };
-
     const geoJsonStyle = (feature: any) => {
         const currValue = feature.properties.totalSamples as number;
         const fillColorIndex = getColor(currValue, allValues, steps); // Call getColor function to get the fill color
