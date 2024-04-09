@@ -84,7 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 				setIsTileLayerVisible(!isTileLayerVisible);
 				break;
 			case "3":
-				setShowFileList(!showFileList);
+				setShowFileList(prev => !prev);
 				break;
 			case "4":
 				setShowFeatureVisibility(!showFeatureVisibility);
@@ -193,11 +193,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 
     const handleFileSelection = (index: number) => {
         setCurrentFileIndex(index);
-		setTitleInputValue(uploadedFiles[index].title);
-    };
-
-    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        event.stopPropagation();
+		setTitleInputValue(uploadedFiles[currentFileIndex].title);
     };
 
 	useEffect(() => {
@@ -212,6 +208,12 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
             setFeatureVisibility(intialVisibility);
         }
     }, [geoJsonData, setFeatureVisibility]);
+
+	useEffect(() => {
+		if (uploadedFiles.length > 0){
+			setShowFileList(true);
+		}
+	}, [uploadedFiles.length]);
 
 	const handleSelectAll = () => {
 		Object.keys(featureVisibility).forEach((key) => {
@@ -293,6 +295,11 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 	const handleColorMethodSwitch = () => {
 		setAutoColourRange(!autoColourRange);
 	};
+
+	const handleSubmit = (event: React.FormEvent) => {
+		event.preventDefault();
+		handleNewTitle(titleInputValue);
+	}
 	
     return (
 		<div className="sidebar">
@@ -395,7 +402,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 						)}
 					</li>
 				))}
-				<form className="titleForm">
+				<form className="titleForm" onSubmit={handleSubmit}>
 					<input
                         className="titleInput"
                         type="text"
@@ -403,10 +410,11 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 						value={titleInputValue}
                         onChange={(e) => setTitleInputValue(e.target.value)}
                     />
-					<FaRegSave
-					className="save-icon"   
+				<button type="submit" style={{ display: 'none' }} aria-hidden="true"></button>
+				<FaRegSave
+					className="save-icon"
 					onClick={() => handleNewTitle(titleInputValue)}
-					/>
+				/>
 				</form>
 			</ul>
 			{showConfirmation && (
