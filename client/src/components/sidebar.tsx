@@ -193,7 +193,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 
     const handleFileSelection = (index: number) => {
         setCurrentFileIndex(index);
-		setTitleInputValue(uploadedFiles[index].title);
+		setTitleInputValue(uploadedFiles[currentFileIndex].title);
     };
 
 	useEffect(() => {
