@@ -109,7 +109,7 @@ const App: React.FC = () => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ filePath: selectedFile.path, fillColors: featureColors, visibileFeatures: featureVisibility}),
+				body: JSON.stringify({ filePath: selectedFile.path, fillColors: featureColors, visibileFeatures: featureVisibility, title: selectedFile.title}),
 			});
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);

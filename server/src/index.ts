@@ -25,6 +25,7 @@ interface uploadFileData {
 	size: number;
 	type: string;
 	lastModifiedDate: Date;
+	title: string;
 }
 
 // express module augmentation

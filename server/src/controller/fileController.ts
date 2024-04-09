@@ -16,6 +16,7 @@ export const fileController = {
 				size: req.file.size,
 				type: req.file.mimetype,
 				lastModifiedDate: new Date(),
+				title: req.file.originalname,
 			};
 
 			// init the session uploadFileList if it doesn't exist
@@ -110,6 +111,21 @@ export const fileController = {
 			res.status(404).send("File not found.");
 		}
 	},
+
+	changeTitleName: (req: Request, res: Response) => {
+		const uploadFileList = req.session.uploadFileList;
+		const fileName = req.params.fileId;
+		const newTitle = req.body.title;
+
+		if(!uploadFileList || !uploadFileList[fileName]){
+			res.status(404).send('File not found.');
+			return;
+		}
+
+		uploadFileList[fileName].title = newTitle;
+
+		res.send({ message: "Title updated successfully.", newTitle });
+	}
 };
 // download: (req: Request, res: Response) => {
 

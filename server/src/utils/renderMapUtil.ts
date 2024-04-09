@@ -4,7 +4,8 @@ import fs from "fs/promises";
 const renderMap = async (
     filePath: string,
     fillColors: undefined,
-    visibleFeatures: undefined
+    visibleFeatures: undefined,
+    title: string
 ): Promise<Buffer> => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -46,10 +47,19 @@ const renderMap = async (
         .leaflet-container {
             background-color:  #ffffff;
           }          
+            .map-title{
+            position:relative;
+            padding: 6px 8px;
+            color: #4a4a4a;
+            z-index: 400;
+            font-size: 35px;
+            text-align: center;
+        }   
     </style>
 </head>
 <body>
     <div id="map"></div>
+    <div class="map-title">${title}</div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
