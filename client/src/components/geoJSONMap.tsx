@@ -67,7 +67,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     
         legend.onAdd = function () {
             const div = L.DomUtil.create("div", "info legend");
-            let labels = ['<strong>Legend</strong>'];
+            let labels = [];
 
             const featuresColorMap = Object.values(featureColorMapRef.current).map((item, index) => {return [item, allValues[index]]});
             const featuresWithValues = featuresColorMap.sort((a, b) => a[1] - b[1]).filter(item => item[1] !== 0);
@@ -85,12 +85,16 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
             
             if (!isNaN(threshold) && !isNaN(upperBound)) {
                 labels.push(
-                    `<i style="background:${color}; width:18px; height:18px; display:inline-block; margin-right:4px;"></i> ` +
-                    `<span style="color: black;">${threshold.toFixed(0)} &ndash; ${upperBound.toFixed(0)}</span>`
+                    `<i style="background:${color}; width:18px; height:18px; display:inline-block; margin-right:4px; border: 1px solid #ccc; border-radius: 4px;"></i> ` +
+                    `<span style="color: black; font-weight: bold;">${threshold.toFixed(0)} &ndash; ${upperBound.toFixed(0)}</span>`
                 );
             }
         }
-
+            div.style.backgroundColor = "rgba(255, 255, 255, 0.3)";
+            div.style.padding = "10px"; 
+            div.style.border = "2px solid #ccc"; 
+            div.style.borderRadius = "5px"; 
+        
             div.innerHTML = labels.join('<br>');
             return div;
         };
