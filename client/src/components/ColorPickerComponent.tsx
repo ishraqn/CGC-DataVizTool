@@ -30,6 +30,10 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange, backg
   });
   const [error, setError] = useState('');
 
+  const hexBlurHandler = () => {
+    setError('');
+  };
+
   const handleClick = () => {
     setDisplayColorPicker(!displayColorPicker);
   };
@@ -59,6 +63,7 @@ const ColorPickerComponent: React.FC<ColorPickerProps> = ({ onColorChange, backg
     input.forEach((input) => {
       if (input !== null) {
               input.maxLength = 7;
+              input.onblur = hexBlurHandler;
           }
       });
   },[]);
