@@ -16,11 +16,9 @@ export const geoController = {
 		const keys = Object.keys(req.session.uploadFileList);
 		const lastFileKey = keys[keys.length - 1];
 		const lastFile = req.session.uploadFileList[lastFileKey];
-
 		const directory = dirname(lastFile.path);
-		const newGeoJSONFileName =
-			basename(lastFile.path, extname(lastFile.path)) + ".geojson";
-		const processedGeoJSONFilePath = join(directory, newGeoJSONFileName);
+
+		const processedGeoJSONFile = res.locals.convertedCsvToGeoJson;
 		const processedCSVFilePath = resolve(
 			__dirname,
 			"..",
@@ -32,7 +30,7 @@ export const geoController = {
 
 		try {
 			const aggregatedData = await aggregateSamplesInBorders(
-				processedGeoJSONFilePath,
+				processedGeoJSONFile,
 				processedCSVFilePath
 			);
 			const outputFilePath = join(

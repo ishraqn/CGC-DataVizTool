@@ -1,9 +1,15 @@
 import * as puppeteer from "puppeteer";
 import fs from "fs/promises";
 
-const renderMap = async (filePath: string, title: string): Promise<Buffer> => {
+const renderMap = async (
+    filePath: string,
+    fillColors: undefined,
+    visibleFeatures: undefined,
+    title: string
+): Promise<Buffer> => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
+    await page.setBypassCSP(true);
 
     page.on("console", (consoleMessage) =>
         console.log("PAGE LOG:", consoleMessage.text())
@@ -39,13 +45,7 @@ const renderMap = async (filePath: string, title: string): Promise<Buffer> => {
     <style>
         #map { height: 100vh; width: 100vw; }
         .leaflet-container {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            bottom: 10px;
-            left: 10px;
-            border-radius: 10px;
-            background-color: #e0e7e7;
+            background-color:  #ffffff;
           }          
             .map-title{
             position:relative;
@@ -64,60 +64,50 @@ const renderMap = async (filePath: string, title: string): Promise<Buffer> => {
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
     <script>
-        const geoJsonData = ${JSON.stringify(geoJsonData)};
+    const geoJsonData = ${JSON.stringify(geoJsonData)};
+    const featureColors = ${JSON.stringify(fillColors)};
+    const featureVisibility = ${JSON.stringify(visibleFeatures)};
 
-        const getColor = totalSamples =>  {
-            return totalSamples > 28
-                ? "#29394a"
-                : totalSamples > 26
-                ? "#304152"
-                : totalSamples > 24
-                ? "#38495b"
-                : totalSamples > 22
-                ? "#405264"
-                : totalSamples > 20
-                ? "#485a6d"
-                : totalSamples > 18
-                ? "#506376"
-                : totalSamples > 16
-                ? "#586b7f"
-                : totalSamples > 14
-                ? "#607488"
-                : totalSamples > 12
-                ? "#687c91"
-                : totalSamples > 10
-                ? "#70849a"
-                : totalSamples > 8
-                ? "#788da3"
-                : totalSamples > 6
-                ? "#8095ac"
-                : totalSamples > 4
-                ? "#889eb5"
-                : totalSamples > 2
-                ? "#90a6be"
-                : totalSamples > 0
-                ? "#98afc7"
-                : "white"; // missing/0
-        };
+    const geoJsonStyle = (feature) => {
+        if (!featureVisibility[feature.properties.CARUID]) {
+            return {
+                fillOpacity: 0,
+                weight: 0,
+                color: "white",
+                fillColor: featureColors[feature.properties.CARUID],
+            };
+        } else {
+            return {
+                fillColor: featureColors[feature.properties.CARUID],
+                weight: 3,
+                color: "#46554F",
+                fillOpacity: 1,
+            };
+        }
+    };
 
-        const geoJsonStyle = feature => ({
-            fillColor: getColor(feature.properties.totalSamples),
-            weight: 2,
-            color: "#46554F",
-            fillOpacity: 1,
+    const initMap = () => {
+        const map = L.map('map', {
+            zoom: 1,
+            zoomControl: false,
         });
 
-        const initMap = () => {
-            const map = L.map('map', {
-                center: [74.14008387440462, -96.767578125],
-                zoom: 3,
-                zoomControl: false,
-            });
+        const geoJSONLayer = L.geoJson(geoJsonData, {
+            style: geoJsonStyle,
+            filter: (feature) => {
+                return featureVisibility[feature.properties.CARUID];
+            }
+        }).addTo(map);
 
-            L.geoJson(geoJsonData, {style: geoJsonStyle}).addTo(map);
+        const bounds = geoJSONLayer.getBounds();
 
+        if (bounds.isValid()) {
+            map.fitBounds(bounds);
+        }
+        else{
             map.fitBounds(-146.77734375000003,20.797201434307,-46.75781250000001,86.77799674310461);
-        };
+        }
+    };
 
         document.addEventListener('DOMContentLoaded', initMap);
     </script>

@@ -9,12 +9,9 @@ import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
 import fs from "fs";
 
 export const aggregateSamplesInBorders = async (
-    pointsFilePath: string,
+    pointsFile: FeatureCollection,
     bordersFilePath: string
 ): Promise<FeatureCollection> => {
-    const pointsGeoJSON: FeatureCollection = JSON.parse(
-        fs.readFileSync(pointsFilePath, "utf-8")
-    );
     const bordersGeoJSON: FeatureCollection = JSON.parse(
         fs.readFileSync(bordersFilePath, "utf-8")
     );
@@ -26,7 +23,7 @@ export const aggregateSamplesInBorders = async (
             border.geometry.type === "Polygon" ||
             border.geometry.type === "MultiPolygon"
         ) {
-            pointsGeoJSON.features.forEach((point) => {
+            pointsFile.features.forEach((point) => {
 				let matched = false;
 
                 if (point.geometry.type === "Point") {

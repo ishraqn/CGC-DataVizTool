@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { MapContainer, GeoJSON, useMap } from "react-leaflet";
 import { GeoJsonObject, Feature, Geometry } from "geojson";
 import "leaflet/dist/leaflet.css";
@@ -30,17 +30,34 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
         [key: number]: string;
     }>({});
     const [allValues, setValues] = useState<number[]>([]);
-    const [steps, setSteps] = useState<number>(5); // State for steps
-    const { colorPickerColor, featureVisibility, currentFileTitle} = useToggle();
+
+    const [steps, setSteps] = useState<number>(500); // State for steps
+    const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, currentFileTitle} = useToggle();
+    const featureColorMapRef = useRef({});
 
     // Effect to initialize color gradient and data values
     useEffect(() => {
         if (geoJsonData) {
             setValues(extractValuesFromGeoJSON(geoJsonData));
-            const rgbColor = hexToRgb(colorPickerColor);
-            setColorGradient(generateColorGradient(steps, rgbColor));
+            const primaryRGB = hexToRgb(primaryColorPicker);
+            const secondaryRGB = hexToRgb(secondaryColorPicker);
+            setColorGradient(generateColorGradient(steps, primaryRGB, secondaryRGB, autoColourRange));
         }
-    }, [geoJsonData, colorPickerColor, steps]);
+    }, [geoJsonData, primaryColorPicker, secondaryColorPicker, autoColourRange, steps]);
+
+    useEffect(() => {
+        if(geoJsonData && geoJsonData.type === "FeatureCollection") {
+            const featureColorMap = {};
+            geoJsonData.features.forEach((feature: GeoJSONFeature) => {
+                const currValue = feature.properties.totalSamples as number;
+                const fillColorIndex = getColor(currValue, allValues, steps);
+                const fillColor = colorGradient[fillColorIndex] || "#98AFC7";
+                featureColorMap[feature.properties.CARUID] = fillColor;
+            });
+            setFeatureColors(featureColorMap);
+            featureColorMapRef.current = featureColorMap;
+        }
+    }, [colorGradient, steps, allValues, geoJsonData]);
 
     const defaultStyle = {
         fillColor: "#98AFC7",

@@ -18,8 +18,12 @@ type ToggleContextType = {
 	setIsUploadedFileVisible: (isVisible: boolean) => void;
 	uploadedFile            : UploadFileData | null;
 	setUploadedFile         : (file: UploadFileData | null) => void;
-	colorPickerColor        : string;
-	setColorPickerColor     : (color: string) => void;
+	primaryColorPicker        : string;
+	setPrimaryColorPicker     : (color: string) => void;
+	secondaryColorPicker      : string;
+	setSecondaryColorPicker   : (color: string) => void;
+	autoColourRange			: boolean;
+	setAutoColourRange		: (isMonochrome: boolean) => void;
 	uploadedFiles           : UploadFileData[];
 	setUploadedFiles        : (files: UploadFileData[]) => void;
 	currentFileIndex        : number;
@@ -28,10 +32,15 @@ type ToggleContextType = {
 	featureVisibility       : { [key: string]: boolean };
 	toggleFeatureVisibility : (feature: string) => void;
 	setFeatureVisibility    : (visibility: {[key: string]: boolean}) => void;
+	provinceVisibility       : { [key: string]: boolean };
+	toggleProvinceVisibility : (feature: string) => void;
+	setProvinceVisibility    : (visibility: {[key: string]: boolean}) => void;
 	removeUploadedFile		: (index: number) => void;
 	handleChangeTitle		: (title: string) => void;
 	currentFileTitle		: string;
 	setCurrentFileTitle		: (title: string) => void;
+	featureColors 			: { [key: string]: string };
+	setFeatureColors 		: (colors: { [key: string]: string }) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -41,8 +50,12 @@ const defaultState: ToggleContextType = {
 	setIsUploadedFileVisible: () => {},
 	uploadedFile            : null,
 	setUploadedFile         : () => {},
-	colorPickerColor        : "#98AFC7",
-	setColorPickerColor     : () => {},
+	primaryColorPicker        : "#DDE6B3",
+	setPrimaryColorPicker     : () => {},
+	secondaryColorPicker      : "#DDE6B3",
+	setSecondaryColorPicker   : () => {},
+	autoColourRange			: true,
+	setAutoColourRange		: () => {},
 	uploadedFiles           : [],
 	setUploadedFiles        : () => {},
 	currentFileIndex        : 0,
@@ -55,6 +68,11 @@ const defaultState: ToggleContextType = {
 	handleChangeTitle		: () => {},
 	currentFileTitle		: "",
 	setCurrentFileTitle		: () => {},
+	featureColors 			: {},
+	setFeatureColors 		: () => {},
+	provinceVisibility      : {},
+	toggleProvinceVisibility: () => {},
+	setProvinceVisibility   : () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -67,7 +85,9 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		defaultState.isUploadedFileVisible
 	);
 	const [uploadedFile, setUploadedFile]   = useState(defaultState.uploadedFile);
-	const [colorPickerColor, setColorPickerColor]           = useState(defaultState.colorPickerColor);
+	const [primaryColorPicker, setPrimaryColorPicker]           = useState(defaultState.primaryColorPicker);
+	const [secondaryColorPicker, setSecondaryColorPicker]           = useState(defaultState.secondaryColorPicker);
+	const [autoColourRange, setAutoColourRange] = useState(defaultState.autoColourRange);
 	const [uploadedFiles, setUploadedFiles] = useState(
 		defaultState.uploadedFiles
 	);
@@ -75,6 +95,11 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		defaultState.currentFileIndex
 	);
 	const [removedFileIds, setRemovedFileIds] = useState<string[]>([]);
+
+	const [featureColors, setFeatureColors] = useState<{
+		[key: string]: string;
+	}>(defaultState.featureColors);
+
 	const [featureVisibility, setFeatureVisibility] = useState<{
 		[key: string]: boolean;
 	}>(defaultState.featureVisibility);
@@ -85,6 +110,16 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
 	const toggleFeatureVisibility = (key: string) => {
 		setFeatureVisibility((prev) => ({
+			...prev,
+			[key]: !prev[key],
+		}));
+	};
+	const [provinceVisibility, setProvinceVisibility] = useState<{
+		[key: string]: boolean;
+	}>(defaultState.provinceVisibility);
+
+	const toggleProvinceVisibility = (key: string) => {
+		setProvinceVisibility((prev) => ({
 			...prev,
 			[key]: !prev[key],
 		}));
@@ -185,8 +220,12 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				setIsUploadedFileVisible,
 				uploadedFile,
 				setUploadedFile,
-				colorPickerColor,
-				setColorPickerColor,
+				primaryColorPicker,
+				setPrimaryColorPicker,
+				secondaryColorPicker,
+				setSecondaryColorPicker,
+				autoColourRange,
+				setAutoColourRange,
 				uploadedFiles,
 				setUploadedFiles,
 				currentFileIndex,
@@ -195,10 +234,15 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				featureVisibility,
 				toggleFeatureVisibility,
 				setFeatureVisibility,
+				provinceVisibility,
+				toggleProvinceVisibility,
+				setProvinceVisibility,
 				removeUploadedFile,
 				handleChangeTitle,
 				currentFileTitle,
-				setCurrentFileTitle
+				setCurrentFileTitle,
+				featureColors,
+				setFeatureColors,
 			}}
 		>
 			{children}
