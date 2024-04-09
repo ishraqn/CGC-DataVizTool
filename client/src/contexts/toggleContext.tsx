@@ -138,26 +138,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 	};
 
 	const handleChangeTitle = async (newTitle: string) => {
-		const fileId = uploadedFiles[currentFileIndex]?.id;
-		try {
-			const response = await fetch(`/api/v1/changeTitle/${fileId}`, {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({title: newTitle}),
-			});
-
-			if (!response.ok) {
-				throw new Error(`HTTP error! Status: ${response.status}`);
-			}
-
 			setCurrentFileTitle(newTitle);
 			uploadedFiles[currentFileIndex].title = newTitle;
-			const data = await response.json();
-		} catch (error) {
-			console.error("Error updating title:", error);
-		}
 	}
 
 	const fetchUploadedFiles = async () => {
