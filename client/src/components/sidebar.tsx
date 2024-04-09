@@ -20,6 +20,7 @@ const mockFilterGroups: FilterGroup[] = [
 	{ id: "1", name: "Map Colors" },
     { id: "3", name: "Select File" },
 	{ id: "4", name: "Select Crop Region" },
+	{ id: "7", name: "Toggle Legend" },
 	{ id: "5", name: "Download Map" },
 ];
 
@@ -61,7 +62,9 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 		setProvinceVisibility,	
 		removeUploadedFile,
 		handleChangeTitle,
-		currentFileTitle
+		currentFileTitle,
+		toggleLegendVisibility,
+		setLegendVisibility,
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
@@ -85,6 +88,9 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 				break;
 			case "5":
 				handleDownload();
+				break;
+			case "7":
+				setLegendVisibility(!toggleLegendVisibility);
 				break;
 			default:
 				break;
