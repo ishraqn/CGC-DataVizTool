@@ -287,6 +287,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 				setLegendVisibility,
 				titlesById,
 				setTitlesById,
+				legendLabels,
+				setLegendLabels,
 			}}
 		>
 			{children}
