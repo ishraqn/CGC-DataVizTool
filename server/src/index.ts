@@ -53,7 +53,11 @@ app.use(
 	helmet.contentSecurityPolicy({
 		directives: {
 			defaultSrc: ["'self'"],
-			imgSrc: ["'self'", "https://c.tile.openstreetmap.org", "data:"],
+			imgSrc: [
+				"'self'",
+				"data:",
+				"*.tile.openstreetmap.org",
+			],
 		},
 	})
 );
