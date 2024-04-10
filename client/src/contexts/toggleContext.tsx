@@ -56,10 +56,10 @@ type ToggleContextType = {
 	legendLabels: {lower: string; upper: string; color: unknown; }[];
 	setLegendLabels: (labels: {lower: string; upper: string ; color: unknown; }[]) => void;
 	handleSetLegendLabels: (labels: {lower: string; upper: string; color: unknown; }[]) => void;
-  fileErrors: FileErrors; // Errors for each uploaded file
-  setFileErrors: (errors: FileErrors[]) => void;
-  updateFileErrors: (fileID: string, errors: string []) => void;
-  clearFileErrors: (fileID: string) => void;
+	fileErrors: FileErrors; // Errors for each uploaded file
+	setFileErrors: (errors: FileErrors[]) => void;
+	updateFileErrors: (fileID: string, errors: string []) => void;
+	clearFileErrors: (fileID: string) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -101,10 +101,10 @@ const defaultState: ToggleContextType = {
 	legendLabels: [],
 	setLegendLabels: () => {},
 	handleSetLegendLabels: () => {},
-  fileErrors: {},
-  setFileErrors: () => {},
-  updateFileErrors: () => {},
-  clearFileErrors: () => {},
+	fileErrors: {},
+	setFileErrors: () => {},
+	updateFileErrors: () => {},
+	clearFileErrors: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -196,8 +196,6 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 		}
 	};
 
-	const [userCorrections, setCorrections] = useState(defaultState.userCorrections);
-
 	const fetchUploadedFiles = async () => {
 		try {
 			const response = await fetch("/api/v1/all-uploaded-files");
@@ -277,17 +275,6 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
         return storedErrors ? JSON.parse(storedErrors) : defaultState.fileErrors;
     });
 
-	const clearFileCorrections = (fileId) => {
-		// Implementation depends on how corrections are stored
-		// Example: if corrections are stored in a state object with file IDs as keys
-		setCorrections(prevCorrections => {
-			const updatedCorrections = { ...prevCorrections };
-			delete updatedCorrections[fileId]; // Remove corrections for the given file ID
-			return updatedCorrections;
-		});
-	};
-	// const [errorFileID, setErrorFileID] = use 
-
 
 	useEffect(() => {
 		fetchUploadedFiles();
@@ -333,13 +320,10 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 				toggleProvinceVisibility,
 				setProvinceVisibility,
 				removeUploadedFile,
-        fileErrors,
+        		fileErrors,
 				setFileErrors,
 				clearFileErrors,
 				updateFileErrors,
-				userCorrections,
-				setCorrections,
-				clearFileCorrections,
 				handleChangeTitle,
 				currentFileTitle,
 				setCurrentFileTitle,

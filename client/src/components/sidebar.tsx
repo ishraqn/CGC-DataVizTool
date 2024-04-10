@@ -24,7 +24,7 @@ const mockFilterGroups: FilterGroup[] = [
 	{ id: "7", name: "Toggle Legend" },
 	{ id: "6", name: "Toggle Tile Layer" },
 	{ id: "5", name: "Download Map" },
-	{ id: "6", name: "Show Errors" },
+	// { id: "6", name: "Show Errors" },
 ];
 
 const caruidToProvinceMap: Record<number, string> = {
@@ -100,9 +100,10 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 				break;
 			case "6": 
 				setShowErrorDropdown(!showErrorDropdown); // Toggle the visibility of the selected item
+				break
 			case "6":
 				setToggleTileLayer(!toggleTileLayer);
-        break;
+        		break;
 			case "7":
 				setLegendVisibility(!toggleLegendVisibility);
 				break;
@@ -426,12 +427,11 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 						)}
 					</li>
 				))}
-				 {showErrorDropdown && (
-                    <li className="file-dropdown">
-                        <ErrorDropdown />
-                    </li>
-                )}
-			
+					{showErrorDropdown && (
+					<li className="file-dropdown">
+						<ErrorDropdown />
+					</li>
+				)}
 				<form className="titleForm" onSubmit={handleSubmit}>
 					<input
                         className="titleInput"
