@@ -33,3 +33,12 @@ Thumbs.db
 *.out
 *.synctex.gz
 *.toc
+
+#data unprocessed
+2021-Agri-Preprocessed
+
+#history
+.history
+
+#temporary uploads
+temp/

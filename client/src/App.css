@@ -1,0 +1,53 @@
+.map-frame {
+  position: relative;
+  height: calc(85vh);
+  margin-right: 15px;
+  flex-grow: 1;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
+  overflow: hidden;
+  background-color: #FDFDFD;
+}
+
+.App{
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  background-color: #F4F6F9;
+}
+
+h1 {
+  font-size: 2.2em;
+  margin: 0;
+  padding: 20px 0 0 20px;
+  color: #3f3f3f;
+  text-align: left;
+  position: absolute;
+  top: 0;
+  left: 15px;
+}
+/* Media queries */
+@media screen and (max-width: 768px) {
+  .App {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .map-frame {
+    height: calc(70vh);
+    width: 90vw;
+    margin: 0;
+    margin-bottom: 15px;
+  }
+
+  h1 {
+    text-align: center;
+    position: static;
+    padding: 20px 0;
+    font-size: 1.8em;
+  }
+}
