@@ -22,6 +22,7 @@ const mockFilterGroups: FilterGroup[] = [
     { id: "3", name: "Select File" },
 	{ id: "4", name: "Select Crop Region" },
 	{ id: "5", name: "Download Map" },
+	{ id: "6", name: "Show Errors" },
 ];
 
 const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
@@ -37,12 +38,14 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
         toggleFeatureVisibility,
         setFeatureVisibility,
 		removeUploadedFile,
+		fileErrors,
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
 	const [showFeatureVisibility, setShowFeatureVisibility] = useState(false);
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [fileToDeleteIndex, setFileToDeleteIndex] = useState<number | null>(null);
+	const [showErrorDropdown, setShowErrorDropdown] = useState(false); // State to control the visibility of the ErrorDropdown
 
     const handleCardClick = (id: string) => {
 		switch (id) {
@@ -59,6 +62,9 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 				break;
 			case "5":
 				handleDownload();
+				break;
+			case "6": 
+				setShowErrorDropdown(!showErrorDropdown); // Toggle the visibility of the selected item
 				break;
 			default:
 				break;
@@ -220,6 +226,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 											onClick={() => handleRemoveFile(index)}
 											/>
 										</div>
+
 									</li>
 								))}
 							</ul>
@@ -238,12 +245,19 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
                                 className="feature-list" >
                                 {renderFeatureVisibilityToggles()}
 							</ul>
+
+
 						</div>
 						)}
 					</li>
 				))}
+				 {showErrorDropdown && (
+                    <li className="file-dropdown">
+                        <ErrorDropdown />
+                    </li>
+                )}
+				
 			</ul>
-			<div> <ErrorDropdown/> </div>
 			{showConfirmation && (
                 <ConfirmationDialog
                     message="Are you sure you want to delete this file?"

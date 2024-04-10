@@ -1,58 +1,65 @@
-.error-dropdown {
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 240px;
-    max-width: 90vw;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    padding: 12px;
-    z-index: 1;
-    overflow-x: auto;
-}
+    .error-dropdown {
+        position: absolute;
+        top: calc(100% - 225px); /* Position it right under the "Show Errors" button */
+        left: 1; /* Corrected the value for left */
+        z-index: 9999;
+    }
 
-.error-content {
-    max-height: 200px;
-    overflow-y: auto;
-}
+    /* Rest of the styles remain the same */
+    .error-content {
+        max-height: 200px;
+        overflow-y: auto;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        padding: 5px;
+        border: 2px solid #000;
+        border-radius: 5px;
+    }
 
-.error-dropdown table {
-    width: 100%;
-    border-collapse: collapse;
-}
+    .error-content table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed; /* Equal width columns */
+    }
 
-.error-dropdown th,
-.error-dropdown td {
-    text-align: left;
-    padding: 8px;
-    border: 1px solid #ddd;
-    max-width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: #000000; /* Set text color to black */
-}
+    .error-content th,
+    .error-content td {
+        text-align: left;
+        padding: 8px;
+        border: 1px solid #ddd;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #000000;
+    }
 
-.error-dropdown th {
-    background-color: #f2f2f2;
-}
+    .table-input {
+        width: 100%;
+        height: 30px;
+        box-sizing: border-box;
+        padding: 4px;
+        border: 1px solid red;
+        background-color: #ffffff;
+        color: #000000;
+    }
+    
+    .error-header {
+        position: sticky;
+        top: 0; /* Set top to 0 to remove the gap */
+        background-color: #f9f9f9;
+        z-index: 999; /* Ensure the headers remain above the content */
+        display: flex;
+        font-weight: bold; /* Make the title bold */
+    }
 
-.error-dropdown .conversion-options,
-.error-actions {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 10px;
-    border-top: 1px solid #ccc;
-}
+    .error-header > div {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ddd;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #000000;
+        text-align: center; /* Center align the title */
+    }
 
-.error-dropdown .conversion-options button,
-.error-actions button {
-    padding: 6px 12px;
-    font-size: 14px;
-    color: #ffffff;
-    background-color: #000000;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    white-space: nowrap;
-    margin-left: 10px;
-}

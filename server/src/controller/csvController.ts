@@ -41,25 +41,5 @@ export const csvController = {
                 return; 
             }
         }
-    },
-
-    retryConversion: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-        console.log("Received request body:", req.body);
-
-        const [filePath, fileID] = req.body;
-
-        if (!filePath || !fileID) {
-            res.status(400).send({ message: "Missing File Details causing conversion to fail in retryConversion" });
-            return; 
-        }
-
-        try {            
-            await convertCsvToGeoJsonUtil(filePath, fileID);
-            next();
-        } catch (err) {
-                console.error("Error in csvController.convert2JSON: ", err);
-                next(err);
-                return; 
-        }
     }
 };

@@ -112,6 +112,7 @@ export const fileController = {
 			res.status(404).send("File not found.");
 		}
 	},
+	
 };
 // download: (req: Request, res: Response) => {
 

@@ -35,11 +35,11 @@ type ToggleContextType = {
 	removeUploadedFile		: (index: number) => void;
 	fileErrors: FileErrors; // Errors for each uploaded file
 	setFileErrors: (errors: FileErrors[]) => void;
-	errorFileID: string;
-	setErrorFileID: (fileID: string) => void;
-	handleRetryConversion: (filePath: string, fileID: string) => void;
 	updateFileErrors: (fileID: string, errors: string []) => void;
 	clearFileErrors: (fileID: string) => void;
+	userCorrections: string [];
+	setCorrections: (userCorrections: string []) => void;
+	clearFileCorrections: (fileId: string) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -62,11 +62,11 @@ const defaultState: ToggleContextType = {
 	setFeatureVisibility    : () => {},
 	fileErrors: {},
 	setFileErrors: () => {},
-	errorFileID: {},
-	setErrorFileID: () => {},
-	handleRetryConversion: () => {},
 	updateFileErrors: () => {},
 	clearFileErrors: () => {},
+	userCorrections: [],
+	setCorrections: () => {},
+	clearFileCorrections: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -99,6 +99,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 			[key]: !prev[key],
 		}));
 	};
+
+	const [userCorrections, setCorrections] = useState(defaultState.userCorrections);
 
 	const fetchUploadedFiles = async () => {
 		try {
@@ -152,32 +154,6 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		}
 	};
 
-	const handleRetryConversion = async (filePath: string, fileId: string) => {
-		try {
-			const response = await fetch(`api/v1/retry-conversion`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify([filePath, fileId]), // Include filePath and fileId in the request body
-			});
-	
-			if (response.ok) {
-				console.log('Conversion retried successfully.');
-				// Optionally reset or update any relevant state here, like clearing errors
-				setFileErrors([]);
-			} else {
-				console.error('Failed to retry conversion');
-				// It might be helpful to also log the response body for more detailed error messages
-				const errorBody = await response.json();
-				console.error('Error details:', errorBody);
-			}
-		} catch (error) {
-			console.error('Error retrying conversion:', error);
-		}
-			// Method to update file errors
-	};
-
 	const updateFileErrors = (fileId: string, errors: string[]) => {
 		setFileErrors((prevErrors) => {
 			const updatedErrors = { ...prevErrors, [fileId]: errors };
@@ -200,6 +176,16 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         const storedErrors = localStorage.getItem('fileErrors');
         return storedErrors ? JSON.parse(storedErrors) : defaultState.fileErrors;
     });
+
+	const clearFileCorrections = (fileId) => {
+		// Implementation depends on how corrections are stored
+		// Example: if corrections are stored in a state object with file IDs as keys
+		setCorrections(prevCorrections => {
+			const updatedCorrections = { ...prevCorrections };
+			delete updatedCorrections[fileId]; // Remove corrections for the given file ID
+			return updatedCorrections;
+		});
+	};
 	// const [errorFileID, setErrorFileID] = use 
 
 
@@ -229,9 +215,11 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				removeUploadedFile,
 				fileErrors,
 				setFileErrors,
-				handleRetryConversion,
 				clearFileErrors,
 				updateFileErrors,
+				userCorrections,
+				setCorrections,
+				clearFileCorrections,
 			}}
 		>
 			{children}

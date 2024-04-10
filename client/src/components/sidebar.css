@@ -193,6 +193,15 @@
     overflow: auto;
 }
 
+.error-count-badge {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    margin-left: 8px;
+    font-size: 0.75em;
+}
+
 /* Media queries */
 @media screen and (max-width: 768px) {
     .sidebar {
@@ -211,4 +220,9 @@
         border-bottom: none;
         padding-bottom: 0;
     }
+}
+
+.greyed-out {
+    color: #c0c0c0; /* Grey color */
+    pointer-events: none; /* Prevent clicking */
 }
