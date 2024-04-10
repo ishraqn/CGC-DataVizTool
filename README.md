@@ -1,14 +1,15 @@
 <div align="center">
     <h1> CGC Data Visualization Tool </h1>
-    <img src="main_screen.png" width="" height="">
+    <img src="main_screen.gif" width="" height="">
 </div>
 
 ## 
-CGC-DataVizTool is a web-based program that simplifies and improves the display of agricultural data for the **Canadian Grain Commission** 🍁
+The CGC-DataVizTool is a web-based program that simplifies and improves the display of agricultural data for the **Canadian Grain Commission** 🍁
 
 ## Features 📊
-- Works to convert complicated data sets into intuitive, interactive, and informative visual representations.
-- Focus on time series and geographic data analysis.
+- Works to convert complicated agricultural data sets into intuitive, interactive, and informative visual representations with custom filters courtesy of CGC.
+- Remains an open source project, allowing for easy customization and expansion.
+- Focus on agricultural geographic data analysis.
 
 ## Installation and Usage 🛠️
 - Clone the repository
@@ -21,7 +22,11 @@ CGC-DataVizTool is a web-based program that simplifies and improves the display 
 
 ```npm run init```
 
-- Run the server (from the root directory) 🚀
+- Build the product (from the root directory) 🚧
 
-```npm run dev```
+```npm run build```
+
+- Start the server (from the root directory) 🚀
+
+```npm run start```
 
