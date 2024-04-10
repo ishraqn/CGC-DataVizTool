@@ -217,7 +217,12 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 			setShowFileList(true);
 			setTitleInputValue(currentFileTitle);
 		}
-	}, [currentFileTitle, uploadedFiles.length]);
+		if(uploadedFiles.length === 0){
+			setShowFileList(false);
+			setTitleInputValue("");
+			setTitlesById({});
+		}
+	}, [currentFileTitle, setTitlesById, uploadedFiles.length]);
 
 	const handleSelectAll = () => {
 		Object.keys(featureVisibility).forEach((key) => {
