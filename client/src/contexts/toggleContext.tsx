@@ -1,101 +1,113 @@
 import React, { createContext, useState, useEffect } from "react";
 
 interface UploadFileData {
-	id              : unknown;
-	name            : string;
-	path            : string;
-	size            : number;
-	type            : string;
+	id: unknown;
+	name: string;
+	path: string;
+	size: number;
+	type: string;
 	lastModifiedDate: Date;
-	cleanName       : string;
-    title           : string;
+	cleanName: string;
+	title: string;
 }
 
 type ToggleContextType = {
-	isTileLayerVisible      : boolean;
-	setIsTileLayerVisible   : (isVisible: boolean) => void;
-	isUploadedFileVisible   : boolean;
+	isTileLayerVisible: boolean;
+	setIsTileLayerVisible: (isVisible: boolean) => void;
+	isUploadedFileVisible: boolean;
 	setIsUploadedFileVisible: (isVisible: boolean) => void;
-	uploadedFile            : UploadFileData | null;
-	setUploadedFile         : (file: UploadFileData | null) => void;
-	primaryColorPicker        : string;
-	setPrimaryColorPicker     : (color: string) => void;
-	secondaryColorPicker      : string;
-	setSecondaryColorPicker   : (color: string) => void;
-	autoColourRange			: boolean;
-	setAutoColourRange		: (isMonochrome: boolean) => void;
-	uploadedFiles           : UploadFileData[];
-	setUploadedFiles        : (files: UploadFileData[]) => void;
-	currentFileIndex        : number;
-	setCurrentFileIndex     : (index: number) => void;
-	fetchUploadedFiles      : () => void;
-	featureVisibility       : { [key: string]: boolean };
-	toggleFeatureVisibility : (feature: string) => void;
-	setFeatureVisibility    : (visibility: {[key: string]: boolean}) => void;
-	provinceVisibility       : { [key: string]: boolean };
-	toggleProvinceVisibility : (feature: string) => void;
-	setProvinceVisibility    : (visibility: {[key: string]: boolean}) => void;
-	removeUploadedFile		: (index: number) => void;
-	handleChangeTitle		: (title: string) => void;
-	currentFileTitle		: string;
-	setCurrentFileTitle		: (title: string) => void;
-	featureColors 			: { [key: string]: string };
-	setFeatureColors 		: (colors: { [key: string]: string }) => void;
-	toggleTileLayer			: boolean;
-	setToggleTileLayer		: (toggle: boolean) => void;
-	toggleLegendVisibility	: boolean;
-	setLegendVisibility		: (isVisible: boolean) => void;
+	uploadedFile: UploadFileData | null;
+	setUploadedFile: (file: UploadFileData | null) => void;
+	primaryColorPicker: string;
+	setPrimaryColorPicker: (color: string) => void;
+	secondaryColorPicker: string;
+	setSecondaryColorPicker: (color: string) => void;
+	autoColourRange: boolean;
+	setAutoColourRange: (isMonochrome: boolean) => void;
+	uploadedFiles: UploadFileData[];
+	setUploadedFiles: (files: UploadFileData[]) => void;
+	currentFileIndex: number;
+	setCurrentFileIndex: (index: number) => void;
+	fetchUploadedFiles: () => void;
+	featureVisibility: { [key: string]: boolean };
+	toggleFeatureVisibility: (feature: string) => void;
+	setFeatureVisibility: (visibility: { [key: string]: boolean }) => void;
+	provinceVisibility: { [key: string]: boolean };
+	toggleProvinceVisibility: (feature: string) => void;
+	setProvinceVisibility: (visibility: { [key: string]: boolean }) => void;
+	removeUploadedFile: (index: number) => void;
+	handleChangeTitle: (title: string) => void;
+	currentFileTitle: string;
+	setCurrentFileTitle: (title: string) => void;
+	featureColors: { [key: string]: string };
+	setFeatureColors: (colors: { [key: string]: string }) => void;
+	toggleTileLayer: boolean;
+	setToggleTileLayer: (toggle: boolean) => void;
+	toggleLegendVisibility: boolean;
+	setLegendVisibility: (isVisible: boolean) => void;
+	titlesById: { [key: string]: string };
+	setTitlesById: (titles: { [key: string]: string }) => void;
 };
 
 const defaultState: ToggleContextType = {
-	isTileLayerVisible      : false,
-	setIsTileLayerVisible   : () => {},
-	isUploadedFileVisible   : false,
+	isTileLayerVisible: false,
+	setIsTileLayerVisible: () => {},
+	isUploadedFileVisible: false,
 	setIsUploadedFileVisible: () => {},
-	uploadedFile            : null,
-	setUploadedFile         : () => {},
-	primaryColorPicker        : "#DDE6B3",
-	setPrimaryColorPicker     : () => {},
-	secondaryColorPicker      : "#DDE6B3",
-	setSecondaryColorPicker   : () => {},
-	autoColourRange			: true,
-	setAutoColourRange		: () => {},
-	uploadedFiles           : [],
-	setUploadedFiles        : () => {},
-	currentFileIndex        : 0,
-	setCurrentFileIndex     : () => {},
-	fetchUploadedFiles      : async () => [],
-	removeUploadedFile		: () => {},
-	featureVisibility       : {},
-	toggleFeatureVisibility : () => {},
-	setFeatureVisibility    : () => {},
-	handleChangeTitle		: () => {},
-	currentFileTitle		: "",
-	setCurrentFileTitle		: () => {},
-	featureColors 			: {},
-	setFeatureColors 		: () => {},
-	provinceVisibility      : {},
+	uploadedFile: null,
+	setUploadedFile: () => {},
+	primaryColorPicker: "#DDE6B3",
+	setPrimaryColorPicker: () => {},
+	secondaryColorPicker: "#DDE6B3",
+	setSecondaryColorPicker: () => {},
+	autoColourRange: true,
+	setAutoColourRange: () => {},
+	uploadedFiles: [],
+	setUploadedFiles: () => {},
+	currentFileIndex: 0,
+	setCurrentFileIndex: () => {},
+	fetchUploadedFiles: async () => [],
+	removeUploadedFile: () => {},
+	featureVisibility: {},
+	toggleFeatureVisibility: () => {},
+	setFeatureVisibility: () => {},
+	handleChangeTitle: () => {},
+	currentFileTitle: "",
+	setCurrentFileTitle: () => {},
+	featureColors: {},
+	setFeatureColors: () => {},
+	provinceVisibility: {},
 	toggleProvinceVisibility: () => {},
-	setProvinceVisibility   : () => {},
-	toggleTileLayer			: false,
-	setToggleTileLayer		: () => {},
-	toggleLegendVisibility	: true,
-	setLegendVisibility		: () => {},
+	setProvinceVisibility: () => {},
+	toggleTileLayer: false,
+	setToggleTileLayer: () => {},
+	toggleLegendVisibility: true,
+	setLegendVisibility: () => {},
+	titlesById: {},
+	setTitlesById: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
 
-export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
+	children,
+}) => {
 	const [isTileLayerVisible, setIsTileLayerVisible] = useState(
 		defaultState.isTileLayerVisible
 	);
 	const [isUploadedFileVisible, setIsUploadedFileVisible] = useState(
 		defaultState.isUploadedFileVisible
 	);
-	const [uploadedFile, setUploadedFile]   = useState(defaultState.uploadedFile);
-	const [primaryColorPicker, setPrimaryColorPicker]           = useState(defaultState.primaryColorPicker);
-	const [secondaryColorPicker, setSecondaryColorPicker]           = useState(defaultState.secondaryColorPicker);
-	const [autoColourRange, setAutoColourRange] = useState(defaultState.autoColourRange);
+	const [uploadedFile, setUploadedFile] = useState(defaultState.uploadedFile);
+	const [primaryColorPicker, setPrimaryColorPicker] = useState(
+		defaultState.primaryColorPicker
+	);
+	const [secondaryColorPicker, setSecondaryColorPicker] = useState(
+		defaultState.secondaryColorPicker
+	);
+	const [autoColourRange, setAutoColourRange] = useState(
+		defaultState.autoColourRange
+	);
 	const [uploadedFiles, setUploadedFiles] = useState(
 		defaultState.uploadedFiles
 	);
@@ -104,13 +116,17 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 	);
 	const [removedFileIds, setRemovedFileIds] = useState<string[]>([]);
 
-	const [toggleLegendVisibility, setLegendVisibility] = useState(defaultState.toggleLegendVisibility);
+	const [toggleLegendVisibility, setLegendVisibility] = useState(
+		defaultState.toggleLegendVisibility
+	);
 
 	const [featureColors, setFeatureColors] = useState<{
 		[key: string]: string;
 	}>(defaultState.featureColors);
 
-	const [toggleTileLayer, setToggleTileLayer] = useState(defaultState.toggleTileLayer);
+	const [toggleTileLayer, setToggleTileLayer] = useState(
+		defaultState.toggleTileLayer
+	);
 
 	const [featureVisibility, setFeatureVisibility] = useState<{
 		[key: string]: boolean;
@@ -119,6 +135,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 	const [currentFileTitle, setCurrentFileTitle] = useState(
 		uploadedFiles[currentFileIndex]?.title || ""
 	);
+
+	const [titlesById, setTitlesById] = useState<{ [key: string]: string }>({});
 
 	const toggleFeatureVisibility = (key: string) => {
 		setFeatureVisibility((prev) => ({
@@ -137,10 +155,15 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 		}));
 	};
 
-	const handleChangeTitle = async (newTitle: string) => {
-			setCurrentFileTitle(newTitle);
-			uploadedFiles[currentFileIndex].title = newTitle;
-	}
+	const handleChangeTitle = (newTitle: string) => {
+		if (currentFileIndex >= 0 && currentFileIndex < uploadedFiles.length) {
+			const file = uploadedFiles[currentFileIndex];
+			if (file && file.id !== undefined) {
+				setTitlesById({ ...titlesById, [file.id.toString()]: newTitle });
+				setCurrentFileTitle(newTitle);
+			}
+		}
+	};
 
 	const fetchUploadedFiles = async () => {
 		try {
@@ -150,13 +173,22 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 			}
 			const filesObject = await response.json();
 			const filesArray: UploadFileData[] = Object.keys(filesObject).map(
-				(key) => ({
-					...filesObject[key],
-					id: key,
-					cleanName: filesObject[key].name.includes("_")
-						? filesObject[key].name.split("_").slice(1).join("_")
-						: filesObject[key].name,
-				})
+				(key) => {
+					let title = titlesById[key];
+					if (title === undefined) {
+						title = filesObject[key].name.includes("_")
+							? filesObject[key].name.split("_").slice(1).join("_")
+							: filesObject[key].name;
+					}
+					return {
+						...filesObject[key],
+						id: key,
+						cleanName: filesObject[key].name.includes("_")
+							? filesObject[key].name.split("_").slice(1).join("_")
+							: filesObject[key].name,
+						title,
+					};
+				}
 			);
 			setUploadedFiles(filesArray);
 		} catch (error) {
@@ -200,9 +232,16 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
 	useEffect(() => {
 		if (currentFileIndex >= 0 && currentFileIndex < uploadedFiles.length) {
-			setCurrentFileTitle(uploadedFiles[currentFileIndex].title);
+			const file = uploadedFiles[currentFileIndex];
+			if (file && file.id) {
+				const title =
+					titlesById[file.id.toString()] !== undefined
+						? titlesById[file.id.toString()]
+						: file.title || file.cleanName;
+				setCurrentFileTitle(title);
+			}
 		}
-	}, [currentFileIndex, uploadedFiles]);
+	}, [currentFileIndex, uploadedFiles, titlesById]);
 
 	return (
 		<ToggleContext.Provider
@@ -240,6 +279,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 				setToggleTileLayer,
 				toggleLegendVisibility,
 				setLegendVisibility,
+				titlesById,
+				setTitlesById,
 			}}
 		>
 			{children}

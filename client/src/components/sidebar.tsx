@@ -68,6 +68,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 		currentFileTitle,
 		toggleLegendVisibility,
 		setLegendVisibility,
+		setTitlesById,
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
@@ -212,8 +213,9 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 	useEffect(() => {
 		if (uploadedFiles.length > 0){
 			setShowFileList(true);
+			setTitleInputValue(currentFileTitle);
 		}
-	}, [uploadedFiles.length]);
+	}, [currentFileTitle, uploadedFiles.length]);
 
 	const handleSelectAll = () => {
 		Object.keys(featureVisibility).forEach((key) => {
@@ -239,6 +241,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 
 	const handleNewTitle = (title: string) => {
 		handleChangeTitle(title);
+		setTitleInputValue(title);
 	};
 
 	const handleNonzeroSelect = () => {
