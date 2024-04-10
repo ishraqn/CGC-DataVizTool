@@ -57,16 +57,6 @@ const renderMap = async (
             font-size: 35px;
             text-align: center;
         }
-        .legend{
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            z-index: 400;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-        }
     </style>
 </head>
 <body>
@@ -135,10 +125,12 @@ const renderMap = async (
                 let labels = ['<strong>Legend</strong>'];
                 legendLabels.forEach((label, index) => {
                     labels.push(
-                        '<i style="background:' + label.color + '; width: 18px; height: 18px; margin-right: 5px; display: inline-block; border-radius: 3px;"></i> ' +
-                        label.lower + ' &ndash; ' + label.upper
+                        '<div style="display: flex; align-items: center;">' +
+                        '<i style="background:' + label.color + '; width:18px; height:18px; display:inline-block; margin-right:4px; border: 1px solid #ccc; border-radius: 4px;"></i> ' +
+                        '<span style="color: black; font-weight: bold;">' + label.lower + ' &ndash; ' + label.upper + '</span>' +
+                        '</div>'
                     );
-                });
+                });                
                 div.innerHTML = labels.join('<br>');
                 return div;
             };
