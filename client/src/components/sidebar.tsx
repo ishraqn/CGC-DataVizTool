@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaRegSave, FaAngleRight, FaAngleDown } from "react-icons/fa";
 import "./sidebar.css";
 import { useToggle } from "../contexts/useToggle";
 import ColorPickerComponent from "./ColorPickerComponent";
@@ -18,12 +18,30 @@ interface SidebarProps {
 
 // mock data
 const mockFilterGroups: FilterGroup[] = [
-	{ id: "1", name: "Color Picker" },
     { id: "3", name: "Select File" },
+	{ id: "1", name: "Map Colors" },
 	{ id: "4", name: "Select Crop Region" },
+	{ id: "7", name: "Toggle Legend" },
+	{ id: "6", name: "Toggle Tile Layer" },
 	{ id: "5", name: "Download Map" },
 	{ id: "6", name: "Show Errors" },
 ];
+
+const caruidToProvinceMap: Record<number, string> = {
+	10: "Newfoundland and Labrador",
+	11: "Prince Edward Island",
+	12: "Nova Scotia",
+	13: "New Brunswick",
+	24: "Quebec",
+	35: "Ontario",
+	46: "Manitoba",
+	47: "Saskatchewan",
+	48: "Alberta",
+	59: "British Columbia",
+	60: "Yukon",
+	61: "Northwest Territories",
+	62: "Nunavut",
+};
 
 const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 
@@ -32,13 +50,27 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
         setIsTileLayerVisible,
         uploadedFiles,
         setCurrentFileIndex,
-        setColorPickerColor,
+		primaryColorPicker,
+        setPrimaryColorPicker,
+		secondaryColorPicker,
+        setSecondaryColorPicker,
+		autoColourRange,
+		setAutoColourRange,
         currentFileIndex,
 		featureVisibility,
         toggleFeatureVisibility,
         setFeatureVisibility,
+		provinceVisibility,
+		toggleProvinceVisibility,
+		setProvinceVisibility,	
 		removeUploadedFile,
-		fileErrors,
+		toggleTileLayer,
+		setToggleTileLayer,
+		handleChangeTitle,
+		currentFileTitle,
+		toggleLegendVisibility,
+		setLegendVisibility,
+		setTitlesById,
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
@@ -46,16 +78,19 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [fileToDeleteIndex, setFileToDeleteIndex] = useState<number | null>(null);
 	const [showErrorDropdown, setShowErrorDropdown] = useState(false); // State to control the visibility of the ErrorDropdown
+	const [titleInputValue, setTitleInputValue] = useState("");
+	const [showMapColorToggle, setShowMapColorToggle] = useState(false);
 
     const handleCardClick = (id: string) => {
 		switch (id) {
 			case "1":
+				setShowMapColorToggle(prev => !prev);
 				break;
 			case "2":
 				setIsTileLayerVisible(!isTileLayerVisible);
 				break;
 			case "3":
-				setShowFileList(!showFileList);
+				setShowFileList(prev => !prev);
 				break;
 			case "4":
 				setShowFeatureVisibility(!showFeatureVisibility);
@@ -65,50 +100,108 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 				break;
 			case "6": 
 				setShowErrorDropdown(!showErrorDropdown); // Toggle the visibility of the selected item
+			case "6":
+				setToggleTileLayer(!toggleTileLayer);
+        break;
+			case "7":
+				setLegendVisibility(!toggleLegendVisibility);
 				break;
 			default:
 				break;
 		}
     };
 
-	const renderFeatureVisibilityToggles = () => {
-        if (!geoJsonData || !geoJsonData.features) return null;
+	const renderProvinceToggles = () => {
+		if (!geoJsonData || !geoJsonData.features) return null;
+	
+		const sortedFeatures = geoJsonData.features.sort((curr: { properties: { CARUID: string; }; }, prev: { properties: { CARUID: string; }; }) => {
+			const currKey = curr.properties?.CARUID || "";
+			const prevKey = prev.properties?.CARUID || "";
+			if (!currKey || !prevKey) return 0;
+			return currKey.localeCompare(prevKey);
+		});
+	
+		return Object.keys(caruidToProvinceMap).map((provinceKey) => {
+			const provinceName = caruidToProvinceMap[provinceKey];
+			const provinceFeatures = sortedFeatures.filter((feature: { properties: { CARUID: number; }; }) => Math.floor(feature.properties?.CARUID / 100) === parseInt(provinceKey));
+			const allFeaturesVisible = provinceFeatures.every((feature: { properties: { CARUID: string | number; }; }) => featureVisibility[feature.properties?.CARUID]);
+			if (provinceVisibility[provinceKey]) {
+				return (
+				  <div key={provinceKey} className="file-item-checkbox">
+					<FaAngleDown
+					  className="expand-carrot"
+					  onClick={() => toggleProvinceVisibility(provinceKey)}
+					/>
+					<input
+					  type="checkbox"
+					  id={`province-visibility-${provinceKey}`}
+					  checked={allFeaturesVisible}
+					  onChange={() => handleProvinceToggle(provinceFeatures, !allFeaturesVisible)}
+					/>
+					<label htmlFor={`province-visibility-${provinceKey}`}>
+					  {provinceName}
+					</label>
+					<ul>
+					  {renderFeatureVisibilityToggles(provinceFeatures)}
+					</ul>
+				  </div>
+				);
+			  } else {
+				return (
+				<div key={provinceKey} className="file-item-checkbox">
+					<FaAngleRight
+					  className="expand-carrot"
+					  onClick={() => toggleProvinceVisibility(provinceKey)}
+					/>
+					<input
+					  type="checkbox"
+					  id={`province-visibility-${provinceKey}`}
+					  checked={allFeaturesVisible}
+					  onChange={() => handleProvinceToggle(provinceFeatures, !allFeaturesVisible)}
+					/>
+					<label htmlFor={`province-visibility-${provinceKey}`}>
+					  {provinceName}
+					</label>
+				  </div>
+				  )
+			  }
+			});
+	};
+	
+	const renderFeatureVisibilityToggles = (provinceFeatures: any[]) => {
+		return provinceFeatures.map((feature, index) => {
+			const key = feature.properties?.CARUID;
+			if (!key) return null;
+			return (
+				<li key={`feature-${index}`}>
+					<div className="file-item-checkbox">
+						<input
+							type="checkbox"
+							id={`feature-visibility-${key}`}
+							checked={featureVisibility[key] ?? false}
+							onChange={() => toggleFeatureVisibility(key)}
+						/>
+						<label htmlFor={`feature-visibility-${key}`}>
+							{`${key}`}
+						</label>
+					</div>
+				</li>
+			);
+		});
+	};
 
-		const sortedFeatures = geoJsonData.features.sort((curr, prev) => {
-            const currKey = curr.properties?.CARUID || "";
-            const prevKey = prev.properties?.CARUID || "";
-            if (!currKey || !prevKey) return 0;
-            return currKey.localeCompare(prevKey);
-        });
-
-        return sortedFeatures.map((feature, index) => {
-            const key = feature.properties?.CARUID;
-            if (!key) return null;
-
-            return (
-                <li key={`feature-${index}`}>
-                    <div className="file-item-checkbox">
-                        <input
-                            type="checkbox"
-                            id={`feature-visibility-${key}`}
-                            checked={featureVisibility[key] ?? false}
-                            onChange={() => toggleFeatureVisibility(key)}
-                        />
-                        <label htmlFor={`feature-visibility-${key}`}>
-                            {`${key}`}
-                        </label>
-                    </div>
-                </li>
-            );
-        });
+	const handleProvinceToggle = (provinceFeatures: any[], visible: boolean) => {
+		provinceFeatures.forEach(feature => {
+			const key = feature.properties.CARUID;
+			if(featureVisibility[key] != visible) {
+				toggleFeatureVisibility(key);
+			}
+		});
 	};
 
     const handleFileSelection = (index: number) => {
         setCurrentFileIndex(index);
-    };
-
-    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        event.stopPropagation();
+		setTitleInputValue(uploadedFiles[currentFileIndex].title);
     };
 
 	useEffect(() => {
@@ -123,6 +216,18 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
             setFeatureVisibility(intialVisibility);
         }
     }, [geoJsonData, setFeatureVisibility]);
+
+	useEffect(() => {
+		if (uploadedFiles.length > 0){
+			setShowFileList(true);
+			setTitleInputValue(currentFileTitle);
+		}
+		if(uploadedFiles.length === 0){
+			setShowFileList(false);
+			setTitleInputValue("");
+			setTitlesById({});
+		}
+	}, [currentFileTitle, setTitlesById, uploadedFiles.length]);
 
 	const handleSelectAll = () => {
 		Object.keys(featureVisibility).forEach((key) => {
@@ -146,6 +251,45 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 		});
 	};
 
+	const handleNewTitle = (title: string) => {
+		handleChangeTitle(title);
+		setTitleInputValue(title);
+	};
+
+	const handleNonzeroSelect = () => {
+		geoJsonData.features.forEach((feature) => {
+			const key = feature.properties.CARUID;
+			if (feature.properties.totalSamples as number > 0) {
+				if(!featureVisibility[key]) {
+					toggleFeatureVisibility(key);
+				}
+			} else {
+				if(featureVisibility[key]) {
+					toggleFeatureVisibility(key);
+				}
+			}
+		});
+	};
+
+
+	const handleToggleAllProvince = () => {
+		if (provinceVisibility[10]){
+			Object.keys(caruidToProvinceMap).map((provinceKey) => {
+				if (provinceVisibility[provinceKey]){
+					toggleProvinceVisibility(provinceKey);
+				}
+			});
+		} else {
+			Object.keys(caruidToProvinceMap).map((provinceKey) => {
+				if (!provinceVisibility[provinceKey]){
+					toggleProvinceVisibility(provinceKey);
+				}
+			});
+		}
+		
+	};
+	
+
 	const handleRemoveFile = (index: number) => {
 		setFileToDeleteIndex(index);
         setShowConfirmation(true);
@@ -162,6 +306,15 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 		setFileToDeleteIndex(null);
 		setShowConfirmation(false);
 	};
+
+	const handleColorMethodSwitch = () => {
+		setAutoColourRange(!autoColourRange);
+	};
+
+	const handleSubmit = (event: React.FormEvent) => {
+		event.preventDefault();
+		handleNewTitle(titleInputValue);
+	}
 	
     return (
 		<div className="sidebar">
@@ -176,25 +329,43 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 						onClick={() => handleCardClick(group.id)}
 					>
 						<div className="menu-item-checkbox">
-							{group.id === "1" ? (
-								<><label
-									htmlFor={`checkbox-${group.id}`}
-									className="menu-item-label"
-								>
-									{group.name}
-								</label><ColorPickerComponent
-										onColorChange={(colorResult) => setColorPickerColor(colorResult.hex)} /></>
+							{group.id === "1" && showMapColorToggle ? (
+								<>
+									<>
+										<label className="menu-item-label">
+											{group.name}
+										</label>
+										<button
+											className="color-range-toggle-button"
+											onClick={(event) => {
+												handleColorMethodSwitch();
+												event.stopPropagation();
+											}}
+										>
+											{!autoColourRange ? "Auto-Color Range":"Manual Color Range"}
+										</button>
+										<div className="color-picker-wrapper" onClick={(event) => event.stopPropagation()}>
+											<ColorPickerComponent
+												onColorChange={(colorResult) => setPrimaryColorPicker(colorResult.hex)}
+												backgroundColor={primaryColorPicker}
+											/>
+											{!autoColourRange && (
+												<ColorPickerComponent
+													onColorChange={(colorResult) => setSecondaryColorPicker(colorResult.hex)}
+													backgroundColor={secondaryColorPicker}
+												/>
+											)}
+										</div>
+									</>
+								</>
 							) : (
 								<>
-									<label
-										htmlFor={`checkbox-${group.id}`}
-										className="menu-item-label"
-									>
+									<label htmlFor={`checkbox-${group.id}`} className="menu-item-label">
 										{group.name}
 									</label>
 								</>
 							)}
-						</div>
+					</div>
 						{group.id === "3" && showFileList && (
 							<ul className="file-dropdown">
 								{uploadedFiles.map((file, index) => (
@@ -240,6 +411,8 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 								<span onClick={handleSelectAll} className='selection-toggle'>Select All</span>
 								<span onClick={handleDeselectAll} className='selection-toggle'>Deselect All</span>
 								<span onClick={handleInversionSelect} className='selection-toggle'>Inversion Select</span>
+								<span onClick={handleNonzeroSelect} className='selection-toggle'>Select Regions with Data</span>
+								<span onClick={handleToggleAllProvince} className='selection-toggle'>Toggle province display</span>
 							</div>
                             <ul
                                 className="feature-list" >
@@ -247,6 +420,8 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 							</ul>
 
 
+
+                                {renderProvinceToggles()}
 						</div>
 						)}
 					</li>
@@ -256,7 +431,21 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
                         <ErrorDropdown />
                     </li>
                 )}
-				
+			
+				<form className="titleForm" onSubmit={handleSubmit}>
+					<input
+                        className="titleInput"
+                        type="text"
+                        placeholder="Map Title"
+						value={titleInputValue}
+                        onChange={(e) => setTitleInputValue(e.target.value)}
+                    />
+				<button type="submit" style={{ display: 'none' }} aria-hidden="true"></button>
+				<FaRegSave
+					className="save-icon"
+					onClick={() => handleNewTitle(titleInputValue)}
+				/>
+				</form>
 			</ul>
 			{showConfirmation && (
                 <ConfirmationDialog

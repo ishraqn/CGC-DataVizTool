@@ -4,10 +4,29 @@ import { RGBColor } from "react-color";
 export function generateColorGradient(
     numSteps: number = 10,
     startColor: string = 'rgb(152, 175, 199)',
-    endColor: string = 'rgb(72, 19, 102)'
+    endColor: string = 'null',
+    calcMonochrome: boolean
 ): string[] {
     // Parse the start and end colors
     const startRGB: number[] = parseRGB(startColor);
+
+    // Calculate the end color based on the start color values
+    if(calcMonochrome){
+        endColor = 'rgb(';
+            for (let i = 0; i < startRGB.length; i++) {
+                if (startRGB[i] > 153) {
+                    endColor += (startRGB[i] - 153).toString();
+                } else {
+                    endColor += (startRGB[i] + 153).toString();
+                }
+                if (i < startRGB.length - 1) {
+                    endColor += ', ';
+                }
+            }
+        endColor += ')';
+    }
+    
+    // Parse the end color
     const endRGB: number[] = parseRGB(endColor);
     
     // Calculate the step size for each color channel 
@@ -22,9 +41,10 @@ export function generateColorGradient(
     
     // Push white color for 0
     gradientColors.push('rgb(255, 255, 255)');
+    gradientColors.push(startColor);
 
     // Generate the gradient colors for other steps
-    for (let i = 1; i <= numSteps; i++) {
+    for (let i = 2; i <= numSteps; i++) {
         const r: number = Math.round(startRGB[0] + stepSize[0] * i);
         const g: number = Math.round(startRGB[1] + stepSize[1] * i);
         const b: number = Math.round(startRGB[2] + stepSize[2] * i);

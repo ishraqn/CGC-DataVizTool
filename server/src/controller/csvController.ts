@@ -23,7 +23,6 @@ export const csvController = {
 
             try {
                 const validation = await validateCsvRecords(fileDetails.path);
-
                 if (validation.hasErrors) {
 
                     res.status(422).json({
