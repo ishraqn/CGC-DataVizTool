@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useRef } from "react";
+import isEqual from "lodash/isEqual";
 
 interface UploadFileData {
 	id: unknown;
@@ -49,6 +50,7 @@ type ToggleContextType = {
 	setTitlesById: (titles: { [key: string]: string }) => void;
 	legendLabels: {lower: string; upper: string; color: unknown; }[];
 	setLegendLabels: (labels: {lower: string; upper: string ; color: unknown; }[]) => void;
+	handleSetLegendLabels: (labels: {lower: string; upper: string; color: unknown; }[]) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -89,6 +91,7 @@ const defaultState: ToggleContextType = {
 	setTitlesById: () => {},
 	legendLabels: [],
 	setLegendLabels: () => {},
+	handleSetLegendLabels: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -144,6 +147,15 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	const [legendLabels, setLegendLabels] = useState<{ lower: string; upper: string; color: unknown; }[]>([]);
 
+	const currentLegendLabels = useRef<{ lower: string; upper: string; color: unknown; }[]>([]);
+
+	const handleSetLegendLabels = (labels: { lower: string; upper: string; color: unknown; }[]) => {
+		if(!isEqual(labels, currentLegendLabels.current)){
+			currentLegendLabels.current = labels;
+			setLegendLabels(labels);
+		}
+	};
+
 	const toggleFeatureVisibility = (key: string) => {
 		setFeatureVisibility((prev) => ({
 			...prev,
@@ -180,19 +192,14 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 			const filesObject = await response.json();
 			const filesArray: UploadFileData[] = Object.keys(filesObject).map(
 				(key) => {
-					let title = titlesById[key];
-					if (title === undefined) {
-						title = filesObject[key].name.includes("_")
-							? filesObject[key].name.split("_").slice(1).join("_").split('.').slice(0,-1).join('.')
-							: filesObject[key].name;
-					}
+					const customTitle = titlesById[key];
 					return {
 						...filesObject[key],
 						id: key,
 						cleanName: filesObject[key].name.includes("_")
 							? filesObject[key].name.split("_").slice(1).join("_").split('.').slice(0,-1).join('.')
 							: filesObject[key].name,
-						title,
+							title: customTitle !== undefined ? customTitle : "",
 					};
 				}
 			);
@@ -243,7 +250,7 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 				const title =
 					titlesById[file.id.toString()] !== undefined
 						? titlesById[file.id.toString()]
-						: file.title || file.cleanName;
+						: "";
 				setCurrentFileTitle(title);
 			}
 		}
@@ -289,6 +296,7 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 				setTitlesById,
 				legendLabels,
 				setLegendLabels,
+				handleSetLegendLabels,
 			}}
 		>
 			{children}

@@ -89,8 +89,8 @@ const renderMap = async (
         } else {
             return {
                 fillColor: featureColors[feature.properties.CARUID],
-                weight: 3,
-                color: "#46554F",
+                weight: 0.7,
+                color: "black",
                 fillOpacity: tileLayer ? 0.4 : 1,
             };
         }
