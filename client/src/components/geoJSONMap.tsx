@@ -77,13 +77,20 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
             const minValue = Math.min(...featuresWithValues.map(item => item[1]));
             const interval = (maxValue - minValue) / numberOfLegendItems;
             const labelsArray = [];
+            const initValueColor = getColor(0, allValues, steps);
+
+            labels.push(
+                `<div style="display: flex; align-items: center;">` + 
+                `<i style="background:${initValueColor}; width:18px; height:18px; display:inline-block; margin-right:4px; border: 1px solid #ccc; border-radius: 4px;"></i> ` +
+                `<span style="color: black; font-weight: bold;">${0}</span>` + `</div>`
+            );
 
             for (let i = 0; i < numberOfLegendItems; i++) {
               const threshold = minValue + i * interval;
             const upperBound = threshold + interval;
             const colorIndex = getColor(upperBound - 1, allValues, steps);
             const color = colorGradient[colorIndex];
-            
+
             if (!isNaN(threshold) && !isNaN(upperBound)) {
                 const labelToPush = {
                     lower: threshold.toFixed(0),
