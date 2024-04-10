@@ -78,6 +78,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
             const interval = (maxValue - minValue) / numberOfLegendItems;
             const labelsArray = [];
             const initValueColor = getColor(0, allValues, steps);
+            labelsArray.push({lower: 0, upper: 0, color: initValueColor});
 
             labels.push(
                 `<div style="display: flex; align-items: center;">` + 
