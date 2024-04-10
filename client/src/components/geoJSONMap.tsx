@@ -32,7 +32,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     const [allValues, setValues] = useState<number[]>([]);
 
     const [steps, setSteps] = useState<number>(500); // State for steps
-    const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, currentFileTitle, toggleLegendVisibility, toggleTileLayer} = useToggle();
+    const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, currentFileTitle, toggleLegendVisibility, toggleTileLayer, uploadedFiles} = useToggle();
     const featureColorMapRef = useRef({});
 
     // Effect to initialize color gradient and data values
@@ -198,7 +198,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
                 <Legend colorGradient={colorGradient} allValues={allValues} />
                 {geoJsonData && (
                     <>
-                        <TitleComponent title = {currentFileTitle}/>
+                        {uploadedFiles.length > 0 && <TitleComponent title = {currentFileTitle}/>}
                         <GeoJSON
                             data={geoJsonData}
                             style={geoJsonStyle}
