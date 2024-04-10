@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MapContainer, GeoJSON, useMap, TileLayer } from "react-leaflet";
+import { MapContainer, GeoJSON, useMap, TileLayer, ZoomControl } from "react-leaflet";
 import { GeoJsonObject, Feature, Geometry } from "geojson";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -32,7 +32,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     const [allValues, setValues] = useState<number[]>([]);
 
     const [steps, setSteps] = useState<number>(500); // State for steps
-    const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, currentFileTitle, toggleLegendVisibility, toggleTileLayer} = useToggle();
+    const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, currentFileTitle, toggleLegendVisibility, toggleTileLayer, uploadedFiles} = useToggle();
     const featureColorMapRef = useRef({});
 
     // Effect to initialize color gradient and data values
@@ -183,11 +183,12 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
             <MapContainer
                 key={mapKey}
                 zoom={1}
-                zoomControl={true}
+                zoomControl={false}
                 keyboard={false}
                 preferCanvas={false}
                 inertia={false}
             >
+                <ZoomControl position="bottomleft" />
                 {toggleTileLayer && (
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -198,7 +199,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
                 <Legend colorGradient={colorGradient} allValues={allValues} />
                 {geoJsonData && (
                     <>
-                        <TitleComponent title = {currentFileTitle}/>
+                        {uploadedFiles.length > 0 && <TitleComponent title = {currentFileTitle}/>}
                         <GeoJSON
                             data={geoJsonData}
                             style={geoJsonStyle}
