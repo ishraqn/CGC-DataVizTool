@@ -49,7 +49,14 @@ const limiter = rateLimit({
 app.use(morgan("dev"));
 app.use(limiter);
 app.use(cookieParser());
-app.use(helmet());
+app.use(
+	helmet.contentSecurityPolicy({
+		directives: {
+			defaultSrc: ["'self'"],
+			imgSrc: ["'self'", "https://c.tile.openstreetmap.org", "data:"],
+		},
+	})
+);
 app.use(cors());
 app.use(compression());
 app.use(express.json({ limit: "50mb" }));
@@ -59,6 +66,8 @@ app.use(
 	"/api/v1/data-folder",
 	express.static(path.resolve(__dirname, "data", "default", "simplified"))
 );
+
+app.use(express.static(path.resolve(__dirname, "../../client/dist")));
 
 // express-session middleware for user session management
 app.use(sessionMiddleware);
