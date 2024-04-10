@@ -9,6 +9,8 @@ export const mapController = {
             let filePath = req.body.filePath;
             const fillColors = req.body.fillColors;
             const visibleFeatures = req.body.visibileFeatures;
+            const legendLabels = req.body.legendLabels;
+            const tileLayer = req.body.tileLayer;
 
             if (Object.keys (filePath).length === 0) {
                 filePath = resolve(__dirname, "..", "data", "default", "simplified", "default-simplified.geojson");
@@ -16,7 +18,7 @@ export const mapController = {
             else{
                 filePath = filePath.replace(".csv","_totalSamples.geojson");
             }
-            const screenshotBuffer = await renderMap(filePath, fillColors, visibleFeatures, title);
+            const screenshotBuffer = await renderMap(filePath, fillColors, visibleFeatures, title, legendLabels, tileLayer);
             res.type("image/png").send(screenshotBuffer);
         } catch (error) {
             console.error("Error rendering map: ");

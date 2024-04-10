@@ -5,7 +5,9 @@ const renderMap = async (
     filePath: string,
     fillColors: undefined,
     visibleFeatures: undefined,
-    title: string
+    title: string,
+    legendLabels: undefined,
+    tileLayer: boolean
 ): Promise<Buffer> => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
@@ -46,7 +48,7 @@ const renderMap = async (
         #map { height: 100vh; width: 100vw; }
         .leaflet-container {
             background-color:  #ffffff;
-          }          
+        }          
             .map-title{
             position:relative;
             padding: 6px 8px;
@@ -54,7 +56,13 @@ const renderMap = async (
             z-index: 400;
             font-size: 35px;
             text-align: center;
-        }   
+        }
+        .legend{
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -67,6 +75,8 @@ const renderMap = async (
     const geoJsonData = ${JSON.stringify(geoJsonData)};
     const featureColors = ${JSON.stringify(fillColors)};
     const featureVisibility = ${JSON.stringify(visibleFeatures)};
+    const legendLabels = ${JSON.stringify(legendLabels)};
+    const tileLayer = ${tileLayer};
 
     const geoJsonStyle = (feature) => {
         if (!featureVisibility[feature.properties.CARUID]) {
@@ -81,7 +91,7 @@ const renderMap = async (
                 fillColor: featureColors[feature.properties.CARUID],
                 weight: 3,
                 color: "#46554F",
-                fillOpacity: 1,
+                fillOpacity: tileLayer ? 0.4 : 1,
             };
         }
     };
@@ -91,6 +101,12 @@ const renderMap = async (
             zoom: 1,
             zoomControl: false,
         });
+
+        if (tileLayer) {
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+            }).addTo(map);
+        }
 
         const geoJSONLayer = L.geoJson(geoJsonData, {
             style: geoJsonStyle,
@@ -107,6 +123,35 @@ const renderMap = async (
         else{
             map.fitBounds(-146.77734375000003,20.797201434307,-46.75781250000001,86.77799674310461);
         }
+
+        if (legendLabels && legendLabels.length > 0) {
+            const legend = L.control({ position: 'bottomright' });
+            legend.onAdd = function () {
+                const div = L.DomUtil.create('div', 'legend');
+                let labels = [];
+                legendLabels.forEach((label, index) => {
+                    if (label.upper === "") {
+                        labels.push(
+                            '<div style="display: flex; align-items: center;">' +
+                            '<i style="background:' + label.color + '; width:18px; height:18px; display:inline-block; margin-right:4px; border: 1px solid #ccc; border-radius: 4px;"></i> ' +
+                            '<span style="color: black; font-weight: bold;">' + label.lower + ' </span>' +
+                            '</div>'
+                        );
+                    } else {
+                        labels.push(
+                            '<div style="display: flex; align-items: center;">' +
+                            '<i style="background:' + label.color + '; width:18px; height:18px; display:inline-block; margin-right:4px; border: 1px solid #ccc; border-radius: 4px;"></i> ' +
+                            '<span style="color: black; font-weight: bold;">' + label.lower + ' &ndash; ' + label.upper + '</span>' +
+                            '</div>'
+                        );
+                    }
+                });            
+                div.innerHTML = labels.join('<br>');
+                return div;
+            };
+            legend.addTo(map);
+        }
+        
     };
 
         document.addEventListener('DOMContentLoaded', initMap);
