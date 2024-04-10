@@ -32,7 +32,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     const [allValues, setValues] = useState<number[]>([]);
 
     const [steps, setSteps] = useState<number>(500); // State for steps
-    const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, currentFileTitle, toggleLegendVisibility, toggleTileLayer, uploadedFiles} = useToggle();
+    const {primaryColorPicker, secondaryColorPicker, featureVisibility, autoColourRange, setFeatureColors, currentFileTitle, toggleLegendVisibility, toggleTileLayer, uploadedFiles, setLegendLabels} = useToggle();
     const featureColorMapRef = useRef({});
 
     // Effect to initialize color gradient and data values
@@ -67,7 +67,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
     
         legend.onAdd = function () {
             const div = L.DomUtil.create("div", "info legend");
-            let labels = [];
+            const labels = [];
 
             const featuresColorMap = Object.values(featureColorMapRef.current).map((item, index) => {return [item, allValues[index]]});
             const featuresWithValues = featuresColorMap.sort((a, b) => a[1] - b[1]).filter(item => item[1] !== 0);
@@ -76,6 +76,7 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
             const maxValue = Math.max(...featuresWithValues.map(item => item[1]));
             const minValue = Math.min(...featuresWithValues.map(item => item[1]));
             const interval = (maxValue - minValue) / numberOfLegendItems;
+            const labelsArray = [];
 
             for (let i = 0; i < numberOfLegendItems; i++) {
               const threshold = minValue + i * interval;
@@ -84,13 +85,20 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
             const color = colorGradient[colorIndex];
             
             if (!isNaN(threshold) && !isNaN(upperBound)) {
+                const labelToPush = {
+                    lower: threshold.toFixed(0),
+                    upper: upperBound.toFixed(0),
+                    color: color,
+                };
                 labels.push(
                     `<div style="display: flex; align-items: center;">` + 
                     `<i style="background:${color}; width:18px; height:18px; display:inline-block; margin-right:4px; border: 1px solid #ccc; border-radius: 4px;"></i> ` +
                     `<span style="color: black; font-weight: bold;">${threshold.toFixed(0)} &ndash; ${upperBound.toFixed(0)}</span>` + `</div>`
                 );
+                labelsArray.push(labelToPush);
             }
         }
+            setLegendLabels(labelsArray);
             div.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
             div.style.padding = "10px"; 
             div.style.border = "2px solid #ccc"; 
