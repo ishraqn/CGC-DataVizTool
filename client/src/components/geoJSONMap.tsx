@@ -106,7 +106,6 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
                 labelsArray.push(labelToPush);
             }
         }
-            setLegendLabels(labelsArray);
             div.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
             div.style.padding = "10px"; 
             div.style.border = "2px solid #ccc"; 
