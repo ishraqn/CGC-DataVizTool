@@ -47,6 +47,8 @@ type ToggleContextType = {
 	setLegendVisibility: (isVisible: boolean) => void;
 	titlesById: { [key: string]: string };
 	setTitlesById: (titles: { [key: string]: string }) => void;
+	legendLabels: {lower: string; upper: string; color: unknown; }[];
+	setLegendLabels: (labels: {lower: string; upper: string; color: unknown; }[]) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -85,6 +87,8 @@ const defaultState: ToggleContextType = {
 	setLegendVisibility: () => {},
 	titlesById: {},
 	setTitlesById: () => {},
+	legendLabels: [],
+	setLegendLabels: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -137,6 +141,8 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 	);
 
 	const [titlesById, setTitlesById] = useState<{ [key: string]: string }>({});
+
+	const [legendLabels, setLegendLabels] = useState<{ lower: string; upper: string; color: unknown; }[]>([]);
 
 	const toggleFeatureVisibility = (key: string) => {
 		setFeatureVisibility((prev) => ({
