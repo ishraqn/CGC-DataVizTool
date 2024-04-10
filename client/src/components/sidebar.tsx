@@ -76,10 +76,12 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [fileToDeleteIndex, setFileToDeleteIndex] = useState<number | null>(null);
 	const [titleInputValue, setTitleInputValue] = useState("");
+	const [showMapColorToggle, setShowMapColorToggle] = useState(false);
 
     const handleCardClick = (id: string) => {
 		switch (id) {
 			case "1":
+				setShowMapColorToggle(prev => !prev);
 				break;
 			case "2":
 				setIsTileLayerVisible(!isTileLayerVisible);
@@ -317,7 +319,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 						onClick={() => handleCardClick(group.id)}
 					>
 						<div className="menu-item-checkbox">
-							{group.id === "1" ? (
+							{group.id === "1" && showMapColorToggle ? (
 								<>
 									<>
 										<label className="menu-item-label">
@@ -325,13 +327,14 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 										</label>
 										<button
 											className="color-range-toggle-button"
-											onClick={() => {
+											onClick={(event) => {
 												handleColorMethodSwitch();
+												event.stopPropagation();
 											}}
 										>
 											{!autoColourRange ? "Auto-Color Range":"Manual Color Range"}
 										</button>
-										<div className="color-picker-wrapper">
+										<div className="color-picker-wrapper" onClick={(event) => event.stopPropagation()}>
 											<ColorPickerComponent
 												onColorChange={(colorResult) => setPrimaryColorPicker(colorResult.hex)}
 												backgroundColor={primaryColorPicker}
