@@ -48,7 +48,7 @@ type ToggleContextType = {
 	titlesById: { [key: string]: string };
 	setTitlesById: (titles: { [key: string]: string }) => void;
 	legendLabels: {lower: string; upper: string; color: unknown; }[];
-	setLegendLabels: (labels: {lower: string; upper: string; color: unknown; }[]) => void;
+	setLegendLabels: (labels: {lower: string; upper: string ; color: unknown; }[]) => void;
 };
 
 const defaultState: ToggleContextType = {

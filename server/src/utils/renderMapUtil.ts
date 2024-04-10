@@ -48,7 +48,7 @@ const renderMap = async (
         #map { height: 100vh; width: 100vw; }
         .leaflet-container {
             background-color:  #ffffff;
-          }          
+        }          
             .map-title{
             position:relative;
             padding: 6px 8px;
@@ -56,6 +56,12 @@ const renderMap = async (
             z-index: 400;
             font-size: 35px;
             text-align: center;
+        }
+        .legend{
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -122,15 +128,24 @@ const renderMap = async (
             const legend = L.control({ position: 'bottomright' });
             legend.onAdd = function () {
                 const div = L.DomUtil.create('div', 'legend');
-                let labels = ['<strong>Legend</strong>'];
+                let labels = [];
                 legendLabels.forEach((label, index) => {
-                    labels.push(
-                        '<div style="display: flex; align-items: center;">' +
-                        '<i style="background:' + label.color + '; width:18px; height:18px; display:inline-block; margin-right:4px; border: 1px solid #ccc; border-radius: 4px;"></i> ' +
-                        '<span style="color: black; font-weight: bold;">' + label.lower + ' &ndash; ' + label.upper + '</span>' +
-                        '</div>'
-                    );
-                });                
+                    if (label.upper === "") {
+                        labels.push(
+                            '<div style="display: flex; align-items: center;">' +
+                            '<i style="background:' + label.color + '; width:18px; height:18px; display:inline-block; margin-right:4px; border: 1px solid #ccc; border-radius: 4px;"></i> ' +
+                            '<span style="color: black; font-weight: bold;">' + label.lower + ' </span>' +
+                            '</div>'
+                        );
+                    } else {
+                        labels.push(
+                            '<div style="display: flex; align-items: center;">' +
+                            '<i style="background:' + label.color + '; width:18px; height:18px; display:inline-block; margin-right:4px; border: 1px solid #ccc; border-radius: 4px;"></i> ' +
+                            '<span style="color: black; font-weight: bold;">' + label.lower + ' &ndash; ' + label.upper + '</span>' +
+                            '</div>'
+                        );
+                    }
+                });            
                 div.innerHTML = labels.join('<br>');
                 return div;
             };
