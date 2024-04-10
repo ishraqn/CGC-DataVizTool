@@ -85,8 +85,9 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
             
             if (!isNaN(threshold) && !isNaN(upperBound)) {
                 labels.push(
+                    `<div style="display: flex; align-items: center;">` + 
                     `<i style="background:${color}; width:18px; height:18px; display:inline-block; margin-right:4px; border: 1px solid #ccc; border-radius: 4px;"></i> ` +
-                    `<span style="color: black; font-weight: bold;">${threshold.toFixed(0)} &ndash; ${upperBound.toFixed(0)}</span>`
+                    `<span style="color: black; font-weight: bold;">${threshold.toFixed(0)} &ndash; ${upperBound.toFixed(0)}</span>` + `</div>`
                 );
             }
         }
