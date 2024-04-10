@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { MapContainer, GeoJSON, useMap, TileLayer } from "react-leaflet";
+import { MapContainer, GeoJSON, useMap, TileLayer, ZoomControl } from "react-leaflet";
 import { GeoJsonObject, Feature, Geometry } from "geojson";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -183,11 +183,12 @@ const GeoJSONMap: React.FC<GeoJSONMapProps> = ({ geoJsonData }) => {
             <MapContainer
                 key={mapKey}
                 zoom={1}
-                zoomControl={true}
+                zoomControl={false}
                 keyboard={false}
                 preferCanvas={false}
                 inertia={false}
             >
+                <ZoomControl position="bottomleft" />
                 {toggleTileLayer && (
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
