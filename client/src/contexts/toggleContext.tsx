@@ -177,14 +177,14 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 					let title = titlesById[key];
 					if (title === undefined) {
 						title = filesObject[key].name.includes("_")
-							? filesObject[key].name.split("_").slice(1).join("_")
+							? filesObject[key].name.split("_").slice(1).join("_").split('.').slice(0,-1).join('.')
 							: filesObject[key].name;
 					}
 					return {
 						...filesObject[key],
 						id: key,
 						cleanName: filesObject[key].name.includes("_")
-							? filesObject[key].name.split("_").slice(1).join("_")
+							? filesObject[key].name.split("_").slice(1).join("_").split('.').slice(0,-1).join('.')
 							: filesObject[key].name,
 						title,
 					};
