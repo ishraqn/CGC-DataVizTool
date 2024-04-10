@@ -9,7 +9,7 @@ import { useToggle } from "./contexts/useToggle";
 const App: React.FC = () => {
 	const [mapData, setMapData] = useState(null);
 	const [uploadCount, setUploadCount] = useState(0);
-	const { uploadedFiles, currentFileIndex, setCurrentFileIndex, featureColors, featureVisibility } = useToggle();
+	const { uploadedFiles, currentFileIndex, setCurrentFileIndex, featureColors, featureVisibility, titlesById } = useToggle();
 	const [previousFileIndex, setPreviousFileIndex] = useState(-1);
 
 	const getCurrentSelectedFile = async () => {
@@ -104,12 +104,13 @@ const App: React.FC = () => {
 	const handleDownload = async () => {
 		try {
 			const selectedFile = uploadedFiles[currentFileIndex];
+			const customTitle = titlesById[selectedFile.id.toString()] !== undefined ? titlesById[selectedFile.id.toString()] : selectedFile.title;
 			const response = await fetch("/api/v1/map/render-map", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ filePath: selectedFile.path, fillColors: featureColors, visibileFeatures: featureVisibility, title: selectedFile.title}),
+				body: JSON.stringify({ filePath: selectedFile.path, fillColors: featureColors, visibileFeatures: featureVisibility, title: customTitle}),
 			});
 			if (!response.ok) {
 				throw new Error(`HTTP error! Status: ${response.status}`);
