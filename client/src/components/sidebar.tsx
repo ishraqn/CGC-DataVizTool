@@ -17,11 +17,11 @@ interface SidebarProps {
 
 // mock data
 const mockFilterGroups: FilterGroup[] = [
-	{ id: "1", name: "Map Colors" },
     { id: "3", name: "Select File" },
+	{ id: "1", name: "Map Colors" },
 	{ id: "4", name: "Select Crop Region" },
-	{ id: "6", name: "Toggle Tile Layer" },
 	{ id: "7", name: "Toggle Legend" },
+	{ id: "6", name: "Toggle Tile Layer" },
 	{ id: "5", name: "Download Map" },
 ];
 
