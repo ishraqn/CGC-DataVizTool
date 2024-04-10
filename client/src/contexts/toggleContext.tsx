@@ -192,19 +192,14 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 			const filesObject = await response.json();
 			const filesArray: UploadFileData[] = Object.keys(filesObject).map(
 				(key) => {
-					let title = titlesById[key];
-					if (title === undefined) {
-						title = filesObject[key].name.includes("_")
-							? filesObject[key].name.split("_").slice(1).join("_").split('.').slice(0,-1).join('.')
-							: filesObject[key].name;
-					}
+					const customTitle = titlesById[key];
 					return {
 						...filesObject[key],
 						id: key,
 						cleanName: filesObject[key].name.includes("_")
 							? filesObject[key].name.split("_").slice(1).join("_").split('.').slice(0,-1).join('.')
 							: filesObject[key].name,
-						title,
+							title: customTitle !== undefined ? customTitle : "",
 					};
 				}
 			);
@@ -255,7 +250,7 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 				const title =
 					titlesById[file.id.toString()] !== undefined
 						? titlesById[file.id.toString()]
-						: file.title || file.cleanName;
+						: "";
 				setCurrentFileTitle(title);
 			}
 		}
