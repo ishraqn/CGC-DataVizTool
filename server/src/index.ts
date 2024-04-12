@@ -106,11 +106,18 @@ const CLEANUP_INTERVAL = 2 * (MAX_AGE); // 2 hours
 cleanupTempFiles(MAX_AGE, CLEANUP_INTERVAL);
 
 // start the server
-app.listen(PORT, (): void => {
-	console.log(`Server is running on port ${PORT}`);
+const startServer = (port: number | string) => {
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    }).on('error', (err: NodeJS.ErrnoException) => {
+        if (err.code === 'EADDRINUSE') {
+            console.error(`Port ${port} is already in use. Please ensure that another instance of the application is not running or specify a different port in the environment variable.`);
+            process.exit(1);
+        } else {
+            console.error(`An error occurred while starting the server: ${err.message}`);
+            process.exit(1);
+        }
+    });
+};
 
-	// // Open browser on server start
-	// void import("open").then((open) => {
-	//     open.default(`http://localhost:${PORT}`);
-	// });
-});
+startServer(PORT);
