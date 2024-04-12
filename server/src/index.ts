@@ -46,7 +46,7 @@ const limiter = rateLimit({
 });
 
 // middleware for the server
-app.use(morgan("dev"));
+app.use(morgan("short"));
 app.use(limiter);
 app.use(cookieParser());
 app.use(
