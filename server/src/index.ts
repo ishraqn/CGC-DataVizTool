@@ -41,8 +41,8 @@ const PORT: string | number = process.env.PORT || 5120;
 
 // rate limiter for the server
 const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 5000, // limit each IP to 5000 requests per windowMs (bad must change)
+	windowMs: 10 * 60 * 1000, // 10 minutes
+	max: 100, // limit each IP request to 100 requests per windowMs
 });
 
 // middleware for the server
@@ -97,7 +97,7 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 		return _next(err);
 	}
 	console.error(err);
-	res.status(500).send(err.message || "Internal Error");
+	res.status(500).send("Internal Server Error");
 });
 
 // cleanup function for temp files
