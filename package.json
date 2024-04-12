@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\"",
     "init": "npm install && cd server && npm install && cd ../client && npm install",
-    "build": "concurrently \"cd server && npm run build\" \"cd client && npm run build\"",
+    "build": "concurrently \"cd server && npm run build && npm prune --omit=dev\" \"cd client && npm run build && npm prune --omit=dev\"",
     "start": "cd server && node dist/index.js"
   },
   "keywords": [],
