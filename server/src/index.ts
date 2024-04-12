@@ -101,8 +101,8 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 // cleanup function for temp files
-const MAX_AGE = 1000 * 60 * 60; // 1 hour
-const CLEANUP_INTERVAL = 3 * (1000 * 60 * 60); // 3 hours
+const MAX_AGE = parseInt(process.env.SESSION_MAX_AGE || "60") * 60 * 1000 // 1 hour if not specified
+const CLEANUP_INTERVAL = 2 * (MAX_AGE); // 2 hours
 cleanupTempFiles(MAX_AGE, CLEANUP_INTERVAL);
 
 // start the server
