@@ -42,7 +42,7 @@ const PORT: string | number = process.env.PORT || 5120;
 // rate limiter for the server
 const limiter = rateLimit({
 	windowMs: 10 * 60 * 1000, // 10 minutes
-	max: 100, // limit each IP request to 100 requests per windowMs
+	max: 5000, // limit each IP request to 5000 requests per windowMs for local use
 });
 
 // middleware for the server
@@ -50,17 +50,17 @@ app.use(morgan("short"));
 app.use(limiter);
 app.use(cookieParser());
 app.use(
-	helmet.contentSecurityPolicy({
-		directives: {
-			defaultSrc: ["'self'"],
-			imgSrc: [
-				"'self'",
-				"data:",
-				"*.tile.openstreetmap.org",
-			],
-		},
-	})
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: ["'self'"],
+            imgSrc: ["'self'", "data:", "*.tile.openstreetmap.org"],
+            scriptSrc: ["'self'", "'unsafe-inline'"],
+            styleSrc: ["'self'", "'unsafe-inline'"],
+            connectSrc: ["'self'"],
+        },
+    })
 );
+
 app.use(cors());
 app.use(compression());
 app.use(express.json({ limit: "50mb" }));
