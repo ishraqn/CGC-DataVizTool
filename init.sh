@@ -4,7 +4,7 @@
 REPOSITORY_URL="https://github.com/ishraqn/CGC-DataVizTool.git"
 REPO_DIR_NAME="$(basename -s .git $REPOSITORY_URL)"
 GITHUB_ZIP_LINK="https://github.com/ishraqn/CGC-DataVizTool/archive/refs/heads/main.zip"
-ZIP_FILE_NAME="$REPO_DIR_NAME.zip"  
+ZIP_FILE_NAME="main.zip"  
 
 # install Node.js using apt
 install_node() {
@@ -44,13 +44,13 @@ confirm_start
 
 # 1: Clone the Git repository
 echo "Attempting to clone the Git repository from $REPOSITORY_URL..."
-git clone $REPOSITORY_URL || {
+{
     echo "Failed to clone the repository. Attempting to download the ZIP file..."
     curl -LO $GITHUB_ZIP_LINK && unzip $ZIP_FILE_NAME -d . || {
         echo "Failed to download and extract the repository ZIP file. Exiting..."
         exit 1
     }
-    REPO_DIR_NAME="$(basename $ZIP_FILE_NAME .zip)"  # Update repo directory name from ZIP file, if needed
+    REPO_DIR_NAME="CGC-DataVizTool-main"  # Update repo directory name from ZIP file, if needed
 }
 
 # Change directory to the repository
