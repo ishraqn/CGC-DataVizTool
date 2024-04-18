@@ -44,7 +44,7 @@ confirm_start
 
 # 1: Clone the Git repository
 echo "Attempting to clone the Git repository from $REPOSITORY_URL..."
-{
+git clone $REPOSITORY_URL || {
     echo "Failed to clone the repository. Attempting to download the ZIP file..."
     curl -LO $GITHUB_ZIP_LINK && unzip $ZIP_FILE_NAME -d . || {
         echo "Failed to download and extract the repository ZIP file. Exiting..."
