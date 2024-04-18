@@ -45,3 +45,6 @@ temp/
 
 #tsconfig build
 tsconfig.tsbuildinfo
+
+#main zip download
+main.zip
