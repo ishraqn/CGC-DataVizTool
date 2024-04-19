@@ -3,6 +3,7 @@
 # Constants
 REPOSITORY_URL="https://github.com/ishraqn/CGC-DataVizTool.git"
 REPO_DIR_NAME="$(basename -s .git $REPOSITORY_URL)"
+REPO_NAME="CGC-DataVizTool"
 GITHUB_ZIP_LINK="https://github.com/ishraqn/CGC-DataVizTool/archive/refs/heads/main.zip"
 ZIP_FILE_NAME="main.zip"  
 
@@ -50,7 +51,7 @@ git clone $REPOSITORY_URL || {
         echo "Failed to download and extract the repository ZIP file. Exiting..."
         exit 1
     }
-    REPO_DIR_NAME="CGC-DataVizTool-main"  # Update repo directory name from ZIP file, if needed
+    REPO_DIR_NAME="$REPO_NAME-main"  # Update repo directory name from ZIP file, if needed
 }
 
 # Change directory to the repository
