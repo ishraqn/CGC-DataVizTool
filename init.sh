@@ -44,6 +44,7 @@ ask_for_input() {
 
 # Function to prompt user to start the application
 start_application() {
+    printf "\n"
     read -p "Do you want to start the application now? (y/n): " start_confirm
     if [ "$start_confirm" == "y" ]; then
         echo "Starting the application..."
@@ -52,7 +53,7 @@ start_application() {
             exit 1
         }
     else
-        echo "Application setup is complete, but not started."
+        printf "\nApplication setup is complete, but not started."
         exit 0
     fi
 }
@@ -115,7 +116,7 @@ npm run init && npm run build || {
 
 # Copy the .env.template to .env and modify it
 cp .env.template .env
-echo "Please Configure the Server Settings (Leave empty for default):"
+printf "\nPlease Configure the Server Settings (Leave empty for default):\n"
 SERVER_PORT=$(ask_for_input "Server Port" $SERVER_PORT)
 FRONT_END_PORT=$(ask_for_input "Front End Port" $FRONT_END_PORT)
 MAX_SESSION=$(ask_for_input "Max Session Time (in minutes)" $MAX_SESSION)
