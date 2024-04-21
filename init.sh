@@ -10,25 +10,41 @@ SERVER_PORT=5000
 FRONT_END_PORT=3000
 MAX_SESSION=60
 OS=$(uname -s) 
+SHELL_NAME=$(basename "$SHELL")
 
 # install Node.js using apt
 install_node() {
     OS=$(uname -s)
-    echo "Installing Node.js on $OS ..."
-    if [[ "$OS" =~ ^Darwin$ ]]; then
-        # macOS
-        which brew > /dev/null || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        brew install node || {
-            echo "Failed to install Node.js. Exiting..."
+    echo "Installing nvm and Node.js on $OS ..."
+
+    if [[ "$OS" =~ ^Darwin$ || "$OS" =~ ^Linux$ ]]; then
+        if ! curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash; then
+            echo "Failed to install NVM. Exiting..."
+            exit 1
+        fi
+
+        if [[ "$SHELL_NAME" == "bash" ]]; then
+            SOURCE_FILE="$HOME/.bashrc"
+        elif [[ "$SHELL_NAME" == "zsh" ]]; then
+            SOURCE_FILE="$HOME/.zshrc"
+        elif [[ "$SHELL_NAME" == "ksh" ]]; then
+            SOURCE_FILE="$HOME/.profile"
+        else
+            echo "Shell not supported for auto-sourcing. Please manually source your shell's configuration file."
+            exit 1
+        fi
+
+        source $SOURCE_FILE || {
+            echo "Failed to source $SOURCE_FILE. Exiting..."
             exit 1
         }
-    elif [[ "$OS" =~ ^Linux$ ]]; then
-        # Linux
-        sudo apt-get update
-        sudo apt-get install -y nodejs npm || {
+
+        if ! nvm install node; then
             echo "Failed to install Node.js. Exiting..."
             exit 1
-        }
+        fi
+
+        echo "Node.js $(node -v) and npm $(npm -v) installed successfully."
     else
         echo "Unsupported operating system: $OS"
         exit 1
@@ -60,18 +76,12 @@ start_application() {
 
 # ask for confirmation to start the script
 confirm_start() {
-    echo "This script will perform the following actions:"
-    echo "1. Clone a Git repository or download it as a ZIP if cloning fails."
-    if [[ "$OS" =~ ^Darwin$ ]]; then
-        echo "2. Check if Node.js is installed, and install it using Homebrew if it's not installed."
-    elif [[ "$OS" =~ ^Linux$ ]]; then
-        echo "2. Check if Node.js is installed, and install it using apt if it's not installed."
-    else
-        echo "2. Install Node.js (installation method depends on your OS which is not macOS or Linux)."
-    fi
-    echo "3. Run npm commands to initialize and build the project."
-    echo "4. Set up server configuration via .env file based on provided inputs."
-    echo "5. Start the application and keep it running until you choose to exit."
+    printf  "This script will perform the following actions:\n"
+    echo "1. Clone the Git repo or download as ZIP if cloning fails."
+    echo "2. Install NodeJS using nvm if not installed."
+    echo "3. Run npm commands to initialize and build the platform."
+    echo "4. Configure the server based on user input."
+    echo "5. Start the application. Close the terminal to stop application."
     read -p "Do you want to proceed? (y/n): " confirmation
     if [ "$confirmation" != "y" ]; then
         echo "Script aborted by the user."
@@ -87,12 +97,17 @@ confirm_start
 # 1: Clone the Git repository
 echo "Attempting to clone the Git repository from $REPOSITORY_URL..."
 git clone $REPOSITORY_URL || {
-    echo "Failed to clone the repository. Attempting to download the ZIP file..."
-    curl -LO $GITHUB_ZIP_LINK && unzip $ZIP_FILE_NAME -d . || {
-        echo "Failed to download and extract the repository ZIP file. Exiting..."
-        exit 1
-    }
-    REPO_DIR_NAME="$REPO_NAME-main"  # Update repo directory name from ZIP file, if needed
+    REPO_DIR_NAME="$REPO_NAME-main" 
+    echo "Failed to clone the repository. Attempting to download and unzip $REPO_DIR_NAME file..."
+    if ! curl -LO $GITHUB_ZIP_LINK || ! unzip -o $ZIP_FILE_NAME -d .; then
+        echo "Failed to download and extract the repository ZIP file. Checking for existing directory..."
+        if [ -d "$REPO_DIR_NAME" ]; then
+            echo "$REPO_DIR_NAME exists and will be used."
+        else
+            echo "No existing directory found. Exiting..."
+            exit 1
+        fi
+    fi
 }
 
 # Change directory to the repository
@@ -119,7 +134,7 @@ cp .env.template .env
 printf "\nPlease Configure the Server Settings (Leave empty for default):\n"
 SERVER_PORT=$(ask_for_input "Server Port" $SERVER_PORT)
 FRONT_END_PORT=$(ask_for_input "Front End Port" $FRONT_END_PORT)
-MAX_SESSION=$(ask_for_input "Max Session Time (in minutes)" $MAX_SESSION)
+MAX_SESSION=$(ask_for_input "Max Data Retention (in minutes)" $MAX_SESSION)
 
 # Update the .env file using sed based on the OS
 if [[ "$(uname -s)" =~ ^Darwin$ ]]; then

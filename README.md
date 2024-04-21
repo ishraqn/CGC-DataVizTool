@@ -21,7 +21,7 @@ The CGC-DataVizTool is a web-based program that simplifies and improves the disp
 
 or 
 
-Download the zip file under the `Code` 📦 tab.
+Download the zip file under the `Code` tab.
 
 - Install [Node.js](https://nodejs.org/en/download) <img src = "https://upload.wikimedia.org/wikipedia/commons/d/d9/Node.js_logo.svg" alt="Node.js Icon" height ="15" width="50">
 
@@ -36,11 +36,11 @@ Download the zip file under the `Code` 📦 tab.
 
 ```npm run init```
 
-- Build the product (from the root directory) 🚧
+- Build the product (from the root directory) 
 
 ```npm run build```
 
-- Start the server (from the root directory) 🚀
+- Start the server (from the root directory) 
 
 ```npm run start```
 
@@ -54,10 +54,13 @@ Download the `init.sh` file from the repository and run the following command:
 chmod +x init.sh
 ./init.sh
 ```
-The script will automatically install the required packages, build the product, and start the server. The script will also `ask` and wait for input for:
+
+ The script will `ask` and wait for input for:
 
 - PORTS
 - Server Session Time
-- Start the server automatically
+- Start the server automatically (y/n)
+
+The script will automatically install the required packages, build the product, and start the server.
 
 Close the terminal to stop the server for both options.
