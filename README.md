@@ -55,10 +55,10 @@ chmod +x init.sh
 ./init.sh
 ```
 
- The script will `ask` and wait for input for:
+ The script will `ask` and wait input for:
 
 - PORTS
-- Server Session Time
+- Max Data Retention Time (in minutes) - Defines how long the server will retain the session data before `auto delete` e.g file uploads
 - Start the server automatically (y/n)
 
 The script will automatically install the required packages, build the product, and start the server.
