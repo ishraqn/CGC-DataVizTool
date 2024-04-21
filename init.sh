@@ -9,6 +9,7 @@ ZIP_FILE_NAME="main.zip"
 SERVER_PORT=5000
 FRONT_END_PORT=3000
 MAX_SESSION=60
+OS=$(uname -s) 
 
 # install Node.js using apt
 install_node() {
@@ -60,7 +61,13 @@ start_application() {
 confirm_start() {
     echo "This script will perform the following actions:"
     echo "1. Clone a Git repository or download it as a ZIP if cloning fails."
-    echo "2. Check if Node.js is installed, and install it using Homebrew on macOS or apt on Linux if it's not installed."
+    if [[ "$OS" =~ ^Darwin$ ]]; then
+        echo "2. Check if Node.js is installed, and install it using Homebrew if it's not installed."
+    elif [[ "$OS" =~ ^Linux$ ]]; then
+        echo "2. Check if Node.js is installed, and install it using apt if it's not installed."
+    else
+        echo "2. Install Node.js (installation method depends on your OS which is not macOS or Linux)."
+    fi
     echo "3. Run npm commands to initialize and build the project."
     echo "4. Set up server configuration via .env file based on provided inputs."
     echo "5. Start the application and keep it running until you choose to exit."
@@ -108,6 +115,7 @@ npm run init && npm run build || {
 
 # Copy the .env.template to .env and modify it
 cp .env.template .env
+echo "Please Configure the Server Settings (Leave empty for default):"
 SERVER_PORT=$(ask_for_input "Server Port" $SERVER_PORT)
 FRONT_END_PORT=$(ask_for_input "Front End Port" $FRONT_END_PORT)
 MAX_SESSION=$(ask_for_input "Max Session Time (in minutes)" $MAX_SESSION)
