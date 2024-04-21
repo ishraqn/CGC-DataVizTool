@@ -109,7 +109,8 @@ cleanupTempFiles(MAX_AGE, CLEANUP_INTERVAL);
 // start the server
 const startServer = (port: number | string) => {
     app.listen(port, () => {
-        console.log(`Server running on port ${port}`);
+        const url = `http://localhost:${port}`;
+        console.log(`Server running on ${url}`);
     }).on('error', (err: NodeJS.ErrnoException) => {
         if (err.code === 'EADDRINUSE') {
             console.error(`Port ${port} is already in use. Please ensure that another instance of the application is not running or specify a different port in the environment variable.`);
