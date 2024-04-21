@@ -57,6 +57,7 @@ app.use(
             scriptSrc: ["'self'", "'unsafe-inline'"],
             styleSrc: ["'self'", "'unsafe-inline'"],
             connectSrc: ["'self'"],
+            fontSrc: ["'self'", "https://fonts.googleapis.com"],
         },
     })
 );
