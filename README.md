@@ -12,6 +12,9 @@ The CGC-DataVizTool is a web-based program that simplifies and improves the disp
 - Focus on agricultural geographic data analysis.
 
 ## Installation and Usage 🛠️
+
+### Manual Install 🖥️
+
 - Clone the repository: 
 
 ```git clone git@github.com:ishraqn/CGC-DataVizTool.git``` 
@@ -41,3 +44,20 @@ Download the zip file under the `Code` 📦 tab.
 
 ```npm run start```
 
+### Automatic Install 🤖
+
+#### Linux 🐧 and macOS 🍎
+
+Download the `init.sh` file from the repository and run the following command:
+
+```bash
+chmod +x init.sh
+./init.sh
+```
+The script will automatically install the required packages, build the product, and start the server. The script will also `ask` and wait for input for:
+
+- PORTS
+- Server Session Time
+- Start the server automatically
+
+Close the terminal to stop the server for both options.
