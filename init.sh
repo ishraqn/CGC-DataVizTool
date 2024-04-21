@@ -5,17 +5,35 @@ REPOSITORY_URL="https://github.com/ishraqn/CGC-DataVizTool.git"
 REPO_DIR_NAME="$(basename -s .git $REPOSITORY_URL)"
 REPO_NAME="CGC-DataVizTool"
 GITHUB_ZIP_LINK="https://github.com/ishraqn/CGC-DataVizTool/archive/refs/heads/main.zip"
-ZIP_FILE_NAME="main.zip"  
+ZIP_FILE_NAME="main.zip" 
+SERVER_PORT=5000
+FRONT_END_PORT=3000
+MAX_SESSION=60
 
 # install Node.js using apt
 install_node() {
-    echo "Installing Node.js ..."
-    sudo apt-get update
-    sudo apt-get install -y nodejs npm || {
-        echo "Failed to install Node.js. Exiting..."
+    OS=$(uname -s)
+    echo "Installing Node.js on $OS ..."
+    if [ "$OS" = "Darwin" ]; then
+        # macOS
+        which brew > /dev/null || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+        brew install node || {
+            echo "Failed to install Node.js. Exiting..."
+            exit 1
+        }
+    elif [ "$OS" = "Linux" ]; then
+        # Linux
+        sudo apt-get update
+        sudo apt-get install -y nodejs npm || {
+            echo "Failed to install Node.js. Exiting..."
+            exit 1
+        }
+    else
+        echo "Unsupported operating system: $OS"
         exit 1
-    }
+    fi
 }
+
 
 # handle user input with default values
 ask_for_input() {
@@ -42,7 +60,7 @@ start_application() {
 confirm_start() {
     echo "This script will perform the following actions:"
     echo "1. Clone a Git repository or download it as a ZIP if cloning fails."
-    echo "2. Install Node.js if not already installed."
+    echo "2. Check if Node.js is installed, and install it using Homebrew on macOS or apt on Linux if it's not installed."
     echo "3. Run npm commands to initialize and build the project."
     echo "4. Set up server configuration via .env file based on provided inputs."
     echo "5. Start the application and keep it running until you choose to exit."
@@ -90,12 +108,18 @@ npm run init && npm run build || {
 
 # Copy the .env.template to .env and modify it
 cp .env.template .env
-PORT=$(ask_for_input "Port" 5000)
-sed -i "s/^PORT='.*'$/PORT='$PORT'/" .env
-FRONT_END_PORT=$(ask_for_input "Front end port" 3000)
-sed -i "s/^FRONTEND_PORT='.*'$/FRONTEND_PORT='$FRONT_END_PORT'/" .env
-MAX_SESSION=$(ask_for_input "Max session time (in minutes)" 60)
-sed -i "s/^SESSION_MAX_AGE='.*'$/SESSION_MAX_AGE='$MAX_SESSION'/" .env
+
+# Update the .env file using sed based on the OS
+if [ "$(uname -s)" = "Darwin" ]; then
+    sed -i '' "s/^PORT='.*'$/PORT='$SERVER_PORT'/" .env
+    sed -i '' "s/^FRONTEND_PORT='.*'$/FRONTEND_PORT='$FRONT_END_PORT'/" .env
+    sed -i '' "s/^SESSION_MAX_AGE='.*'$/SESSION_MAX_AGE='$MAX_SESSION'/" .env
+else
+    sed -i "s/^PORT='.*'$/PORT='$SERVER_PORT'/" .env
+    sed -i "s/^FRONTEND_PORT='.*'$/FRONTEND_PORT='$FRONT_END_PORT'/" .env
+    sed -i "s/^SESSION_MAX_AGE='.*'$/SESSION_MAX_AGE='$MAX_SESSION'/" .env
+fi
+
 
 # 5: Start application
 start_application
