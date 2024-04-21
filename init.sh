@@ -14,14 +14,14 @@ MAX_SESSION=60
 install_node() {
     OS=$(uname -s)
     echo "Installing Node.js on $OS ..."
-    if [ "$OS" = "Darwin" ]; then
+    if [[ "$OS" =~ ^Darwin$ ]]; then
         # macOS
         which brew > /dev/null || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         brew install node || {
             echo "Failed to install Node.js. Exiting..."
             exit 1
         }
-    elif [ "$OS" = "Linux" ]; then
+    elif [[ "$OS" =~ ^Linux$ ]]; then
         # Linux
         sudo apt-get update
         sudo apt-get install -y nodejs npm || {
@@ -108,9 +108,12 @@ npm run init && npm run build || {
 
 # Copy the .env.template to .env and modify it
 cp .env.template .env
+SERVER_PORT=$(ask_for_input "Server Port" $SERVER_PORT)
+FRONT_END_PORT=$(ask_for_input "Front End Port" $FRONT_END_PORT)
+MAX_SESSION=$(ask_for_input "Max Session Time (in minutes)" $MAX_SESSION)
 
 # Update the .env file using sed based on the OS
-if [ "$(uname -s)" = "Darwin" ]; then
+if [[ "$(uname -s)" =~ ^Darwin$ ]]; then
     sed -i '' "s/^PORT='.*'$/PORT='$SERVER_PORT'/" .env
     sed -i '' "s/^FRONTEND_PORT='.*'$/FRONTEND_PORT='$FRONT_END_PORT'/" .env
     sed -i '' "s/^SESSION_MAX_AGE='.*'$/SESSION_MAX_AGE='$MAX_SESSION'/" .env
@@ -119,7 +122,6 @@ else
     sed -i "s/^FRONTEND_PORT='.*'$/FRONTEND_PORT='$FRONT_END_PORT'/" .env
     sed -i "s/^SESSION_MAX_AGE='.*'$/SESSION_MAX_AGE='$MAX_SESSION'/" .env
 fi
-
 
 # 5: Start application
 start_application
