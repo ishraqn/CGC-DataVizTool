@@ -23,6 +23,21 @@ ask_for_input() {
     echo "${input:-$2}"
 }
 
+# Function to prompt user to start the application
+start_application() {
+    read -p "Do you want to start the application now? (y/n): " start_confirm
+    if [ "$start_confirm" == "y" ]; then
+        echo "Starting the application..."
+        npm run start || {
+            echo "Failed to start the application. Exiting..."
+            exit 1
+        }
+    else
+        echo "Application setup is complete, but not started."
+        exit 0
+    fi
+}
+
 # ask for confirmation to start the script
 confirm_start() {
     echo "This script will perform the following actions:"
@@ -83,12 +98,4 @@ MAX_SESSION=$(ask_for_input "Max session time (in minutes)" 60)
 sed -i "s/^SESSION_MAX_AGE='.*'$/SESSION_MAX_AGE='$MAX_SESSION'/" .env
 
 # 5: Start application
-echo "Starting the application..."
-npm run start || {
-    echo "Failed to start the application. Exiting..."
-    exit 1
-}
-
-# Prevent closing immediately
-echo "Application is running. Press any key to close."
-read -n 1 -s
+start_application
