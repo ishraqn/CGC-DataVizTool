@@ -12,14 +12,14 @@ export default defineConfig({
         port: Number(process.env.FRONTEND_PORT) || 3120,
         proxy: {
             "/api": {
-                target: `http://localhost:${process.env.PORT}`,
+                target: `http://localhost:${process.env.PORT || 5120}`,
                 changeOrigin: true,
                 secure: false,
             },
         },
     },
     build:{
-        sourceMap: false,
+        sourcemap: false,
         minify: "terser",
         rollupOptions: {
             output: {
