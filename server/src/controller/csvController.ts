@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { convertCSVToGeoJSON as convertCsvToGeoJsonUtil } from '../utils/csv2GeojsonUtils';
+import { validateCsvRecords } from "../utils/inputValidationUtil"
 
 export const csvController = {
     convert2JSON: async (req: Request, res: Response, next: NextFunction) => {
@@ -21,7 +22,16 @@ export const csvController = {
             return; 
         }
 
-        try {
+        try { //need to clean up this route
+
+            const validation = await validateCsvRecords(fileDetails.path);
+            if (validation.hasErrors) {
+                res.status(422).json({
+                    errors: validation.errors,
+                    fileInfo: [fileDetails.path, fileDetails.name],
+                });
+            }
+
             const geoJson = await convertCsvToGeoJsonUtil(fileDetails.path, fileDetails.name);
             res.locals.convertedCsvToGeoJson = geoJson;
             next();

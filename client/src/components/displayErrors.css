@@ -1,0 +1,96 @@
+/* Styles for error dropdown container */
+.error-dropdown {
+    position: absolute;
+    top: calc(100% - 25px); /* Position it right under the "Show Errors" button */
+    left: 0; /* Align to the left of the parent container */
+    z-index: 9999; /* Ensure it's on top of other elements */
+    width: 100%; /* Extended width to better utilize available space */
+    max-width: 600px; /* Set a max width to maintain layout integrity */
+}
+
+/* Styles for the content within the dropdown */
+.error-content {
+    max-height: 200px;
+    overflow-y: auto; /* Enable scrolling for overflow content */
+    background-color: #f9f9f9; /* Light gray background for visibility */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Shadow for 3D effect */
+    padding: 5px;
+    border: 2px solid #000; /* Solid black border */
+    border-radius: 5px;
+}
+
+/* Styles for tables within the content area */
+.error-content table {
+    width: 200%; /* Adjust width to full width of its container */
+    border-collapse: collapse;
+    table-layout: fixed; /* Equal width columns */
+}
+
+/* Styles for table headers and cells */
+.error-content th,
+.error-content td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ddd; /* Light gray border for cells */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* Prevent text wrapping */
+    color: #000000; /* Black text for contrast */
+}
+
+/* Input styles within the table */
+.table-input {
+    width: 100%; /* Full width to fill the cell */
+    height: 30px; /* Fixed height for consistency */
+    box-sizing: border-box; /* Include padding and border in width and height */
+    padding: 4px;
+    border: 1px solid red; /* Red border for emphasis on editable areas */
+    background-color: #ffffff; /* White background */
+    color: #000000; /* Black text for contrast */
+}
+
+/* Sticky header styles */
+.error-header {
+    position: sticky;
+    top: 0; /* Stick to the top of the container */
+    background-color: #f9f9f9; /* Light gray for visibility */
+    z-index: 10; /* High enough z-index to stay on top but not too high */
+    display: flex;
+    font-weight: bold; /* Bold text for visibility */
+    border-bottom: 1px solid #ddd; /* Subtle border for separation */
+}
+
+.error-header > div {
+    flex: 1;
+    padding: 8px;
+    border-right: 1px solid #ddd; /* Right borders between header cells */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center; /* Center align the text */
+}
+
+.error-header > div:last-child {
+    border-right: none; /* No right border for the last cell */
+}
+
+/* Container and button styles remain the same */
+.buttons-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+}
+
+.button {
+    cursor: pointer;
+    padding: 8px 16px;
+    margin: 0 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
