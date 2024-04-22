@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script contains the initialization steps for the CGC-DataVizTool
+
 # Constants
 REPOSITORY_URL="https://github.com/ishraqn/CGC-DataVizTool.git"
 REPO_DIR_NAME="$(basename -s .git $REPOSITORY_URL)"
