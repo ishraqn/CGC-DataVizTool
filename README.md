@@ -1,19 +1,52 @@
 <div align="center">
     <h1> CGC Data Visualization Tool </h1>
-    <img src="main_screen.gif" width="" height="">
+    <img src="main_screen.gif" width="" height="" style="border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;">
 </div>
 
 ## 
-The CGC-DataVizTool is a web-based program that simplifies and improves the display of agricultural data for the **Canadian Grain Commission** 🍁
+
+The CGC-DataVizTool is a web-based program that simplifies and aids in displaying of agricultural data and mapping for the **Canadian Grain Commission** 🍁
 
 ## Features 📊
+
 - Works to convert complicated agricultural data sets into intuitive, interactive, and informative visual representations with custom filters courtesy of CGC.
 - Remains an open source project, allowing for easy customization and expansion.
 - Focus on agricultural geographic data analysis.
 
-## Installation and Usage 🛠️
+## Application Usage 🌐
+
+Please refer to the `?` button in the application for detailed instructions on how to use the application.
+
+**Close the terminal to `stop` the application.**
+
+## Accepted File Formats 📁
+
+- CSV (Comma Separated Values)
+
+## Installation🛠️
+
+### Automatic Install 🤖
+
+#### Linux and macOS 🐧 🍎
+
+Download the `init.sh` file from the repository and run the following command:
+
+```bash
+chmod +x init.sh
+./init.sh
+```
+
+ The script will `ask` and wait input for:
+
+- PORTS
+- Max Data Retention Time (in minutes) - Defines how long the server will retain the session data before `auto delete` e.g file uploads
+- Start the server automatically (y/n)
+
+The script will automatically install the required packages, build the product, and ask (y/n) to start the server.
 
 ### Manual Install 🖥️
+
+#### Linux, macOS and Windows 🐧 🍎 🪟
 
 - Clone the repository: 
 
@@ -43,24 +76,3 @@ Download the zip file under the `Code` tab.
 - Start the server (from the root directory) 
 
 ```npm run start```
-
-### Automatic Install 🤖
-
-#### Linux 🐧 and macOS 🍎
-
-Download the `init.sh` file from the repository and run the following command:
-
-```bash
-chmod +x init.sh
-./init.sh
-```
-
- The script will `ask` and wait input for:
-
-- PORTS
-- Max Data Retention Time (in minutes) - Defines how long the server will retain the session data before `auto delete` e.g file uploads
-- Start the server automatically (y/n)
-
-The script will automatically install the required packages, build the product, and start the server.
-
-Close the terminal to stop the server for both options.
