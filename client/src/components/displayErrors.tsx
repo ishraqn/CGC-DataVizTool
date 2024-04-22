@@ -6,16 +6,23 @@ import { fetchCsvFile, parseCsv, applyCorrections, convertArrayToCSV } from '../
 const ErrorDropdown = () => {
     const { uploadedFiles, currentFileIndex, fileErrors, fetchUploadedFiles, removeUploadedFile, updateFileErrors } = useToggle();
     const [corrections, setCorrections] = useState({});
-    const [isVisible] = useState(true);  // State to manage dropdown visibility
-
+    const [isModalOpen, setIsModalOpen] = useState(false);  // State to control modal visibility
 
     const currentFileId = uploadedFiles[currentFileIndex]?.id;
-    const currentFileErrors = currentFileId ? fileErrors[currentFileId] || [] : [];
+    const currentFileErrors = fileErrors[currentFileId] || [];
 
     const handleInputChange = (event, rowIndex, columnName) => {
-        const cellKey = `${rowIndex-1}-${columnName}`;
+        const cellKey = `${rowIndex}-${columnName}`;
         const updatedCorrections = { ...corrections, [cellKey]: event.target.value };
         setCorrections(updatedCorrections);
+    };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
     };
 
 
@@ -28,73 +35,72 @@ const ErrorDropdown = () => {
             const correctedData = applyCorrections(parsedData, corrections);
             const correctedCsvText = convertArrayToCSV(correctedData);
             const originalFileName = uploadedFiles[currentFileIndex]?.name;
-    
-            // cleaning name to match previous file name before upload
+        
+            // Cleaning name to match previous file name before upload
             const cleanName = originalFileName.includes("_")
-            ? originalFileName.split("_").slice(1).join("_").split('.').slice(0, -1).join('.')
-            : originalFileName.split('.').slice(0, -1).join('.');  // Clean up extension if no underscore
+                ? originalFileName.split("_").slice(1).join("_").split('.').slice(0, -1).join('.')
+                : originalFileName.split('.').slice(0, -1).join('.');  // Clean up extension if no underscore
             const finalFileName = `${cleanName}.csv`;
             const blob = new Blob([correctedCsvText], { type: 'text/csv' });
             const formData = new FormData();
             formData.append('csvFile', blob, finalFileName);
-            removeUploadedFile(currentFileIndex);
-            // reuploading the file.
-            const response = await fetch(`/api/v1/upload?overwrite=true`, {
+            removeUploadedFile(currentFileIndex);  // Assuming this function is synchronous or its asynchronous effects are handled elsewhere
+    
+            // Reuploading the file.
+            const response = await fetch('api/v1/upload', {
                 method: 'POST',
                 body: formData
             });
     
-            if (response.ok) {
-                console.log("Re-upload was successful.");
-                // Clear any previous errors if the upload is successful
-            } else {
-                console.error(`Error uploading file: ${response.status} ${await response.text()}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
             }
-
-            fetchUploadedFiles(); // Refresh the list of files, if necessary
-            setCorrections({}); // resetting the corrections 
+    
+            const data = await response.json();
+            if (!data.success) {
+                updateFileErrors(data.fileInfo[1], data.errors);
+                fetchUploadedFiles();
+            }
+            else{
+                fetchUploadedFiles();
+            }
+            setCorrections({}); // Resetting the corrections after successful upload
         } catch (error) {
             console.error('Network or other error:', error);
         }
     };
-
     
-      if (!isVisible || currentFileErrors.length === 0) {
+
+    if (currentFileErrors.length === 0) {
         return null;
     }
 
-
-    return (
-        <div className="error-dropdown">
-            <div class="buttons-container">
-                <button class="button" onClick = {handleUserEntries} id="confirmation-button">Submit Changes</button>
-            </div>
-        <div className="error-content">
+    const renderTable = (errors) => (
+        <div className="table-scroll-container"> {/* Wrapper for scrolling */}
             <table>
                 <thead>
                     <tr>
                         <th>Row Number</th>
-                        {currentFileErrors[0]?.header.map((header, index) => (
+                        {errors.length > 0 && errors[0].header.map((header, index) => (
                             <th key={index}>{header}</th>
                         ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {currentFileErrors.map((error, rowIndex) => (
-                        <tr key={rowIndex}>
-                            <td>{error.row+1}</td>
-                            {error.header.map((headerName, cellIndex) => {
-                                const cellKey = `${error.row}-${headerName}`;
+                    {errors.map((error, index) => (
+                        <tr key={index}>
+                            <td>{error.row + 1}</td>
+                            {error.header.map((header, cellIndex) => {
+                                const cellKey = `${error.row}-${header}`;
+                                const isError = error.incorrectCells.some(inc => inc.row === error.row && inc.column === header.toLowerCase());
                                 const cellValue = corrections[cellKey] ?? error.rowData[cellIndex];
-                                const isEditable = ["0", "NA", "", "na"].includes(error.rowData[cellIndex]);
-
                                 return (
-                                    <td key={cellIndex}>
-                                        {isEditable ? (
-                                            <input 
-                                                type="text" 
+                                    <td key={cellIndex} className={isError ? 'error-cell' : ''}>
+                                        {isError ? (
+                                            <input
+                                                type="text"
                                                 value={cellValue}
-                                                onChange={(e) => handleInputChange(e, error.row+1, headerName)}
+                                                onChange={(e) => handleInputChange(e, error.row, header)}
                                                 className="table-input"
                                             />
                                         ) : (
@@ -108,7 +114,33 @@ const ErrorDropdown = () => {
                 </tbody>
             </table>
         </div>
-    </div>
+    );
+
+    if (!currentFileErrors.length) {
+        return null;  // Return null if there are no errors to display
+    }
+
+    return (
+        <div className="error-dropdown">
+            <div className="outside-button-container button-container"> 
+                <button className="button" onClick={handleUserEntries}>Submit Changes</button>
+                <button className="button" onClick={openModal}>Expand Errors</button>
+            </div>
+            {isModalOpen && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <div className="button-container"> {/* Inside modal */}
+                            <button className="submit-button" onClick={handleUserEntries}>Submit Changes</button>
+                            <button className="close-button" onClick={closeModal}>Close</button>
+                        </div>
+                        {renderTable(currentFileErrors)}
+                    </div>
+                </div>
+            )}
+            <div className="error-content">
+                {renderTable(currentFileErrors)}
+            </div>
+        </div>
     );
 };
 

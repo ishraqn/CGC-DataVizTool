@@ -23,24 +23,16 @@ const FileUploadForm = ({onUploadSuccess}) => {
                 method: 'POST',
                 body: formData
             })
-            .then(response => {
-                if (response.ok) {
-                    (event.target as HTMLFormElement).reset();
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
                     onUploadSuccess();
                     fetchUploadedFiles();
-                } else if (response.status === 422) {
-                    // Handle validation errors
-                    response.json().then(data => {
-                        updateFileErrors(data.fileInfo[1], data.errors);
-                    });
+                    (event.target as HTMLFormElement).reset();
+                } else {
+                    updateFileErrors(data.fileInfo[1], data.errors);
                     (event.target as HTMLFormElement).reset();
                     fetchUploadedFiles();
-                    // Handle other HTTP status codes (e.g., 400, 500) as errors
-                    console.error('Error uploading file:', response.status, response.statusText);
-                    // Access the response body for further details
-                    response.text().then(errorMessage => {
-                        console.error('Error message:', errorMessage);
-                    });
                 }
             })
             .catch(error => console.error('Error uploading file:', error));

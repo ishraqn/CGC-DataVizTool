@@ -12,9 +12,21 @@ interface UploadFileData {
 	title: string;
 }
 
-interface FileErrors {
-	[fileId: string]: string[]; // Mapping from fileId to array of error messages
-}
+interface IncorrectCell {
+	row: number;
+	column: string;
+  }
+  
+  interface ValidationError {
+	row: number;
+	header: string[];
+	rowData: string[];
+	incorrectCells: IncorrectCell[];
+  }
+  
+  interface FileErrors {
+	[fileId: string]: ValidationError[];
+  }
 
 type ToggleContextType = {
 	isTileLayerVisible: boolean;
@@ -56,8 +68,8 @@ type ToggleContextType = {
 	setLegendLabels: (labels: {lower: string; upper: string ; color: unknown; }[]) => void;
 	handleSetLegendLabels: (labels: {lower: string; upper: string; color: unknown; }[]) => void;
 	fileErrors: FileErrors; // Errors for each uploaded file
-	setFileErrors: (fileErrors: FileErrors[]) => void;
-	updateFileErrors: (fileID: string, errors: string []) => void;
+	setFileErrors: (fileErrors: FileErrors) => void;
+	updateFileErrors: (fileID: string, errors: FileErrors []) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -250,11 +262,12 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 			setRemovedFileIds((prevIds) => [...prevIds, fileId.toString()]);
 			setUploadedFiles((currentFiles) =>
 				currentFiles.filter((_, fileIndex) => fileIndex !== index)
-			);	
-			updateFileErrors(fileId.toString(), []);
+			);
+
 		} catch (error) {
 			console.error("Failed to remove file:", error);
 		}
+		updateFileErrors(fileId.toString(), []);
 	};
 	
 	const updateFileErrors = (fileId: string, errors: string[]) => {

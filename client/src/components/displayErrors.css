@@ -1,96 +1,229 @@
-/* Styles for error dropdown container */
-.error-dropdown {
-    position: absolute;
-    top: calc(100% - 25px); /* Position it right under the "Show Errors" button */
-    left: 0; /* Align to the left of the parent container */
-    z-index: 9999; /* Ensure it's on top of other elements */
-    width: 100%; /* Extended width to better utilize available space */
-    max-width: 600px; /* Set a max width to maintain layout integrity */
+.error-dropdown .table-input {
+    width: 100%;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    background-color: #fff; /* Set background color to white */
+    color: rgb(0, 0, 0) !important; /* Set font color to black with !important */
 }
 
-/* Styles for the content within the dropdown */
+.error-dropdown .table-input:focus {
+    border-color: #4A90E2;
+    outline: none;
+}
+
+.error-dropdown td.error-cell {
+    padding: 0;  /* Removed padding to fit input field properly */
+    border: 2px solid #ff6347; /* Red border for error cells */
+}
+
+
+
+.error-dropdown .error-value {
+    margin-bottom: 10px; /* Add margin for spacing between values */
+    text-align: center; /* Center align text */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto 50%; /* Increased margin-top to move modal window up */
+    padding: 20px;
+    border: 1px solid #ccc;
+    width: 90%;
+    max-width: 600px;
+}
+
 .error-content {
-    max-height: 200px;
-    overflow-y: auto; /* Enable scrolling for overflow content */
-    background-color: #f9f9f9; /* Light gray background for visibility */
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Shadow for 3D effect */
-    padding: 5px;
-    border: 2px solid #000; /* Solid black border */
-    border-radius: 5px;
+    max-height: 220px; /* Adjust this value to limit the number of errors displayed */
+    overflow-y: auto; /* Enable vertical scrolling if the number of errors exceeds the max height */
+    margin-top: 10px; /* Add some margin for spacing */
+    border: 1px solid #ccc; /* Add a border for a neat look */
 }
 
-/* Styles for tables within the content area */
-.error-content table {
-    width: 200%; /* Adjust width to full width of its container */
-    border-collapse: collapse;
-    table-layout: fixed; /* Equal width columns */
-}
-
-/* Styles for table headers and cells */
-.error-content th,
-.error-content td {
-    text-align: left;
-    padding: 8px;
-    border: 1px solid #ddd; /* Light gray border for cells */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap; /* Prevent text wrapping */
-    color: #000000; /* Black text for contrast */
-}
-
-/* Input styles within the table */
-.table-input {
-    width: 100%; /* Full width to fill the cell */
-    height: 30px; /* Fixed height for consistency */
-    box-sizing: border-box; /* Include padding and border in width and height */
-    padding: 4px;
-    border: 1px solid red; /* Red border for emphasis on editable areas */
-    background-color: #ffffff; /* White background */
-    color: #000000; /* Black text for contrast */
-}
-
-/* Sticky header styles */
-.error-header {
+.modal-content table thead th {
     position: sticky;
-    top: 0; /* Stick to the top of the container */
-    background-color: #f9f9f9; /* Light gray for visibility */
-    z-index: 10; /* High enough z-index to stay on top but not too high */
-    display: flex;
-    font-weight: bold; /* Bold text for visibility */
-    border-bottom: 1px solid #ddd; /* Subtle border for separation */
-}
-
-.error-header > div {
-    flex: 1;
+    top: 70px; /* Adjusted to provide space for the buttons */
+    z-index: 1600; /* Ensure it's above the modal content */
+    background-color: #fff; /* Adjust as needed */
     padding: 8px;
-    border-right: 1px solid #ddd; /* Right borders between header cells */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: center; /* Center align the text */
 }
 
-.error-header > div:last-child {
-    border-right: none; /* No right border for the last cell */
-}
-
-/* Container and button styles remain the same */
-.buttons-container {
+.expand-button {
+    position: sticky; /* Set the position to sticky */
+    top: 0; /* Keep it at the top of the modal content */
+    margin: 8px auto;
+    padding: 8px 12px;
+    width: 100%;
+    background-color: #656667;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+    transition: 0.3s;
+    z-index: 1600; /* Ensure it's above the modal content */
+}
+
+.modal-content table {
+    margin-left: -20px; /* Moves the table slightly to the left */
+    width: calc(100% + 40px); /* Extends the width to adjust for the shift if needed */
+}
+
+.close-button:hover {
+    background-color: #464647; /* Adjust the hover color as needed */
+}
+
+.expand-button:hover {
+    background-color: #0056b3;
+}
+
+.modal {
+    position: fixed;
+    z-index: 1500;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.close {
+    position: sticky; /* Set the position to sticky */
+    top: 0; /* Keep it at the top of the modal content */
+    padding: 8px;
+    background-color: #656667;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    z-index: 1600; /* Ensure it's above the modal content */
+}
+
+.close-button:hover {
+    background-color: #464647; /* Adjust the hover color as needed */
+}
+
+.original-table {
+    max-height: px; /* Increased height */
+}
+
+body.modal-open {
+    overflow: hidden; /* Prevent scrolling of the entire page */
+}
+
+.error-dropdown .button-container {
+    position: sticky; /* Set the position to sticky */
+    top: 0; /* Keep it at the top */
+    background-color: #fff; /* Optional: Adjust background color */
+    padding: 10px 0; /* Optional: Add padding */
+    z-index: 1600; /* Ensure it's above the modal content */
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+}
+.submit-button,
+.close-button {
+    margin: 8px auto;
+    padding: 8px 12px;
+    width: 100%;
+    background-color: #656667;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.submit-button:hover,
+.close-button:hover {
+    background-color: #0056b3; /* Adjust the hover color as needed */
+}
+
+.submit-orig-button,
+.expand-button {
+    margin: 8px; /* Adjust margin as needed */
+    padding: 8px 12px;
+    background-color: #656667;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-block; /* Display buttons inline */
+    transition: 0.3s;
+    width: calc(50% - 16px); /* Set width for each button, subtracting margin */
+}
+
+.submit-button:hover,
+.expand-button:hover {
+    background-color: #fef1f1; /* Adjust the hover color as needed */
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Distribute space evenly */
     padding: 10px;
+    background-color: #fff; /* Background color matches modal and dropdown */
+    z-index: 1600; /* High z-index to ensure visibility */
+    width: 100%; /* Full width to align with parent container */
 }
 
 .button {
-    cursor: pointer;
-    padding: 8px 16px;
-    margin: 0 5px;
-    background-color: #4CAF50;
-    color: white;
+    flex-grow: 1; /* Allows the button to grow to fill space */
+    margin: 0 10px; /* Space between buttons */
+    padding: 8px 12px;
+    background-color: #656667;
+    color: #fff;
     border: none;
     border-radius: 4px;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
+    cursor: pointer;
+    display: inline-flex; /* Aligns content within button */
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.button:hover {
+    background-color: #0056b3; /* Blue color on hover */
+}
+
+/* Specific to buttons outside the modal to ensure full width in their respective container */
+.outside-button-container .button {
+    width: calc(50% - 20px); /* Adjusting width considering margins */
+    margin: 10px;
+}
+.original-table-container {
+    max-height: 300px; /* Adjust this to change the number of rows visible */
+    overflow-y: auto; /* Enables vertical scrolling when necessary */
+    border: 1px solid #ccc; /* Adds a subtle border for the table container */
+    background-color: #fff; /* Keeps the background consistent */
+    margin: 10px 0; /* Top and bottom margin for spacing */
+    padding: 0; /* No padding inside the container */
+    width: 100%; /* Ensures it occupies the full available width */
+}
+
+.original-table {
+    width: 100%; /* Full width to match the container */
+    border-collapse: collapse; /* Minimizes the space between borders in the table */
+}
+
+.original-table thead th {
+    position: sticky; /* Keeps headers visible at the top during scrolling */
+    top: 0; /* Ensures headers stay at the top of the table view */
+    background-color: #eee; /* Light background color for visibility */
+    box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1); /* Shadow to differentiate headers from rows */
+    padding: 10px; /* Adequate padding for content */
+    z-index: 10; /* Ensures headers are above the scrollable content */
+}
+
+.original-table tbody tr {
+    background-color: #f9f9f9; /* Light color to distinguish rows */
+    border-bottom: 1px solid #ddd; /* Subtle separation between rows */
 }

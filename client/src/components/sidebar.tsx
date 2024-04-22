@@ -408,12 +408,6 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 						{group.id === "8" && showErrorTable && (
 						<>
 						<div className="file-dropdown" onClick={(event) => event.stopPropagation()}>
-							<button 
-								className="error-hide-button" 
-								onClick={() => setErrorTable(false)} // Correct way to handle the event
-							>
-								X
-							</button>
 							<ErrorDropdown />
 						</div>
 						</>

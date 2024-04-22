@@ -22,11 +22,13 @@ export const csvController = {
             return; 
         }
 
-        try { //need to clean up this route
+        try {
 
             const validation = await validateCsvRecords(fileDetails.path);
             if (validation.hasErrors) {
-                res.status(422).json({
+                res.send({
+                    success: false,
+                    message: "File processed with errors",
                     errors: validation.errors,
                     fileInfo: [fileDetails.path, fileDetails.name],
                 });
