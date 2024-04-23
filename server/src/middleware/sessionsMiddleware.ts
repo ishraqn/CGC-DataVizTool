@@ -2,7 +2,7 @@ import session from "express-session";
 
 // express-session cookie configuration for user session management
 export const sessionMiddleware = session({
-	secret: process.env.SECRET_KEY || "secret",
+	secret: process.env.SECRET_KEY || "default_secret",
 	resave: false,
 	saveUninitialized: true,
 	//ternary operator to check if the environment is production or development
@@ -10,6 +10,6 @@ export const sessionMiddleware = session({
 		secure: process.env.NODE_ENV === "production",
 		httpOnly: true,
 		sameSite: "strict",
-		maxAge: 1000 * 60 * 60, // 1 hour
+		maxAge: parseInt(process.env.SESSION_MAX_AGE || "60") * 60 * 1000, // 1 hour if not specified
 	},
 });

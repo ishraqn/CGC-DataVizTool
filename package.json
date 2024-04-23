@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\"",
     "init": "npm install && cd server && npm install && cd ../client && npm install",
-    "build": "concurrently \"cd server && npm run build\" \"cd client && npm run build\"",
+    "build": "concurrently \"cd server && npm run build && npm prune --omit=dev\" \"cd client && npm run build && npm prune --omit=dev\" && npm run copy-static",
+    "copy-static": "cp -r ./server/src/data ./server/dist/data",
     "start": "cd server && node dist/index.js"
   },
   "keywords": [],

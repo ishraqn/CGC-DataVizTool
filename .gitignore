@@ -5,7 +5,7 @@ node_modules/
 .env
 
 # Build outputs
-/dist
+*/dist
 /build
 
 # Logs
@@ -42,3 +42,13 @@ Thumbs.db
 
 #temporary uploads
 temp/
+
+#tsconfig build
+tsconfig.tsbuildinfo
+
+#main zip download
+main.zip
+CGC-DataVizTool-main/*
+
+# script tar file
+*.tar.gz

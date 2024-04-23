@@ -12,10 +12,24 @@ export default defineConfig({
         port: Number(process.env.FRONTEND_PORT) || 3120,
         proxy: {
             "/api": {
-                target: `http://localhost:${process.env.PORT}`,
+                target: `http://localhost:${process.env.PORT || 5120}`,
                 changeOrigin: true,
                 secure: false,
             },
         },
     },
+    build:{
+        sourcemap: false,
+        minify: "terser",
+        rollupOptions: {
+            output: {
+                manualChunks(id: { includes: (arg0: string) => any; toString: () => string; }) {
+                    if (id.includes('node_modules')) {
+                        return id.toString().split('node_modules/')[1].split('/')[0];
+                    }
+                }
+            }
+        }
+        
+    }
 });
