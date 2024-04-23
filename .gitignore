@@ -49,3 +49,6 @@ tsconfig.tsbuildinfo
 #main zip download
 main.zip
 CGC-DataVizTool-main/*
+
+# script tar file
+*.tar.gz

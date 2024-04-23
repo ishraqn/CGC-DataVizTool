@@ -3,11 +3,21 @@
     <img src="main_screen.gif" width="" height="" style="border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;">
 </div>
 
-## 
 
-The CGC-DataVizTool is a web-based program that simplifies and aids in displaying of agricultural data and mapping for the **Canadian Grain Commission** 🍁
+- [Application and Features 📊](#application-and-features-)
+- [Application Usage 🌐](#application-usage-)
+- [Accepted File Formats 📁](#accepted-file-formats-)
+- [Installation🛠️](#installation️)
+  - [Automatic Install 🤖](#automatic-install-)
+    - [Linux and macOS 🐧 🍎](#linux-and-macos--)
+  - [Manual Install 🖥️](#manual-install-️)
+    - [Linux, macOS and Windows 🐧 🍎 🪟](#linux-macos-and-windows---)
 
-## Features 📊
+
+## Application and Features 📊
+
+
+The CGC-DataVizTool is a web-based program that simplifies and aids in displaying agricultural data and mapping for the **Canadian Grain Commission** 🍁
 
 - Works to convert complicated agricultural data sets into intuitive, interactive, and informative visual representations with custom filters courtesy of CGC.
 - Remains an open source project, allowing for easy customization and expansion.
@@ -29,14 +39,15 @@ Please refer to the `?` button in the application for detailed instructions on h
 
 #### Linux and macOS 🐧 🍎
 
-Download the `init.sh` file from the repository and run the following command:
+- Download the `auto-init.tar.gz` file from the release section.
+- Extract the files.
+- Run the `auto-init.sh` script with the following command:
 
 ```bash
-chmod +x init.sh
-./init.sh
+./auto-init.sh
 ```
 
- The script will `ask` and wait input for:
+The script will `ask` and wait input for:
 
 - PORTS
 - Max Data Retention Time (in minutes) - Defines how long the server will retain the session data before `auto delete` e.g file uploads
