@@ -1,6 +1,6 @@
 <div align="center">
     <h1> CGC Data Visualization Tool </h1>
-    <img src="main_screen.gif" width="" height="" style="border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;">
+    <img src="./assets/main_screen.gif" width="" height="" style="border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;">
 </div>
 
 
