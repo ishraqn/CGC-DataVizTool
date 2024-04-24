@@ -3,7 +3,7 @@ import { join, extname, dirname, basename } from "path";
 
 // handles the file after it has been uploaded (do something with the file after multer middleware has processed it)
 export const fileController = {
-	upload: (req: Request, res: Response, next: NextFunction) => {
+		upload: (req: Request, res: Response, next: NextFunction) => {
 		// Access the uploaded file via req.file
 		if (!req.file) {
 			return res.status(400).send("No file uploaded.");
@@ -49,6 +49,7 @@ export const fileController = {
 		if (uploadFileList[fileName]) {
 			delete uploadFileList[fileName];
 			res.send({ message: "File removed", fileId: fileName });
+			
 		} else {
 			res.status(404).send("File not found.");
 		}
@@ -109,6 +110,22 @@ export const fileController = {
 		} else {
 			res.status(404).send("File not found.");
 		}
+	},
+	getCSVFile: (req: Request, res: Response) => {
+		const uploadFileList = req.session.uploadFileList;
+		const fileName = req.params.fileId;
+
+		if (!uploadFileList || Object.keys(uploadFileList).length === 0) {
+			res.status(404).send("No files uploaded yet.");
+			return;
+		}
+		const file = uploadFileList[fileName];
+		if (!file) {
+			res.status(404).send("File not found.");
+			return;
+		}
+		// Send the original file directly
+		res.sendFile(file.path);
 	},
 };
 // download: (req: Request, res: Response) => {

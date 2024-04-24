@@ -12,6 +12,22 @@ interface UploadFileData {
 	title: string;
 }
 
+interface IncorrectCell {
+	row: number;
+	column: string;
+  }
+  
+  interface ValidationError {
+	row: number;
+	header: string[];
+	rowData: string[];
+	incorrectCells: IncorrectCell[];
+  }
+  
+  interface FileErrors {
+	[fileId: string]: ValidationError[];
+  }
+
 type ToggleContextType = {
 	isTileLayerVisible: boolean;
 	setIsTileLayerVisible: (isVisible: boolean) => void;
@@ -51,6 +67,9 @@ type ToggleContextType = {
 	legendLabels: {lower: string; upper: string; color: unknown; }[];
 	setLegendLabels: (labels: {lower: string; upper: string ; color: unknown; }[]) => void;
 	handleSetLegendLabels: (labels: {lower: string; upper: string; color: unknown; }[]) => void;
+	fileErrors: FileErrors; // Errors for each uploaded file
+	setFileErrors: (fileErrors: FileErrors) => void;
+	updateFileErrors: (fileID: string, errors: FileErrors []) => void;
 };
 
 const defaultState: ToggleContextType = {
@@ -92,6 +111,9 @@ const defaultState: ToggleContextType = {
 	legendLabels: [],
 	setLegendLabels: () => {},
 	handleSetLegendLabels: () => {},
+	fileErrors: {},
+	setFileErrors: () => {},
+	updateFileErrors: () => {},
 };
 
 export const ToggleContext = createContext<ToggleContextType>(defaultState);
@@ -148,6 +170,13 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 	const [legendLabels, setLegendLabels] = useState<{ lower: string; upper: string; color: unknown; }[]>([]);
 
 	const currentLegendLabels = useRef<{ lower: string; upper: string; color: unknown; }[]>([]);
+
+
+	const [fileErrors, setFileErrors] = useState<FileErrors>(() => {
+        const storedErrors = localStorage.getItem('fileErrors');
+        return storedErrors ? JSON.parse(storedErrors) : defaultState.fileErrors;
+    });
+
 
 	const handleSetLegendLabels = (labels: { lower: string; upper: string; color: unknown; }[]) => {
 		if(!isEqual(labels, currentLegendLabels.current)){
@@ -234,11 +263,21 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 			setUploadedFiles((currentFiles) =>
 				currentFiles.filter((_, fileIndex) => fileIndex !== index)
 			);
+
 		} catch (error) {
 			console.error("Failed to remove file:", error);
 		}
+		updateFileErrors(fileId.toString(), []);
 	};
-
+	
+	const updateFileErrors = (fileId: string, errors: string[]) => {
+		setFileErrors((prevErrors) => {
+			const updatedErrors = { ...prevErrors, [fileId]: errors };
+			localStorage.setItem('fileErrors', JSON.stringify(updatedErrors)); // Store updated errors in local storage
+			return updatedErrors;
+		});
+	};
+	
 	useEffect(() => {
 		fetchUploadedFiles();
 	}, []);
@@ -297,6 +336,9 @@ export const ToggleProvider: React.FC<{ children: React.ReactNode }> = ({
 				legendLabels,
 				setLegendLabels,
 				handleSetLegendLabels,
+				fileErrors,
+				setFileErrors,
+				updateFileErrors,
 			}}
 		>
 			{children}

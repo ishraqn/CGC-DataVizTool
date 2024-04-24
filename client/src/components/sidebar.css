@@ -281,3 +281,20 @@
         padding-bottom: 0;
     }
 }
+
+/* Close button styles */
+.error-hide-button {
+    position: absolute;
+    top: 5px; /* Near the top-right corner of its parent */
+    right: 5px; /* Near the right edge of its parent */
+    background-color: #ccc; /* Light gray background */
+    border: none; /* No border */
+    border-radius: 50%; /* Circular button */
+    cursor: pointer; /* Pointer cursor on hover */
+    width: 24px; /* Width of the button */
+    height: 24px; /* Height of the button */
+    font-weight: bold; /* Bold text for 'X' */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -4,13 +4,14 @@ import "./sidebar.css";
 import { useToggle } from "../contexts/useToggle";
 import ColorPickerComponent from "./ColorPickerComponent";
 import ConfirmationDialog from "./ConfirmationDialog";
+import ErrorDropdown from "./displayErrors";
 
 type FilterGroup = {
     id: string;
     name: string;
 };
 
-interface SidebarProps {
+interface SidebarProps {	
 	handleDownload: () => Promise<void>;
 	geoJsonData : unknown;
 }
@@ -23,6 +24,7 @@ const mockFilterGroups: FilterGroup[] = [
 	{ id: "7", name: "Toggle Legend" },
 	{ id: "6", name: "Toggle Tile Layer" },
 	{ id: "5", name: "Download Map" },
+	{ id: "8", name: "Show Errors"}
 ];
 
 const caruidToProvinceMap: Record<number, string> = {
@@ -69,6 +71,8 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 		toggleLegendVisibility,
 		setLegendVisibility,
 		setTitlesById,
+		fileErrors,
+		updateFileErrors,
     } = useToggle();
 
     const [showFileList, setShowFileList] = useState(false);
@@ -77,6 +81,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 	const [fileToDeleteIndex, setFileToDeleteIndex] = useState<number | null>(null);
 	const [titleInputValue, setTitleInputValue] = useState("");
 	const [showMapColorToggle, setShowMapColorToggle] = useState(false);
+	const [showErrorTable, setErrorTable] = useState(false);
 
     const handleCardClick = (id: string) => {
 		switch (id) {
@@ -97,9 +102,12 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 				break;
 			case "6":
 				setToggleTileLayer(!toggleTileLayer);
-        break;
+        		break;
 			case "7":
 				setLegendVisibility(!toggleLegendVisibility);
+				break;
+			case "8":
+				setErrorTable(!showErrorTable);
 				break;
 			default:
 				break;
@@ -319,7 +327,7 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 					<li
 						key={group.id}
 						className={`menu-item ${
-							group.id === "2" && isTileLayerVisible ? "active" : ""
+							group.id === "6" && isTileLayerVisible ? "active" : ""
 						}`}
 						onClick={() => handleCardClick(group.id)}
 					>
@@ -396,7 +404,15 @@ const Sidebar: React.FC<SidebarProps> = ({handleDownload, geoJsonData}) => {
 								))}
 							</ul>
 						)}
-					{group.id === "4" && showFeatureVisibility && (
+
+						{group.id === "8" && showErrorTable && (
+						<>
+						<div className="file-dropdown" onClick={(event) => event.stopPropagation()}>
+							<ErrorDropdown />
+						</div>
+						</>
+						)}
+									{group.id === "4" && showFeatureVisibility && (
 						<div 
 							className="file-dropdown"
 							onClick={(event) => event.stopPropagation()}

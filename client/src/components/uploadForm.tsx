@@ -5,7 +5,7 @@ import GuideTooltip from './GuideTooltip';
 import { FaRegQuestionCircle } from "react-icons/fa";
 
 const FileUploadForm = ({onUploadSuccess}) => {
-    const { fetchUploadedFiles } = useToggle();
+    const { fetchUploadedFiles, updateFileErrors } = useToggle();
     const handleFileUpload = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevent the default form submission behavior
         
@@ -23,23 +23,19 @@ const FileUploadForm = ({onUploadSuccess}) => {
                 method: 'POST',
                 body: formData
             })
-            .then(response => {
-                if (response.ok) {
-                    (event.target as HTMLFormElement).reset();
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
                     onUploadSuccess();
                     fetchUploadedFiles();
+                    (event.target as HTMLFormElement).reset();
                 } else {
-                    // Handle other HTTP status codes (e.g., 400, 500) as errors
-                    console.error('Error uploading file:', response.status, response.statusText);
-                    // Access the response body for further details
-                    response.text().then(errorMessage => {
-                        console.error('Error message:', errorMessage);
-                    });
+                    updateFileErrors(data.fileInfo[1], data.errors);
+                    (event.target as HTMLFormElement).reset();
+                    fetchUploadedFiles();
                 }
             })
             .catch(error => console.error('Error uploading file:', error));
-
-            
         }
     };
 
